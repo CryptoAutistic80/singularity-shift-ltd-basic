@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Singularity Shift Ltd</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #0a2540;
+      --paper: #f8fafd;
+      --graphite: #5b6b7c;
+      --blueprint: #1d5bff;
+      --mist: #ffffff;
+      --lines: #e7eef7;
+      --good: #1f9e7a;
+      --warn: #c07d00;
+      --radius: 16px;
+      --shadow-soft: 0 2px 6px rgba(14, 35, 69, 0.06);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --space-8: 64px;
+      --space-9: 96px;
+      --measure: 68ch;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--blueprint);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    a:hover,
+    a:focus {
+      color: #1141c9;
+      text-decoration: underline;
+      text-decoration-color: rgba(29, 91, 255, 0.45);
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: none;
+      border-bottom: 1px solid rgba(231, 238, 247, 0.7);
+      background: rgba(248, 250, 253, 0.85);
+      transition: background 0.2s ease, padding 0.2s ease, backdrop-filter 0.2s ease;
+    }
+
+    .site-header.is-pinned {
+      backdrop-filter: blur(6px);
+      background: rgba(248, 250, 253, 0.92);
+    }
+
+    .nav {
+      margin: 0 auto;
+      max-width: 960px;
+      padding: var(--space-4) var(--space-4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .site-header.is-pinned .nav {
+      padding-block: var(--space-3);
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(29, 91, 255, 0.18);
+      background: var(--blueprint);
+      color: #fff;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-actions a:hover,
+    .nav-actions a:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(14, 35, 69, 0.12);
+    }
+
+    .container {
+      margin: 0 auto;
+      max-width: 960px;
+      padding: var(--space-8) var(--space-4) var(--space-9);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+
+    section {
+      position: relative;
+      border-radius: var(--radius);
+      border: 1px solid var(--lines);
+      background: var(--mist);
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-7) var(--space-6);
+    }
+
+    section + section::before {
+      content: "";
+      position: absolute;
+      top: calc(-1 * var(--space-8));
+      left: var(--space-6);
+      right: var(--space-6);
+      height: 1px;
+      background: var(--lines);
+      opacity: 0.7;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #eaf2ff 0%, #f8fafd 60%);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-7);
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: var(--space-6);
+      border-radius: calc(var(--radius) - var(--space-3));
+      background: radial-gradient(circle at 85% 20%, rgba(29, 91, 255, 0.12), transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--graphite);
+    }
+
+    h1 {
+      margin: var(--space-3) 0 var(--space-4);
+      font-size: clamp(2.2rem, 3vw + 1.5rem, 3rem);
+      line-height: 1.25;
+      max-width: 18ch;
+    }
+
+    .lede {
+      max-width: 46ch;
+      color: var(--graphite);
+    }
+
+    .hero-cta {
+      margin-top: var(--space-5);
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: var(--blueprint);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-cta:hover,
+    .hero-cta:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(14, 35, 69, 0.12);
+    }
+
+    .diagram {
+      align-self: center;
+      justify-self: center;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: calc(var(--radius) - 6px);
+      border: 1px solid rgba(231, 238, 247, 0.9);
+      padding: var(--space-5);
+      max-width: 320px;
+      box-shadow: inset 0 0 0 1px rgba(231, 238, 247, 0.7);
+    }
+
+    .diagram svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .diagram-caption {
+      margin-top: var(--space-3);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      color: var(--graphite);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+
+    .evidence-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: var(--space-4);
+      padding: var(--space-4) var(--space-4);
+      border-radius: var(--radius);
+      border: 1px solid var(--lines);
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(4px);
+      box-shadow: none;
+    }
+
+    .evidence-item {
+      display: grid;
+      gap: var(--space-1);
+      font-size: 15px;
+    }
+
+    .evidence-item span {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--graphite);
+    }
+
+    .about-grid {
+      display: grid;
+      gap: var(--space-6);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .about-copy {
+      max-width: var(--measure);
+    }
+
+    .annotation {
+      position: relative;
+      padding-left: var(--space-5);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 15px;
+      color: var(--graphite);
+    }
+
+    .annotation::before {
+      content: "//";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--blueprint);
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0 0 var(--space-4);
+      font-size: 1.75rem;
+    }
+
+    h3 {
+      margin: 0 0 var(--space-2);
+      font-size: 1.2rem;
+    }
+
+    .card-grid {
+      display: grid;
+      gap: var(--space-4);
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      border-radius: var(--radius);
+      border: 1px solid var(--lines);
+      padding: var(--space-5);
+      background: var(--mist);
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .badge-grid {
+      display: grid;
+      gap: var(--space-3);
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .badge {
+      border-radius: 999px;
+      border: 1px solid rgba(10, 37, 64, 0.08);
+      padding: var(--space-2) var(--space-3);
+      background: rgba(29, 91, 255, 0.06);
+      color: var(--ink);
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      justify-content: center;
+    }
+
+    .badge span {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      color: var(--graphite);
+      letter-spacing: 0.04em;
+    }
+
+    .working-style {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .callout {
+      border-left: 3px solid var(--blueprint);
+      padding-left: var(--space-4);
+      font-size: 16px;
+      color: var(--graphite);
+    }
+
+    footer {
+      margin: var(--space-9) auto var(--space-6);
+      max-width: 960px;
+      padding: 0 var(--space-4);
+      font-size: 15px;
+      color: var(--graphite);
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    footer strong {
+      color: var(--ink);
+    }
+
+    .mobile-contact {
+      position: fixed;
+      bottom: var(--space-4);
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 20px;
+      border-radius: 999px;
+      background: var(--blueprint);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 10px 24px rgba(17, 65, 201, 0.24);
+      display: none;
+      z-index: 30;
+    }
+
+    .mobile-contact:focus-visible {
+      outline: 2px solid rgba(29, 91, 255, 0.6);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 840px) {
+      .nav {
+        padding: var(--space-4) var(--space-3);
+      }
+
+      .container {
+        padding: var(--space-7) var(--space-3) var(--space-8);
+        gap: var(--space-7);
+      }
+
+      section {
+        padding: var(--space-6) var(--space-4);
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .diagram {
+        max-width: 260px;
+      }
+
+      .mobile-contact {
+        display: inline-flex;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="site-header">
+    <nav class="nav" aria-label="Primary">
+      <div class="brand">Singularity Shift Ltd</div>
+      <div class="nav-actions">
+        <a class="cta" href="mailto:singularityshiftai@gmail.com">Email us</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <p class="eyebrow">Practical software architecture</p>
+        <h1 id="hero-title">Practical engineering for measurable outcomes</h1>
+        <p class="lede">
+          We design, build, and ship thoughtful systems across the stack—agentic AI workflows,
+          resilient services, and considered interfaces. Every engagement is measured, maintainable, and grounded in reality.
+        </p>
+        <a class="hero-cta" href="mailto:singularityshiftai@gmail.com">Start a project</a>
+      </div>
+      <figure class="diagram" aria-hidden="true">
+        <svg viewBox="0 0 220 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="20" width="196" height="140" rx="14" stroke="#BFD1F6" stroke-width="1" />
+          <rect x="36" y="52" width="50" height="50" rx="10" fill="#FFFFFF" stroke="#1D5BFF" />
+          <rect x="134" y="52" width="50" height="50" rx="10" fill="#FFFFFF" stroke="#1D5BFF" />
+          <rect x="86" y="96" width="50" height="50" rx="10" fill="#FFFFFF" stroke="#BFD1F6" />
+          <path d="M86 76h-8" stroke="#5B6B7C" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M134 76h-8" stroke="#5B6B7C" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M110 102V84" stroke="#1D5BFF" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4" />
+          <path d="M86 126h-8" stroke="#5B6B7C" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M142 126h-8" stroke="#5B6B7C" stroke-width="1.5" stroke-linecap="round" />
+          <circle cx="61" cy="112" r="6" fill="#1D5BFF" opacity="0.14" />
+          <circle cx="158" cy="64" r="5" fill="#1D5BFF" opacity="0.25" />
+          <text x="46" y="72" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#5B6B7C">ingest</text>
+          <text x="142" y="72" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#5B6B7C">insight</text>
+          <text x="94" y="138" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#5B6B7C">ship</text>
+        </svg>
+        <figcaption class="diagram-caption">Systems stitched end-to-end</figcaption>
+      </figure>
+    </section>
+
+    <section class="evidence-strip" aria-label="Company facts">
+      <div class="evidence-item">
+        <span>Location</span>
+        Cheltenham, United Kingdom
+      </div>
+      <div class="evidence-item">
+        <span>Focus</span>
+        Systems architecture & AI delivery
+      </div>
+      <div class="evidence-item">
+        <span>Since</span>
+        Operating independently since 2023
+      </div>
+      <div class="evidence-item">
+        <span>Contact</span>
+        <a href="mailto:singularityshiftai@gmail.com">Email us</a>
+      </div>
+    </section>
+
+    <section class="about" aria-labelledby="about-title">
+      <div class="about-grid">
+        <div class="about-copy">
+          <h2 id="about-title">Designing clear and resilient systems</h2>
+          <p>
+            Singularity Shift brings deep attention to detail across architecture, infrastructure, and the human interfaces that
+            sit on top. We prefer considered releases over noisy launches, shipping tools that stay dependable long after the first delivery.
+          </p>
+          <p>
+            Based in Cheltenham, we partner with founders and product teams to turn complex requirements into dependable
+            software. The emphasis is on clarity—documented, observable, and accountable.
+          </p>
+        </div>
+        <div>
+          <h3>About James</h3>
+          <p>
+            James is a self-taught engineer who translates ambiguous ideas into clean, reliable systems. He works end-to-end,
+            linking agentic AI, back-end services, and responsive front-ends with the same care for maintainability.
+          </p>
+          <p class="annotation">Hands-on from strategy to ship-ready delivery.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="capabilities" aria-labelledby="capabilities-title">
+      <h2 id="capabilities-title">Capabilities that stay grounded</h2>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Backend systems</h3>
+          <p>
+            REST and event-driven services with observability, rollback strategies, and background workers tuned for real workloads.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Agentic AI workflows</h3>
+          <p>
+            Practical automation that blends LLM reasoning, tool integration, and safe guardrails—shipped with measurable feedback loops.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Interfaces & insight</h3>
+          <p>
+            Responsive dashboards and UIs designed for speed, accessibility, and clarity; data made legible with purpose-built views.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Infrastructure craft</h3>
+          <p>
+            Containerised deploys, logging, metrics, and steady rollout plans—all documented with diagrams and operational runbooks.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="languages" aria-labelledby="languages-title">
+      <h2 id="languages-title">Languages & tools in rotation</h2>
+      <div class="badge-grid">
+        <div class="badge"><span>Core</span>TypeScript · Node.js · Nest.js</div>
+        <div class="badge"><span>Front-end</span>React · Next.js · HTML/CSS</div>
+        <div class="badge"><span>Systems</span>Rust · Python</div>
+        <div class="badge"><span>Data</span>PostgreSQL · SQLite · Redis/Valkey · Sled</div>
+        <div class="badge"><span>Infra</span>Docker · GitHub Actions · Google Cloud</div>
+        <div class="badge"><span>Ops</span>Logging · Metrics · Rollbacks</div>
+      </div>
+    </section>
+
+    <section class="working" aria-labelledby="working-title">
+      <h2 id="working-title">Working style</h2>
+      <div class="working-style">
+        <p>
+          Engagements start with a briefing deck and technical scope, ensuring both parties agree on architecture, interfaces, and measurement.
+          Weekly delivery notes keep stakeholders aligned while providing traceability from design to deployment.
+        </p>
+        <div class="callout">
+          Focus on maintainable, observable systems—not experiments left in production.
+        </div>
+        <p>
+          Every project ships with pragmatic documentation—architecture diagrams, operational checklists, and handover materials tailored to your team.
+          We embed with existing teams or run independently, always with an eye on maintainable velocity.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <strong>© 2025 Singularity Shift Ltd</strong>
+    Cheltenham, United Kingdom · <a href="mailto:singularityshiftai@gmail.com">singularityshiftai@gmail.com</a>
+  </footer>
+
+  <a class="mobile-contact" href="mailto:singularityshiftai@gmail.com">Email Singularity Shift</a>
+
+  <script>
+    (function () {
+      const header = document.getElementById("site-header");
+      if (!header) return;
+
+      const togglePinned = (state) => {
+        header.classList.toggle("is-pinned", state);
+      };
+
+      if ("IntersectionObserver" in window) {
+        const sentinel = document.createElement("div");
+        sentinel.setAttribute("aria-hidden", "true");
+        sentinel.style.position = "absolute";
+        sentinel.style.top = "0";
+        sentinel.style.height = "1px";
+        sentinel.style.width = "1px";
+        header.parentElement?.insertBefore(sentinel, header.nextSibling);
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const [entry] = entries;
+            togglePinned(!entry.isIntersecting);
+          },
+          { threshold: 1 }
+        );
+
+        observer.observe(sentinel);
+      } else {
+        let lastScroll = window.scrollY;
+        window.addEventListener("scroll", () => {
+          const current = window.scrollY;
+          const isScrolled = current > lastScroll && current > 12;
+          togglePinned(isScrolled);
+          lastScroll = current;
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
