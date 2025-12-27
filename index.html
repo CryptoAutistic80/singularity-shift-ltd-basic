@@ -336,9 +336,45 @@
       color: var(--ink-soft);
     }
 
+    ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      color: var(--ink-soft);
+    }
+
+    li + li {
+      margin-top: var(--space-2);
+    }
+
     .section-note {
       margin-bottom: var(--space-5);
       max-width: 54ch;
+    }
+
+    .why-panel {
+      display: grid;
+      gap: var(--space-4);
+    }
+
+    .why-panel h2 {
+      margin-bottom: var(--space-2);
+    }
+
+    .why-panel p {
+      margin-bottom: var(--space-3);
+    }
+
+    .working-style {
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(143, 179, 255, 0.28);
+      background: rgba(248, 251, 255, 0.8);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55);
+    }
+
+    .working-style h3 {
+      margin-bottom: var(--space-2);
     }
 
     .about-grid {
@@ -650,11 +686,12 @@
       <section class="hero panel" aria-labelledby="hero-title">
         <div class="hero-copy">
           <span class="meta-label">Overview</span>
-          <h1 id="hero-title">We build systems that think — clearly.</h1>
-          <p class="lede">Practical engineering, clean architecture, measurable outcomes.</p>
+          <h1 id="hero-title">I build systems that think — clearly.</h1>
+          <p class="lede">I’m James, founder of Singularity Shift — practical engineering, calm architecture, measurable outcomes.</p>
           <p>
-            Singularity Shift ships end-to-end platforms where agentic AI, resilient services, and thoughtful interfaces work as one system.
-            Every engagement favours maintainable velocity, crisp documentation, and measurable outcomes over theatrical launches.
+            I’m the right partner when you need a hands-on founder to translate strategy into shipped platforms without the drama.
+            You get experience across AI automation, B2B SaaS, and data platforms, plus outcomes like faster delivery cycles,
+            reliability-first operations, and clearer decisions from day one.
           </p>
         </div>
         <figure class="hero-visual">
@@ -662,25 +699,47 @@
         </figure>
       </section>
 
+      <section class="panel why-panel" aria-labelledby="why-title">
+        <span class="meta-label">Why me</span>
+        <h2 id="why-title">Why I’m your guy</h2>
+        <p class="section-note">
+          The partnership is built on speed, reliability, and clarity — the outcomes that keep your roadmap moving.
+        </p>
+        <ul>
+          <li>Ship MVPs and critical upgrades in weeks, not quarters.</li>
+          <li>Raise system reliability with observability-first builds and runbooks.</li>
+          <li>Turn ambiguous goals into crisp decision frameworks and roadmaps.</li>
+          <li>Design AI-assisted workflows that reduce manual effort by 40%+.</li>
+        </ul>
+      </section>
+
       <section class="panel" aria-labelledby="about-title">
         <div class="about-grid">
           <div>
             <span class="meta-label">About</span>
-            <h2 id="about-title">Designing clarity since 2023</h2>
+            <h2 id="about-title">Designing clarity with hands-on focus</h2>
             <p>
-              We design, build, and ship practical software—clean architectures, calm infrastructure, and interfaces that make decisions legible.
-              The work blends technical illustration with disciplined engineering so complex systems feel grounded.
+              I design, build, and ship practical software — clean architectures, calm infrastructure, and interfaces that make decisions legible.
+              My work blends technical illustration with disciplined engineering so complex systems feel grounded and repeatable.
             </p>
             <p>
-              Based in Cheltenham, we embed with founders and product teams to translate ambiguous ideas into reliable platforms.
+              Based in Cheltenham, I embed with founders and product teams to translate ambiguous ideas into reliable platforms.
               Expect measured releases, accountable communication, and artefacts you can revisit months later.
             </p>
+            <div class="working-style">
+              <h3>Working style</h3>
+              <ul>
+                <li>Weekly delivery cadence with visible progress and checkpoints.</li>
+                <li>Documentation-first decisions so the “why” stays intact.</li>
+                <li>Calm, collaborative communication with direct trade-off calls.</li>
+              </ul>
+            </div>
           </div>
           <aside class="annotation-card" aria-label="Founder's annotation">
             <div class="annotation-header">Founder field note →</div>
             <p>
-              James is a self-taught systems engineer who treats every project like a technical field report—diagrammed, annotated, and shipped with operational guidance.
-              Agentic workflows, backend services, and interface craft are handled as one conversation.
+              I’m a self-taught systems engineer who treats every project like a technical field report — diagrammed, annotated, and shipped with operational guidance.
+              Agentic workflows, backend services, and interface craft are handled as one conversation, with outcomes like reduced onboarding time and faster incident response.
             </p>
             <p class="annotation-footnote">Hands-on from exploration through ship-ready runbooks.</p>
           </aside>
