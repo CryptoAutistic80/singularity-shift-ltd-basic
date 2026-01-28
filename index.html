@@ -42,6 +42,7 @@
       --space-7: 48px;
       --space-8: 64px;
       --space-9: 96px;
+      --section-pad: clamp(56px, 8vw, 88px);
       --container: min(1100px, calc(100% - 72px));
     }
 
@@ -82,22 +83,22 @@
     }
 
     .parallax-section {
-      min-height: 100vh;
+      min-height: 82vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: var(--space-9) 0;
+      padding: var(--section-pad) 0;
       position: relative;
     }
 
     .parallax-section.hero-section {
-      min-height: 100vh;
-      padding-top: calc(var(--space-9) + 80px);
+      min-height: 95vh;
+      padding-top: calc(var(--section-pad) + 64px);
     }
 
     .parallax-section.footer-section {
-      min-height: 50vh;
+      min-height: 46vh;
       justify-content: center;
     }
 
@@ -244,6 +245,21 @@
 
     main {
       display: contents;
+    }
+
+    /* Micro parallax helper: slight skew + z-index bump on hover */
+    .parallax-layer {
+      transform-origin: center;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.4s ease;
+      will-change: transform;
+    }
+
+    .panel.parallax-layer:hover {
+      transform: translateY(-6px) rotateX(1deg) rotateY(-1deg);
+      box-shadow:
+        0 22px 48px -32px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(160, 184, 204, 0.12);
     }
 
     .panel {
@@ -738,6 +754,7 @@
     @media (max-width: 960px) {
       :root {
         --container: min(1100px, calc(100% - 48px));
+        --section-pad: clamp(48px, 10vw, 72px);
       }
 
       body {
@@ -756,6 +773,7 @@
     @media (max-width: 720px) {
       :root {
         --container: min(1100px, calc(100% - 32px));
+        --section-pad: clamp(40px, 12vw, 64px);
       }
 
       body {
@@ -772,7 +790,7 @@
 
       .parallax-section {
         min-height: auto;
-        padding: var(--space-8) 0;
+        padding: var(--section-pad) 0;
       }
 
       .parallax-section.hero-section {
@@ -1070,23 +1088,21 @@
 
       panels.forEach(panel => revealObserver.observe(panel));
 
-      // Parallax update function
+      // Parallax update function with subtle skew
       function updateParallax() {
-        // Smooth interpolation
         currentScroll += (targetScroll - currentScroll) * smoothness;
 
-        // Apply parallax transforms
         parallaxLayers.forEach(layer => {
           const speed = parseFloat(layer.dataset.speed) || 0.5;
           const rect = layer.getBoundingClientRect();
           const centerY = rect.top + rect.height / 2;
           const viewportCenter = window.innerHeight / 2;
-          const offset = (centerY - viewportCenter) * (1 - speed) * 0.3;
+          const offset = (centerY - viewportCenter) * (1 - speed) * 0.28;
+          const tilt = (centerY - viewportCenter) * 0.00012;
 
-          layer.style.transform = `translateY(${offset}px)`;
+          layer.style.transform = `translateY(${offset}px) rotateX(${tilt}rad) rotateY(${tilt * -0.6}rad)`;
         });
 
-        // Floating elements with slower, offset movement
         floats.forEach(float => {
           const speed = parseFloat(float.dataset.speed) || 0.1;
           const offset = currentScroll * speed * 0.5;
@@ -1154,422 +1170,426 @@
       'use strict';
 
       const canvas = document.getElementById('penteract-canvas');
-      const ctx = canvas.getContext('2d');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d', { alpha: false });
 
-      // Check for reduced motion preference
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) return;
+      const cssBg = getComputedStyle(document.documentElement).getPropertyValue('--bg-deep').trim();
+      const BACKDROP = cssBg || '#030308';
 
-      // Color palette matching site theme
+      if (prefersReducedMotion) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.fillStyle = BACKDROP;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        return;
+      }
+
       const COLORS = {
-        bgDeep: '#0a0f1a',
-        primary: '#7a9bb8',
-        primaryBright: '#a0b8cc',
-        primaryMuted: '#5a7a94',
-        particleCyan: '#8ab4d4',
-        particleTeal: '#6fa8c4',
-        particleBlue: '#5090b8',
-        particleWhite: '#d0e4f0'
+        void: BACKDROP,
+        logic: '#00ffcc',
+        code: '#00ff88',
+        pattern: '#ff00aa',
+        memory: '#ffaa00',
+        creative: '#aa00ff',
+        sensory: '#ff4466',
+        language: '#4488ff',
+        weak: '#446688',
+        flash: '#ffffcc',
+        nodeCore: '#ffffff',
+        nodePulse: '#aaeeff',
       };
 
-      let width, height, centerX, centerY, scale;
-      let startTime = Date.now();
-
-      function resize() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        centerX = width / 2;
-        centerY = height / 2;
-        scale = Math.min(width, height) * 0.9;
-      }
-
-      resize();
-      window.addEventListener('resize', resize);
-
-      // 5D Penteract geometry - 32 vertices
-      const vertices5D = [];
-      for (let i = 0; i < 32; i++) {
-        vertices5D.push([
-          (i & 1) ? 1 : -1,
-          (i & 2) ? 1 : -1,
-          (i & 4) ? 1 : -1,
-          (i & 8) ? 1 : -1,
-          (i & 16) ? 1 : -1
-        ]);
-      }
-
-      // 80 edges - connect vertices differing by exactly one coordinate
-      const edges = [];
-      for (let i = 0; i < 32; i++) {
-        for (let j = i + 1; j < 32; j++) {
-          let diff = 0;
-          for (let k = 0; k < 5; k++) {
-            if (vertices5D[i][k] !== vertices5D[j][k]) diff++;
-          }
-          if (diff === 1) edges.push([i, j]);
-        }
-      }
-
-      // Rotation angles
-      const angles = [0, 0, 0, 0, 0, 0];
-
-      // Trail point class
-      class TrailPoint {
-        constructor(x, y, size, alpha, timestamp) {
+      class ThoughtNode {
+        constructor(x, y, z, w, v, category) {
           this.x = x;
           this.y = y;
-          this.size = size;
-          this.initialAlpha = alpha;
-          this.alpha = alpha;
-          this.timestamp = timestamp;
-          this.maxAge = 2200 + Math.random() * 1400;
-          this.currentSize = size;
-        }
-
-        update(currentTime) {
-          const age = currentTime - this.timestamp;
-          const lifeProgress = age / this.maxAge;
-          this.alpha = this.initialAlpha * Math.pow(1 - Math.min(lifeProgress, 1), 2.3);
-          this.currentSize = this.size * (1 - lifeProgress * 0.32);
-          return lifeProgress < 1;
-        }
-      }
-
-      // Edge-following particle class
-      class Particle {
-        constructor() {
-          this.trail = [];
-          this.maxTrailLength = 30;
-          this.lastTrailTime = 0;
-          this.trailInterval = 40;
-          this.reset();
-        }
-
-        reset() {
-          this.edgeIndex = Math.floor(Math.random() * edges.length);
-          this.t = Math.random();
-          this.speed = 0.002 + Math.random() * 0.0038;
-          this.direction = Math.random() > 0.5 ? 1 : -1;
-          this.life = 1;
-          this.maxLife = 220 + Math.random() * 320;
+          this.z = z;
+          this.w = w;
+          this.v = v;
+          this.category = category;
+          this.energy = 0.5 + Math.random() * 0.5;
+          this.pulsePhase = Math.random() * Math.PI * 2;
+          this.pulseSpeed = 0.03 + Math.random() * 0.04;
+          this.size = 1.4 + Math.random() * 2.4;
+          this.activation = 0.3 + Math.random() * 0.4;
+          this.targetActivation = this.activation;
+          this.vx = (Math.random() - 0.5) * 0.003;
+          this.vy = (Math.random() - 0.5) * 0.003;
+          this.vz = (Math.random() - 0.5) * 0.003;
+          this.vw = (Math.random() - 0.5) * 0.002;
+          this.vv = (Math.random() - 0.5) * 0.002;
           this.age = 0;
-          this.colorVariant = Math.floor(Math.random() * 3);
-          this.size = 1.3 + Math.random() * 2.2;
-        }
-
-        update() {
-          this.t += this.speed * this.direction;
-          this.age++;
-
-          if (this.t > 1 || this.t < 0) {
-            const currentEdge = edges[this.edgeIndex];
-            const currentVertex = this.t > 1 ? currentEdge[1] : currentEdge[0];
-
-            const connectedEdges = edges
-              .map((e, i) => ({ edge: e, index: i }))
-              .filter(({ edge, index }) =>
-                index !== this.edgeIndex &&
-                (edge[0] === currentVertex || edge[1] === currentVertex)
-              );
-
-            if (connectedEdges.length > 0) {
-              const next = connectedEdges[Math.floor(Math.random() * connectedEdges.length)];
-              this.edgeIndex = next.index;
-              this.t = next.edge[0] === currentVertex ? 0 : 1;
-              this.direction = next.edge[0] === currentVertex ? 1 : -1;
-            }
-          }
-
-          if (this.age > this.maxLife) this.life -= 0.02;
-          if (this.life <= 0) { this.trail = []; this.reset(); }
-        }
-
-        addTrailPoint(x, y, size, alpha, currentTime) {
-          if (currentTime - this.lastTrailTime > this.trailInterval) {
-            this.trail.push(new TrailPoint(x, y, size * 0.62, alpha * 0.72, currentTime));
-            this.lastTrailTime = currentTime;
-            if (this.trail.length > this.maxTrailLength) this.trail.shift();
-          }
-        }
-
-        updateTrail(currentTime) {
-          this.trail = this.trail.filter(point => point.update(currentTime));
-        }
-
-        getPosition(rotatedVertices) {
-          const edge = edges[this.edgeIndex];
-          const v1 = rotatedVertices[edge[0]];
-          const v2 = rotatedVertices[edge[1]];
-          return v1.map((coord, i) => coord + (v2[i] - coord) * this.t);
-        }
-
-        getColor() {
-          return [COLORS.particleCyan, COLORS.particleTeal, COLORS.particleBlue][this.colorVariant];
-        }
-      }
-
-      // Ambient particle class
-      class AmbientParticle {
-        constructor() {
-          this.trail = [];
-          this.maxTrailLength = 20;
-          this.lastTrailTime = 0;
-          this.trailInterval = 50;
-          this.reset();
-        }
-
-        reset() {
-          this.position = Array(5).fill(0).map(() => (Math.random() - 0.5) * 4);
-          this.velocity = Array(5).fill(0).map(() => (Math.random() - 0.5) * 0.012);
+          this.maxAge = 520 + Math.random() * 680;
           this.life = 1;
-          this.decay = 0.00065 + Math.random() * 0.001;
-          this.size = 0.7 + Math.random() * 1.6;
-          this.colorVariant = Math.floor(Math.random() * 3);
         }
 
         update() {
-          for (let i = 0; i < 5; i++) {
-            this.position[i] += this.velocity[i];
-            this.velocity[i] -= this.position[i] * 0.00009;
-            this.velocity[i] += (Math.random() - 0.5) * 0.00085;
-          }
-          this.life -= this.decay;
-          if (this.life <= 0) { this.trail = []; this.reset(); }
+          this.age++;
+          this.pulsePhase += this.pulseSpeed;
+
+          this.x += this.vx;
+          this.y += this.vy;
+          this.z += this.vz;
+          this.w += this.vw;
+          this.v += this.vv;
+
+          const bound = 2.2;
+          if (Math.abs(this.x) > bound) this.vx -= this.x * 0.002;
+          if (Math.abs(this.y) > bound) this.vy -= this.y * 0.002;
+          if (Math.abs(this.z) > bound) this.vz -= this.z * 0.002;
+          if (Math.abs(this.w) > bound) this.vw -= this.w * 0.001;
+          if (Math.abs(this.v) > bound) this.vv -= this.v * 0.001;
+
+          this.activation += (this.targetActivation - this.activation) * 0.08;
+          this.targetActivation *= 0.992;
+          this.targetActivation = Math.max(0.2, this.targetActivation);
+
+          if (this.age > this.maxAge) this.life -= 0.01;
+
+          return this.life > 0;
         }
 
-        addTrailPoint(x, y, size, alpha, currentTime) {
-          if (currentTime - this.lastTrailTime > this.trailInterval) {
-            this.trail.push(new TrailPoint(x, y, size * 0.48, alpha * 0.52, currentTime));
-            this.lastTrailTime = currentTime;
-            if (this.trail.length > this.maxTrailLength) this.trail.shift();
-          }
-        }
-
-        updateTrail(currentTime) {
-          this.trail = this.trail.filter(point => point.update(currentTime));
+        activate(amount = 0.5) {
+          this.targetActivation = Math.min(1, this.targetActivation + amount);
         }
 
         getColor() {
-          return [COLORS.particleCyan, COLORS.particleTeal, COLORS.particleBlue][this.colorVariant];
+          const colors = {
+            logic: COLORS.logic,
+            code: COLORS.code,
+            pattern: COLORS.pattern,
+            memory: COLORS.memory,
+            creative: COLORS.creative,
+            sensory: COLORS.sensory,
+            language: COLORS.language,
+          };
+          return colors[this.category] || COLORS.logic;
         }
       }
 
-      // Create particles (reduced for performance)
-      const particles = Array(60).fill(null).map(() => new Particle());
-      const ambientParticles = Array(40).fill(null).map(() => new AmbientParticle());
+      class Connection {
+        constructor(nodeA, nodeB, strength = 0.5) {
+          this.nodeA = nodeA;
+          this.nodeB = nodeB;
+          this.strength = strength;
+          this.activity = 0;
+          this.pulsePosition = Math.random();
+          this.pulseSpeed = 0.015 + Math.random() * 0.025;
+          this.pulseDirection = Math.random() > 0.5 ? 1 : -1;
+        }
 
-      // 5D rotation
-      function rotate5D(point, angles) {
-        let p = [...point];
-
-        // XY plane
-        let [x, y] = [p[0], p[1]];
-        p[0] = x * Math.cos(angles[0]) - y * Math.sin(angles[0]);
-        p[1] = x * Math.sin(angles[0]) + y * Math.cos(angles[0]);
-
-        // XZ plane
-        let [x2, z] = [p[0], p[2]];
-        p[0] = x2 * Math.cos(angles[1]) - z * Math.sin(angles[1]);
-        p[2] = x2 * Math.sin(angles[1]) + z * Math.cos(angles[1]);
-
-        // XW plane
-        let [x3, w] = [p[0], p[3]];
-        p[0] = x3 * Math.cos(angles[2]) - w * Math.sin(angles[2]);
-        p[3] = x3 * Math.sin(angles[2]) + w * Math.cos(angles[2]);
-
-        // YW plane
-        let [y2, w2] = [p[1], p[3]];
-        p[1] = y2 * Math.cos(angles[3]) - w2 * Math.sin(angles[3]);
-        p[3] = y2 * Math.sin(angles[3]) + w2 * Math.cos(angles[3]);
-
-        // XV plane
-        let [x4, v] = [p[0], p[4]];
-        p[0] = x4 * Math.cos(angles[4]) - v * Math.sin(angles[4]);
-        p[4] = x4 * Math.sin(angles[4]) + v * Math.cos(angles[4]);
-
-        // ZV plane
-        let [z2, v2] = [p[2], p[4]];
-        p[2] = z2 * Math.cos(angles[5]) - v2 * Math.sin(angles[5]);
-        p[4] = z2 * Math.sin(angles[5]) + v2 * Math.cos(angles[5]);
-
-        return p;
+        update() {
+          this.pulsePosition += this.pulseSpeed * this.pulseDirection;
+          if (this.pulsePosition > 1) { this.pulsePosition = 1; this.pulseDirection = -1; }
+          if (this.pulsePosition < 0) { this.pulsePosition = 0; this.pulseDirection = 1; }
+          this.activity = (this.nodeA.activation + this.nodeB.activation) * 0.5 * this.strength;
+        }
       }
 
-      // 5D to 2D projection
-      function project5Dto2D(point) {
-        const distance4D = 2.5, distance5D = 3.5, fov = 1.8;
+      class TokenStream {
+        constructor() {
+          this.tokens = [];
+          this.baseY = (Math.random() - 0.5) * 1.8;
+          this.baseZ = (Math.random() - 0.5) * 1.8;
+          this.speed = 0.012 + Math.random() * 0.018;
+          this.hue = 190 + Math.random() * 35;
+          this.life = 1;
+          this.maxTokens = 12 + Math.floor(Math.random() * 15);
 
-        const w5 = distance5D - point[4];
-        const scale5 = fov / Math.max(w5, 0.1);
-        const p4 = [point[0] * scale5, point[1] * scale5, point[2] * scale5, point[3] * scale5];
+          for (let i = 0; i < this.maxTokens; i++) {
+            this.tokens.push({
+              x: -2.5 + (i / this.maxTokens) * 5,
+              y: this.baseY + (Math.random() - 0.5) * 0.3,
+              z: this.baseZ + (Math.random() - 0.5) * 0.3,
+              size: 0.4 + Math.random() * 0.5,
+              alpha: 0.4 + Math.random() * 0.5,
+            });
+          }
+        }
 
-        const w4 = distance4D - p4[3];
-        const scale4 = fov / Math.max(w4, 0.1);
-        const p3 = [p4[0] * scale4, p4[1] * scale4, p4[2] * scale4];
+        update() {
+          this.tokens.forEach((token, i) => {
+            token.x += this.speed;
+            if (token.x > 3) {
+              token.x = -3;
+              token.y = this.baseY + (Math.random() - 0.5) * 0.3;
+            }
+            token.y += Math.sin(token.x * 2 + i * 0.5) * 0.002;
+          });
+          this.life -= 0.0004;
+          return this.life > 0;
+        }
+      }
 
-        const depth = 2.5 - p3[2];
-        const scale3 = fov / Math.max(depth, 0.1);
+      const project5Dto2D = (x, y, z, w, v, time) => {
+        const a1 = time * 0.00025;
+        const a2 = time * 0.0002;
+        const a3 = time * 0.0003;
+
+        const x1 = x * Math.cos(a1) - w * Math.sin(a1);
+        const w1 = x * Math.sin(a1) + w * Math.cos(a1);
+
+        const y1 = y * Math.cos(a2) - v * Math.sin(a2);
+        const v1 = y * Math.sin(a2) + v * Math.cos(a2);
+
+        const z1 = z * Math.cos(a3) - w1 * Math.sin(a3);
+        const w2 = z * Math.sin(a3) + w1 * Math.cos(a3);
+
+        const perspective = 3;
+        const scale4 = perspective / Math.max(0.5, perspective - w2 * 0.5);
+        const scale5 = perspective / Math.max(0.5, perspective - v1 * 0.5);
+        const finalScale = scale4 * scale5;
 
         return {
-          x: p3[0] * scale3,
-          y: p3[1] * scale3,
-          scale: Math.min(Math.max(scale3 * scale4 * scale5, 0.1), 5),
-          w4: Math.max(w4, 0.1),
-          v5: Math.max(w5, 0.1)
+          x: x1 * finalScale,
+          y: y1 * finalScale,
+          z: z1,
+          scale: Math.max(0.3, Math.min(finalScale, 3)),
         };
+      };
+
+      const categories = ['logic', 'code', 'pattern', 'memory', 'creative', 'sensory', 'language'];
+      const baseNodeCount = window.innerWidth > 1200 ? 70 : window.innerWidth > 900 ? 60 : 48;
+      const maxNodes = 96;
+      let nodes = [];
+      let connections = [];
+      let tokenStreams = [];
+      let lastSpawnTime = 0;
+      let frameCount = 0;
+
+      for (let i = 0; i < baseNodeCount; i++) {
+        nodes.push(new ThoughtNode(
+          (Math.random() - 0.5) * 3.5,
+          (Math.random() - 0.5) * 3.5,
+          (Math.random() - 0.5) * 3.5,
+          (Math.random() - 0.5) * 2.5,
+          (Math.random() - 0.5) * 2.5,
+          categories[Math.floor(Math.random() * categories.length)]
+        ));
       }
 
-      // Draw glow helper
-      function drawGlow(x, y, size, color, alpha) {
-        if (alpha < 0.01 || !isFinite(x) || !isFinite(y) || !isFinite(size) || size <= 0) return;
-        alpha = Math.max(0, Math.min(1, alpha));
-        const gradient = ctx.createRadialGradient(x, y, 0, x, y, size);
-        const hex = Math.floor(alpha * 255).toString(16).padStart(2, '0');
-        const hexHalf = Math.floor(alpha * 100).toString(16).padStart(2, '0');
-        gradient.addColorStop(0, color + hex);
-        gradient.addColorStop(0.4, color + hexHalf);
-        gradient.addColorStop(1, 'transparent');
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
-        ctx.fill();
+      const rebuildConnections = () => {
+        connections = [];
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const dz = nodes[i].z - nodes[j].z;
+            const dw = nodes[i].w - nodes[j].w;
+            const dv = nodes[i].v - nodes[j].v;
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz + dw * dw * 0.5 + dv * dv * 0.5);
+
+            if (dist < 1.8) {
+              connections.push(new Connection(nodes[i], nodes[j], 1 - dist / 1.8));
+            } else if (nodes[i].category === nodes[j].category && Math.random() < 0.12) {
+              connections.push(new Connection(nodes[i], nodes[j], 0.3));
+            } else if (Math.random() < 0.008) {
+              connections.push(new Connection(nodes[i], nodes[j], 0.2));
+            }
+          }
+        }
+      };
+
+      rebuildConnections();
+
+      const initialStreams = window.innerWidth > 900 ? 4 : 3;
+      for (let i = 0; i < initialStreams; i++) {
+        tokenStreams.push(new TokenStream());
       }
 
-      function draw() {
-        try {
-          const currentTime = Date.now() - startTime;
+      let width, height, centerX, centerY, scale;
 
-          // Clear with background
-          ctx.fillStyle = COLORS.bgDeep;
-          ctx.fillRect(0, 0, width, height);
+      const resize = () => {
+        const dpr = window.devicePixelRatio || 1;
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        centerX = width / 2;
+        centerY = height / 2;
+        scale = Math.min(width, height) * 0.25;
+      };
 
-        // Update rotation angles
-        angles[0] = currentTime * 0.00026;
-        angles[1] = currentTime * 0.0002;
-        angles[2] = currentTime * 0.0004;
-        angles[3] = currentTime * 0.00024;
-        angles[4] = currentTime * 0.00032;
-        angles[5] = currentTime * 0.00016;
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
 
-        // Rotate and project vertices
-        const rotatedVertices = vertices5D.map(v => rotate5D(v, angles));
-        const projectedVertices = rotatedVertices.map(v => {
-          const proj = project5Dto2D(v);
-          return { x: centerX + proj.x * scale, y: centerY + proj.y * scale, ...proj };
-        });
+      const startTime = performance.now();
 
-        // Update all particles
-        particles.forEach(p => { p.update(); p.updateTrail(currentTime); });
-        ambientParticles.forEach(p => { p.update(); p.updateTrail(currentTime); });
+      const hexAlpha = (a) => Math.floor(Math.min(1, Math.max(0, a)) * 255).toString(16).padStart(2, '0');
 
-        // === DRAW TRAILS ===
-        particles.forEach(particle => {
-          particle.trail.forEach(point => {
-            if (point.alpha > 0.015) {
-              drawGlow(point.x, point.y, point.currentSize * 4.5, particle.getColor(), point.alpha);
+      const animate = (time) => {
+        const currentTime = time - startTime;
+        frameCount++;
+
+        ctx.fillStyle = COLORS.void;
+        ctx.fillRect(0, 0, width, height);
+
+        nodes = nodes.filter(node => node.update());
+        if (nodes.length === 0) {
+          nodes.push(new ThoughtNode(0, 0, 0, 0, 0, categories[Math.floor(Math.random() * categories.length)]));
+        }
+
+        connections = connections.filter(conn => conn.nodeA.life > 0 && conn.nodeB.life > 0);
+
+        if (currentTime - lastSpawnTime > 420 && nodes.length < maxNodes) {
+          const parent = nodes[Math.floor(Math.random() * nodes.length)];
+          const child = new ThoughtNode(
+            parent.x + (Math.random() - 0.5) * 0.8,
+            parent.y + (Math.random() - 0.5) * 0.8,
+            parent.z + (Math.random() - 0.5) * 0.8,
+            parent.w + (Math.random() - 0.5) * 0.5,
+            parent.v + (Math.random() - 0.5) * 0.5,
+            Math.random() < 0.6 ? parent.category : categories[Math.floor(Math.random() * categories.length)]
+          );
+          nodes.push(child);
+          parent.activate(0.5);
+          child.activate(0.7);
+          lastSpawnTime = currentTime;
+        }
+
+        if (frameCount % 120 === 0) {
+          rebuildConnections();
+        }
+
+        connections.forEach(conn => conn.update());
+
+        tokenStreams = tokenStreams.filter(s => s.update());
+        if (tokenStreams.length < 6 && Math.random() < 0.015) {
+          tokenStreams.push(new TokenStream());
+        }
+
+        if (Math.random() < 0.02 && nodes.length > 0) {
+          const burstNode = nodes[Math.floor(Math.random() * nodes.length)];
+          burstNode.activate(0.8);
+          nodes.forEach(n => {
+            const dx = n.x - burstNode.x;
+            const dy = n.y - burstNode.y;
+            const dz = n.z - burstNode.z;
+            const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+            if (dist < 1 && n !== burstNode) {
+              n.activate(0.4 * (1 - dist));
+            }
+          });
+        }
+
+        tokenStreams.forEach(stream => {
+          stream.tokens.forEach(token => {
+            const proj = project5Dto2D(token.x, token.y, token.z, 0, 0, currentTime);
+            const sx = centerX + proj.x * scale;
+            const sy = centerY + proj.y * scale;
+            const sz = token.size * proj.scale * 12;
+            const alpha = token.alpha * stream.life * proj.scale * 0.7;
+
+            if (sx > -50 && sx < width + 50 && sy > -50 && sy < height + 50) {
+              const gradient = ctx.createRadialGradient(sx, sy, 0, sx, sy, sz);
+              gradient.addColorStop(0, `hsla(${stream.hue}, 80%, 70%, ${alpha})`);
+              gradient.addColorStop(0.4, `hsla(${stream.hue}, 70%, 50%, ${alpha * 0.4})`);
+              gradient.addColorStop(1, 'transparent');
+              ctx.fillStyle = gradient;
+              ctx.beginPath();
+              ctx.arc(sx, sy, sz, 0, Math.PI * 2);
+              ctx.fill();
             }
           });
         });
 
-        ambientParticles.forEach(particle => {
-          particle.trail.forEach(point => {
-            if (point.alpha > 0.015) {
-              drawGlow(point.x, point.y, point.currentSize * 3.5, particle.getColor(), point.alpha);
-            }
-          });
-        });
-
-        // === DRAW EDGES ===
         ctx.lineCap = 'round';
-        edges.forEach(([i, j]) => {
-          const v1 = projectedVertices[i];
-          const v2 = projectedVertices[j];
-          const avgScale = (v1.scale + v2.scale) / 2;
-          const alpha = Math.max(0, Math.min(1, 0.14 + avgScale * 0.07));
+        connections.forEach(conn => {
+          const projA = project5Dto2D(conn.nodeA.x, conn.nodeA.y, conn.nodeA.z, conn.nodeA.w, conn.nodeA.v, currentTime);
+          const projB = project5Dto2D(conn.nodeB.x, conn.nodeB.y, conn.nodeB.z, conn.nodeB.w, conn.nodeB.v, currentTime);
 
-          const hex = Math.floor(alpha * 255).toString(16).padStart(2, '0');
-          ctx.strokeStyle = COLORS.primary + hex;
-          ctx.lineWidth = 0.6 + avgScale * 0.38;
+          const ax = centerX + projA.x * scale;
+          const ay = centerY + projA.y * scale;
+          const bx = centerX + projB.x * scale;
+          const by = centerY + projB.y * scale;
+
+          const alpha = (conn.strength * 0.3 + conn.activity * 0.5) * conn.nodeA.life * conn.nodeB.life;
+          if (alpha < 0.02) return;
+
+          const gradient = ctx.createLinearGradient(ax, ay, bx, by);
+          gradient.addColorStop(0, conn.nodeA.getColor() + hexAlpha(alpha * 0.7));
+          gradient.addColorStop(0.5, COLORS.weak + hexAlpha(alpha * 0.9));
+          gradient.addColorStop(1, conn.nodeB.getColor() + hexAlpha(alpha * 0.7));
+
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 0.8 + conn.activity * 3 + conn.strength * 0.8;
           ctx.beginPath();
-          ctx.moveTo(v1.x, v1.y);
-          ctx.lineTo(v2.x, v2.y);
+          ctx.moveTo(ax, ay);
+          ctx.lineTo(bx, by);
           ctx.stroke();
+
+          if (conn.activity > 0.12) {
+            const px = ax + (bx - ax) * conn.pulsePosition;
+            const py = ay + (by - ay) * conn.pulsePosition;
+            const pulseSize = 6 + conn.activity * 12;
+            const pulseGradient = ctx.createRadialGradient(px, py, 0, px, py, pulseSize);
+            pulseGradient.addColorStop(0, COLORS.flash + hexAlpha(conn.activity * 0.9));
+            pulseGradient.addColorStop(0.5, COLORS.flash + hexAlpha(conn.activity * 0.4));
+            pulseGradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = pulseGradient;
+            ctx.beginPath();
+            ctx.arc(px, py, pulseSize, 0, Math.PI * 2);
+            ctx.fill();
+          }
         });
 
-        // === DRAW VERTICES ===
-        projectedVertices.forEach(v => {
-          const size = 2.2 + v.scale * 3.8;
-          const alpha = 0.65 + v.scale * 0.3;
+        nodes.forEach(node => {
+          const proj = project5Dto2D(node.x, node.y, node.z, node.w, node.v, currentTime);
+          const sx = centerX + proj.x * scale;
+          const sy = centerY + proj.y * scale;
 
-          // Glow
-          drawGlow(v.x, v.y, size * 4.5, COLORS.primaryBright, alpha * 0.7);
+          if (sx < -100 || sx > width + 100 || sy < -100 || sy > height + 100) return;
 
-          // Core
-          ctx.fillStyle = COLORS.particleWhite;
+          const pulse = Math.sin(node.pulsePhase) * 0.25 + 0.75;
+          const baseSize = node.size * proj.scale * 8;
+          const size = baseSize * (1 + node.activation * 0.4);
+          const alpha = (node.energy * 0.4 + node.activation * 0.6) * pulse * node.life;
+
+          const outerGradient = ctx.createRadialGradient(sx, sy, 0, sx, sy, size * 4);
+          outerGradient.addColorStop(0, node.getColor() + hexAlpha(alpha * 0.7));
+          outerGradient.addColorStop(0.3, node.getColor() + hexAlpha(alpha * 0.35));
+          outerGradient.addColorStop(0.6, node.getColor() + hexAlpha(alpha * 0.1));
+          outerGradient.addColorStop(1, 'transparent');
+          ctx.fillStyle = outerGradient;
           ctx.beginPath();
-          ctx.arc(v.x, v.y, size * 0.42, 0, Math.PI * 2);
+          ctx.arc(sx, sy, size * 4, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (node.activation > 0.3) {
+            const innerGradient = ctx.createRadialGradient(sx, sy, 0, sx, sy, size * 2);
+            innerGradient.addColorStop(0, COLORS.nodePulse + hexAlpha(node.activation * 0.6));
+            innerGradient.addColorStop(0.5, COLORS.nodePulse + hexAlpha(node.activation * 0.2));
+            innerGradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = innerGradient;
+            ctx.beginPath();
+            ctx.arc(sx, sy, size * 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.fillStyle = COLORS.nodeCore + hexAlpha(alpha * 0.95);
+          ctx.beginPath();
+          ctx.arc(sx, sy, size * 0.35, 0, Math.PI * 2);
           ctx.fill();
         });
 
-        // === DRAW PARTICLES ===
-        particles.forEach(particle => {
-          const pos5D = particle.getPosition(rotatedVertices);
-          const proj = project5Dto2D(pos5D);
-          const x = centerX + proj.x * scale;
-          const y = centerY + proj.y * scale;
-          const alpha = particle.life * (0.52 + proj.scale * 0.38);
-          const size = particle.size * (1.1 + proj.scale * 1.9);
-
-          particle.addTrailPoint(x, y, size, alpha, currentTime);
-
-          // Glow
-          drawGlow(x, y, size * 5.5, particle.getColor(), alpha);
-
-          // Core
-          const coreAlpha = Math.max(0, Math.min(1, alpha));
-          const hex = Math.floor(coreAlpha * 255).toString(16).padStart(2, '0');
-          ctx.fillStyle = COLORS.particleWhite + hex;
-          ctx.beginPath();
-          ctx.arc(x, y, size * 0.75, 0, Math.PI * 2);
-          ctx.fill();
-        });
-
-        // Ambient particles
-        ambientParticles.forEach(particle => {
-          const rotated = rotate5D(particle.position, angles);
-          const proj = project5Dto2D(rotated);
-          const x = centerX + proj.x * scale;
-          const y = centerY + proj.y * scale;
-
-          if (x < -100 || x > width + 100 || y < -100 || y > height + 100) return;
-
-          const alpha = particle.life * 0.38 * proj.scale;
-          const size = particle.size * (0.72 + proj.scale * 1.15);
-
-          particle.addTrailPoint(x, y, size, alpha, currentTime);
-
-          drawGlow(x, y, size * 4.5, particle.getColor(), alpha);
-        });
-
-        // === SUBTLE CORNER VIGNETTE ===
         const vignetteGradient = ctx.createRadialGradient(
-          centerX, centerY, Math.min(width, height) * 0.3,
-          centerX, centerY, Math.max(width, height) * 0.8
+          centerX, centerY, Math.min(width, height) * 0.15,
+          centerX, centerY, Math.max(width, height) * 0.7
         );
         vignetteGradient.addColorStop(0, 'transparent');
-        vignetteGradient.addColorStop(0.6, 'transparent');
-        vignetteGradient.addColorStop(1, 'rgba(10, 15, 26, 0.5)');
+        vignetteGradient.addColorStop(0.5, 'transparent');
+        vignetteGradient.addColorStop(1, 'rgba(3, 3, 8, 0.75)');
         ctx.fillStyle = vignetteGradient;
         ctx.fillRect(0, 0, width, height);
-        } catch (e) {
-          console.error('Animation error:', e);
-        }
-        requestAnimationFrame(draw);
-      }
 
-      draw();
+        requestAnimationFrame(animate);
+      };
+
+      requestAnimationFrame(animate);
     })();
   </script>
 </body>
