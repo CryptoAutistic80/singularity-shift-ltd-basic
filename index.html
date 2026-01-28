@@ -63,6 +63,7 @@
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
+      overflow-y: auto;
     }
 
     #penteract-canvas {
@@ -78,11 +79,70 @@
     .page {
       position: relative;
       z-index: 1;
+    }
+
+    .parallax-section {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      gap: var(--space-7);
-      padding-bottom: var(--space-9);
+      justify-content: center;
+      align-items: center;
+      padding: var(--space-9) 0;
+      position: relative;
+    }
+
+    .parallax-section.hero-section {
+      min-height: 100vh;
+      padding-top: calc(var(--space-9) + 80px);
+    }
+
+    .parallax-section.footer-section {
+      min-height: 50vh;
+      justify-content: center;
+    }
+
+    /* Parallax layer system */
+    .parallax-layer {
+      will-change: transform;
+      transition: transform 0.1s linear;
+    }
+
+    .parallax-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Floating elements that move at different rates */
+    .parallax-float {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(122, 155, 184, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .float-1 {
+      width: 300px;
+      height: 300px;
+      top: 10%;
+      left: -5%;
+      opacity: 0.4;
+    }
+
+    .float-2 {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      right: -3%;
+      opacity: 0.3;
+    }
+
+    .float-3 {
+      width: 150px;
+      height: 150px;
+      top: 30%;
+      right: 10%;
+      opacity: 0.25;
     }
 
     a {
@@ -104,12 +164,14 @@
     }
 
     .site-header {
-      position: sticky;
+      position: fixed;
       top: clamp(18px, 4vw, 32px);
-      margin: clamp(20px, 6vw, 36px) auto 0;
+      left: 50%;
+      transform: translateX(-50%) translateY(0);
       width: var(--container);
+      max-width: 1100px;
       border-radius: 999px;
-      background: rgba(17, 24, 39, 0.75);
+      background: rgba(17, 24, 39, 0.85);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
@@ -118,7 +180,22 @@
         0 18px 45px -30px rgba(0, 0, 0, 0.8),
         inset 0 1px 0 rgba(160, 184, 204, 0.1);
       padding: var(--space-2) var(--space-4);
-      z-index: 10;
+      z-index: 100;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  background 0.3s ease,
+                  box-shadow 0.3s ease;
+    }
+
+    .site-header.scrolled {
+      background: rgba(17, 24, 39, 0.95);
+      box-shadow:
+        0 0 1px rgba(160, 184, 204, 0.4),
+        0 8px 32px -8px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(160, 184, 204, 0.15);
+    }
+
+    .site-header.hidden {
+      transform: translateX(-50%) translateY(-120%);
     }
 
     .nav {
@@ -166,16 +243,13 @@
     }
 
     main {
-      width: var(--container);
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-7);
-      flex: 1 0 auto;
+      display: contents;
     }
 
     .panel {
       position: relative;
+      width: var(--container);
+      max-width: 1100px;
       padding: clamp(3.2rem, 6vw, 5rem);
       border-radius: var(--radius-lg);
       border: 1px solid var(--glass-border);
@@ -188,7 +262,81 @@
         inset 0 1px 0 var(--glass-highlight);
       overflow: hidden;
       isolation: isolate;
+      opacity: 0;
+      transform: translateY(60px) scale(0.98);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
+    .panel.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Staggered reveal for panel children */
+    .panel.visible .meta-label,
+    .panel.visible h1,
+    .panel.visible h2,
+    .panel.visible .lede,
+    .panel.visible p,
+    .panel.visible .hero-visual,
+    .panel.visible .about-grid,
+    .panel.visible .capability-flow,
+    .panel.visible .tool-wall,
+    .panel.visible .annotation-card {
+      opacity: 0;
+      animation: revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .panel.visible .meta-label { animation-delay: 0.1s; }
+    .panel.visible h1, .panel.visible h2 { animation-delay: 0.2s; }
+    .panel.visible .lede { animation-delay: 0.3s; }
+    .panel.visible p { animation-delay: 0.35s; }
+    .panel.visible .hero-visual { animation-delay: 0.25s; }
+    .panel.visible .about-grid { animation-delay: 0.2s; }
+    .panel.visible .annotation-card { animation-delay: 0.4s; }
+    .panel.visible .capability-flow { animation-delay: 0.3s; }
+    .panel.visible .tool-wall { animation-delay: 0.3s; }
+
+    @keyframes revealUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Staggered capability nodes */
+    .panel.visible .capability-node {
+      opacity: 0;
+      animation: revealUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .panel.visible .capability-node:nth-child(1) { animation-delay: 0.35s; }
+    .panel.visible .capability-node:nth-child(2) { animation-delay: 0.45s; }
+    .panel.visible .capability-node:nth-child(3) { animation-delay: 0.55s; }
+    .panel.visible .capability-node:nth-child(4) { animation-delay: 0.65s; }
+    .panel.visible .capability-node:nth-child(5) { animation-delay: 0.75s; }
+
+    /* Staggered tool pills */
+    .panel.visible .tool-pill {
+      opacity: 0;
+      animation: revealUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .panel.visible .tool-pill:nth-child(1) { animation-delay: 0.35s; }
+    .panel.visible .tool-pill:nth-child(2) { animation-delay: 0.4s; }
+    .panel.visible .tool-pill:nth-child(3) { animation-delay: 0.45s; }
+    .panel.visible .tool-pill:nth-child(4) { animation-delay: 0.5s; }
+    .panel.visible .tool-pill:nth-child(5) { animation-delay: 0.55s; }
+    .panel.visible .tool-pill:nth-child(6) { animation-delay: 0.6s; }
+    .panel.visible .tool-pill:nth-child(7) { animation-delay: 0.65s; }
+    .panel.visible .tool-pill:nth-child(8) { animation-delay: 0.7s; }
+    .panel.visible .tool-pill:nth-child(9) { animation-delay: 0.75s; }
+    .panel.visible .tool-pill:nth-child(10) { animation-delay: 0.8s; }
 
     .panel::before {
       content: "";
@@ -500,7 +648,7 @@
     .site-footer {
       position: relative;
       width: var(--container);
-      margin: 0 auto;
+      max-width: 1100px;
       border-radius: var(--radius-md);
       padding: var(--space-6) var(--space-5);
       background: rgba(17, 24, 39, 0.8);
@@ -622,6 +770,15 @@
         padding: var(--space-6) var(--space-4);
       }
 
+      .parallax-section {
+        min-height: auto;
+        padding: var(--space-8) 0;
+      }
+
+      .parallax-section.hero-section {
+        min-height: 100vh;
+      }
+
       h1 {
         font-size: clamp(2.4rem, 7vw + 1.4rem, 3rem);
       }
@@ -636,6 +793,52 @@
 
       .tool-wall {
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+
+      .parallax-float {
+        display: none;
+      }
+    }
+
+    /* Scroll indicator for hero */
+    .scroll-indicator {
+      position: absolute;
+      bottom: var(--space-7);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    .scroll-indicator.visible {
+      opacity: 0.7;
+      animation: bounce 2s ease-in-out infinite;
+    }
+
+    .scroll-indicator::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--ink-muted), transparent);
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    @media (max-width: 720px) {
+      .scroll-indicator {
+        bottom: var(--space-5);
       }
     }
 
@@ -652,6 +855,35 @@
       #penteract-canvas {
         display: none;
       }
+
+      .panel {
+        opacity: 1;
+        transform: none;
+      }
+
+      .parallax-layer {
+        transform: none !important;
+      }
+
+      .parallax-float {
+        display: none;
+      }
+
+      .panel.visible .meta-label,
+      .panel.visible h1,
+      .panel.visible h2,
+      .panel.visible .lede,
+      .panel.visible p,
+      .panel.visible .hero-visual,
+      .panel.visible .about-grid,
+      .panel.visible .capability-flow,
+      .panel.visible .tool-wall,
+      .panel.visible .annotation-card,
+      .panel.visible .capability-node,
+      .panel.visible .tool-pill {
+        opacity: 1;
+        animation: none;
+      }
     }
   </style>
 </head>
@@ -659,121 +891,263 @@
 <body>
   <canvas id="penteract-canvas"></canvas>
 
+  <header class="site-header" id="site-header">
+    <nav class="nav" aria-label="Primary">
+      <span class="brand">Singularity Shift</span>
+      <a class="nav-cta" href="mailto:singularityshiftai@gmail.com">Email us</a>
+    </nav>
+  </header>
+
   <div class="page">
-    <header class="site-header" id="site-header">
-      <nav class="nav" aria-label="Primary">
-        <span class="brand">Singularity Shift</span>
-        <a class="nav-cta" href="mailto:singularityshiftai@gmail.com">Email us</a>
-      </nav>
-    </header>
-
     <main>
-      <section class="hero panel" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <span class="meta-label">Overview</span>
-          <h1 id="hero-title">We build systems that think — clearly.</h1>
-          <p class="lede">Practical engineering, clean architecture, measurable outcomes.</p>
-          <p>
-            Singularity Shift ships end-to-end platforms where agentic AI, resilient services, and thoughtful interfaces
-            work as one system.
-            Every engagement favours maintainable velocity, crisp documentation, and measurable outcomes over theatrical
-            launches.
-          </p>
-        </div>
-        <figure class="hero-visual">
-          <img src="assets/logo_clean_white.png" alt="Precision layers sketched before a single commit."
-            loading="lazy" />
-        </figure>
-      </section>
-
-      <section class="panel" aria-labelledby="about-title">
-        <div class="about-grid">
-          <div>
-            <span class="meta-label">About</span>
-            <h2 id="about-title">Designing clarity since 2023</h2>
+      <div class="parallax-section hero-section" data-speed="0.3">
+        <div class="parallax-float float-1" data-speed="0.1"></div>
+        <div class="parallax-float float-2" data-speed="0.15"></div>
+        <section class="hero panel parallax-layer" aria-labelledby="hero-title" data-speed="0.5">
+          <div class="hero-copy">
+            <span class="meta-label">Overview</span>
+            <h1 id="hero-title">We build systems that think — clearly.</h1>
+            <p class="lede">Practical engineering, clean architecture, measurable outcomes.</p>
             <p>
-              We design, build, and ship practical software—clean architectures, calm infrastructure, and interfaces
-              that make decisions legible.
-              The work blends technical illustration with disciplined engineering so complex systems feel grounded.
-            </p>
-            <p>
-              Based in Cheltenham, we embed with founders and product teams to translate ambiguous ideas into reliable
-              platforms.
-              Expect measured releases, accountable communication, and artefacts you can revisit months later.
+              Singularity Shift ships end-to-end platforms where agentic AI, resilient services, and thoughtful interfaces
+              work as one system.
+              Every engagement favours maintainable velocity, crisp documentation, and measurable outcomes over theatrical
+              launches.
             </p>
           </div>
-          <aside class="annotation-card" aria-label="Founder's annotation">
-            <div class="annotation-header">Founder field note →</div>
-            <p>
-              James is a self-taught systems engineer who treats every project like a technical field report—diagrammed,
-              annotated, and shipped with operational guidance.
-              Agentic workflows, backend services, and interface craft are handled as one conversation.
-            </p>
-            <p class="annotation-footnote">Hands-on from exploration through ship-ready runbooks.</p>
-          </aside>
-        </div>
-      </section>
+          <figure class="hero-visual">
+            <img src="assets/logo_clean_white.png" alt="Precision layers sketched before a single commit."
+              loading="lazy" />
+          </figure>
+        </section>
+        <div class="scroll-indicator">Scroll</div>
+      </div>
 
-      <section class="panel" aria-labelledby="capabilities-title">
-        <span class="meta-label">Architecture focus</span>
-        <h2 id="capabilities-title">A connected diagram from blueprint through handover.</h2>
-        <p class="section-note">
-          Each capability is a node in the same system—we build bridges, not silos. The line stays unbroken from ingress
-          to insights, operations to documentation.
-        </p>
-        <div class="capability-flow" role="list">
-          <article class="capability-node" role="listitem">
-            <h3>Backend systems</h3>
-            <p>Resilient APIs, event pipelines, and background workers with observability, alerts, and rollback paths.
-            </p>
-          </article>
-          <article class="capability-node" role="listitem">
-            <h3>Front-end clarity</h3>
-            <p>Interfaces that surface the right decision at the right time—accessible, responsive, and grounded in
-              data.</p>
-          </article>
-          <article class="capability-node" role="listitem">
-            <h3>Data orchestration</h3>
-            <p>Structured storage, reporting layers, and evaluation harnesses so AI workflows stay measurable.</p>
-          </article>
-          <article class="capability-node" role="listitem">
-            <h3>Infrastructure craft</h3>
-            <p>Calm deployments with containers, IaC, and pragmatic automation—documented for long-term stewardship.</p>
-          </article>
-          <article class="capability-node" role="listitem">
-            <h3>Runbooks &amp; docs</h3>
-            <p>Diagrammed architecture notes, operations checklists, and field guides that future teams can trust.</p>
-          </article>
-        </div>
-      </section>
+      <div class="parallax-section" data-speed="0.4">
+        <div class="parallax-float float-3" data-speed="0.08"></div>
+        <section class="panel parallax-layer" aria-labelledby="about-title" data-speed="0.6">
+          <div class="about-grid">
+            <div>
+              <span class="meta-label">About</span>
+              <h2 id="about-title">Designing clarity since 2023</h2>
+              <p>
+                We design, build, and ship practical software—clean architectures, calm infrastructure, and interfaces
+                that make decisions legible.
+                The work blends technical illustration with disciplined engineering so complex systems feel grounded.
+              </p>
+              <p>
+                Based in Cheltenham, we embed with founders and product teams to translate ambiguous ideas into reliable
+                platforms.
+                Expect measured releases, accountable communication, and artefacts you can revisit months later.
+              </p>
+            </div>
+            <aside class="annotation-card" aria-label="Founder's annotation">
+              <div class="annotation-header">Founder field note →</div>
+              <p>
+                James is a self-taught systems engineer who treats every project like a technical field report—diagrammed,
+                annotated, and shipped with operational guidance.
+                Agentic workflows, backend services, and interface craft are handled as one conversation.
+              </p>
+              <p class="annotation-footnote">Hands-on from exploration through ship-ready runbooks.</p>
+            </aside>
+          </div>
+        </section>
+      </div>
 
-      <section class="panel" aria-labelledby="tools-title">
-        <span class="meta-label">System tools</span>
-        <h2 id="tools-title">Languages and tooling we reach for often.</h2>
-        <p class="section-note">
-          Calm, proven stacks with thoughtful defaults. We mix disciplined engineering with creative exploration, always
-          leaving a trail for the next maintainer.
-        </p>
-        <div class="tool-wall">
-          <span class="tool-pill"><span>Core</span>TypeScript</span>
-          <span class="tool-pill"><span>Core</span>Python</span>
-          <span class="tool-pill"><span>Runtime</span>Node.js</span>
-          <span class="tool-pill"><span>Runtime</span>Rust</span>
-          <span class="tool-pill"><span>Data</span>PostgreSQL</span>
-          <span class="tool-pill"><span>Data</span>SQLite</span>
-          <span class="tool-pill"><span>Infra</span>Docker</span>
-          <span class="tool-pill"><span>Infra</span>GitHub Actions</span>
-          <span class="tool-pill"><span>Ops</span>Grafana &amp; OpenTelemetry</span>
-          <span class="tool-pill"><span>Front-end</span>React &amp; Next.js</span>
-        </div>
-      </section>
+      <div class="parallax-section" data-speed="0.45">
+        <div class="parallax-float float-1" data-speed="0.12"></div>
+        <section class="panel parallax-layer" aria-labelledby="capabilities-title" data-speed="0.65">
+          <span class="meta-label">Architecture focus</span>
+          <h2 id="capabilities-title">A connected diagram from blueprint through handover.</h2>
+          <p class="section-note">
+            Each capability is a node in the same system—we build bridges, not silos. The line stays unbroken from ingress
+            to insights, operations to documentation.
+          </p>
+          <div class="capability-flow" role="list">
+            <article class="capability-node" role="listitem">
+              <h3>Backend systems</h3>
+              <p>Resilient APIs, event pipelines, and background workers with observability, alerts, and rollback paths.
+              </p>
+            </article>
+            <article class="capability-node" role="listitem">
+              <h3>Front-end clarity</h3>
+              <p>Interfaces that surface the right decision at the right time—accessible, responsive, and grounded in
+                data.</p>
+            </article>
+            <article class="capability-node" role="listitem">
+              <h3>Data orchestration</h3>
+              <p>Structured storage, reporting layers, and evaluation harnesses so AI workflows stay measurable.</p>
+            </article>
+            <article class="capability-node" role="listitem">
+              <h3>Infrastructure craft</h3>
+              <p>Calm deployments with containers, IaC, and pragmatic automation—documented for long-term stewardship.</p>
+            </article>
+            <article class="capability-node" role="listitem">
+              <h3>Runbooks &amp; docs</h3>
+              <p>Diagrammed architecture notes, operations checklists, and field guides that future teams can trust.</p>
+            </article>
+          </div>
+        </section>
+      </div>
 
+      <div class="parallax-section" data-speed="0.5">
+        <div class="parallax-float float-2" data-speed="0.1"></div>
+        <section class="panel parallax-layer" aria-labelledby="tools-title" data-speed="0.7">
+          <span class="meta-label">System tools</span>
+          <h2 id="tools-title">Languages and tooling we reach for often.</h2>
+          <p class="section-note">
+            Calm, proven stacks with thoughtful defaults. We mix disciplined engineering with creative exploration, always
+            leaving a trail for the next maintainer.
+          </p>
+          <div class="tool-wall">
+            <span class="tool-pill"><span>Core</span>TypeScript</span>
+            <span class="tool-pill"><span>Core</span>Python</span>
+            <span class="tool-pill"><span>Runtime</span>Node.js</span>
+            <span class="tool-pill"><span>Runtime</span>Rust</span>
+            <span class="tool-pill"><span>Data</span>PostgreSQL</span>
+            <span class="tool-pill"><span>Data</span>SQLite</span>
+            <span class="tool-pill"><span>Infra</span>Docker</span>
+            <span class="tool-pill"><span>Infra</span>GitHub Actions</span>
+            <span class="tool-pill"><span>Ops</span>Grafana &amp; OpenTelemetry</span>
+            <span class="tool-pill"><span>Front-end</span>React &amp; Next.js</span>
+          </div>
+        </section>
+      </div>
+
+      <div class="parallax-section footer-section" data-speed="0.55">
+        <footer class="site-footer parallax-layer" data-speed="0.75">
+          <p>© 2025 Singularity Shift Ltd · Cheltenham, UK · <a href="mailto:singularityshiftai@gmail.com">Email us</a></p>
+        </footer>
+      </div>
     </main>
-
-    <footer class="site-footer">
-      <p>© 2025 Singularity Shift Ltd · Cheltenham, UK · <a href="mailto:singularityshiftai@gmail.com">Email us</a></p>
-    </footer>
   </div>
+
+  <script>
+    // Smooth Parallax System
+    (function() {
+      'use strict';
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        // Still show panels without animation
+        document.querySelectorAll('.panel').forEach(p => p.classList.add('visible'));
+        return;
+      }
+
+      // Smooth scroll tracking
+      let currentScroll = 0;
+      let targetScroll = 0;
+      let rafId = null;
+      const smoothness = 0.08;
+
+      // Elements
+      const header = document.querySelector('.site-header');
+      const scrollIndicator = document.querySelector('.scroll-indicator');
+      const panels = document.querySelectorAll('.panel');
+      const parallaxLayers = document.querySelectorAll('[data-speed]');
+      const floats = document.querySelectorAll('.parallax-float');
+
+      let lastScroll = 0;
+      let scrollDirection = 'down';
+      let headerHidden = false;
+
+      // Show scroll indicator after a delay
+      setTimeout(() => {
+        if (scrollIndicator) scrollIndicator.classList.add('visible');
+      }, 1500);
+
+      // Intersection Observer for panel reveals
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {
+        rootMargin: '-5% 0px -5% 0px',
+        threshold: 0.15
+      });
+
+      panels.forEach(panel => revealObserver.observe(panel));
+
+      // Parallax update function
+      function updateParallax() {
+        // Smooth interpolation
+        currentScroll += (targetScroll - currentScroll) * smoothness;
+
+        // Apply parallax transforms
+        parallaxLayers.forEach(layer => {
+          const speed = parseFloat(layer.dataset.speed) || 0.5;
+          const rect = layer.getBoundingClientRect();
+          const centerY = rect.top + rect.height / 2;
+          const viewportCenter = window.innerHeight / 2;
+          const offset = (centerY - viewportCenter) * (1 - speed) * 0.3;
+
+          layer.style.transform = `translateY(${offset}px)`;
+        });
+
+        // Floating elements with slower, offset movement
+        floats.forEach(float => {
+          const speed = parseFloat(float.dataset.speed) || 0.1;
+          const offset = currentScroll * speed * 0.5;
+          float.style.transform = `translateY(${-offset}px)`;
+        });
+
+        // Header hide/show on scroll direction
+        if (Math.abs(targetScroll - lastScroll) > 5) {
+          scrollDirection = targetScroll > lastScroll ? 'down' : 'up';
+          lastScroll = targetScroll;
+
+          if (targetScroll > 100) {
+            if (scrollDirection === 'down' && !headerHidden) {
+              header.classList.add('hidden');
+              headerHidden = true;
+            } else if (scrollDirection === 'up' && headerHidden) {
+              header.classList.remove('hidden');
+              headerHidden = false;
+            }
+            header.classList.add('scrolled');
+          } else {
+            header.classList.remove('hidden', 'scrolled');
+            headerHidden = false;
+          }
+        }
+
+        // Hide scroll indicator
+        if (targetScroll > 80 && scrollIndicator) {
+          scrollIndicator.classList.remove('visible');
+        }
+
+        // Continue animation loop
+        if (Math.abs(targetScroll - currentScroll) > 0.5) {
+          rafId = requestAnimationFrame(updateParallax);
+        } else {
+          rafId = null;
+        }
+      }
+
+      // Scroll event listener
+      window.addEventListener('scroll', () => {
+        targetScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (!rafId) {
+          rafId = requestAnimationFrame(updateParallax);
+        }
+      }, { passive: true });
+
+      // Initial state
+      targetScroll = window.pageYOffset || document.documentElement.scrollTop;
+      currentScroll = targetScroll;
+
+      // Trigger initial parallax calculation
+      requestAnimationFrame(updateParallax);
+
+      // Show first panel immediately
+      if (panels.length > 0) {
+        setTimeout(() => panels[0].classList.add('visible'), 100);
+      }
+    })();
+  </script>
 
   <script>
     (function() {
