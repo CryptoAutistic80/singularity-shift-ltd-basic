@@ -15,6 +15,11 @@ export function ServiceLaneCard({ lane, linkTo }: ServiceLaneCardProps) {
         <h3>{lane.title}</h3>
       </header>
       <p className="service-card__delivery">Delivery: {lane.delivery}</p>
+      <div className="service-card__proof-tags" aria-label="Proof tags">
+        {lane.proofTags.map((tag) => (
+          <span key={tag}>{tag}</span>
+        ))}
+      </div>
       <div>
         <h4>Outcomes</h4>
         <ul>
