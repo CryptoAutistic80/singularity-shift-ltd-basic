@@ -1,0 +1,488 @@
+/*
+ * Singularity Shift visual enhancement layer.
+ * Loaded after the existing site stylesheet so the original layout remains
+ * the safe fallback if this file is unavailable.
+ */
+
+:root {
+  --rizz-coral-glow: rgba(255, 89, 72, 0.2);
+  --rizz-coral-soft: rgba(255, 89, 72, 0.08);
+  --rizz-paper-glow: rgba(242, 238, 231, 0.08);
+  --rizz-deep: #0c0e10;
+}
+
+/* A little more tactility without changing the underlying design system. */
+.button-accent {
+  box-shadow: 0 12px 34px rgba(255, 89, 72, 0.16);
+}
+
+.button-accent:hover {
+  box-shadow: 0 16px 42px rgba(255, 89, 72, 0.24);
+}
+
+.site-header.is-scrolled {
+  background: rgba(12, 14, 16, 0.9);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* Hero: preserve the current composition, restore headroom, add one signature signal. */
+.hero {
+  isolation: isolate;
+  background: var(--rizz-deep);
+}
+
+.hero-image {
+  object-position: 50% 7%;
+  transform: scale(1.012);
+  filter: saturate(0.94) contrast(1.025);
+}
+
+.hero-shade {
+  background:
+    linear-gradient(90deg, rgba(12, 14, 16, 0.99) 0%, rgba(12, 14, 16, 0.94) 31%, rgba(12, 14, 16, 0.36) 62%, rgba(12, 14, 16, 0.1) 100%),
+    linear-gradient(0deg, rgba(12, 14, 16, 0.88) 0%, transparent 38%);
+}
+
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero::before {
+  inset: 0;
+  opacity: 0.32;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 43%, #000 73%, transparent 100%);
+}
+
+.hero::after {
+  width: min(38vw, 560px);
+  aspect-ratio: 1;
+  right: clamp(-210px, -10vw, -80px);
+  top: 50%;
+  border: 1px solid rgba(255, 89, 72, 0.26);
+  border-radius: 50%;
+  transform: translateY(-48%) rotate(-10deg);
+  box-shadow:
+    0 0 0 54px rgba(255, 255, 255, 0.025),
+    0 0 0 108px rgba(255, 89, 72, 0.025),
+    inset 0 0 70px rgba(255, 89, 72, 0.035);
+  animation: rizz-breathe 9s ease-in-out infinite;
+}
+
+.hero-content {
+  z-index: 3;
+}
+
+.hero-content::before {
+  content: "FOUNDER-LED  /  CHELTENHAM";
+  display: block;
+  width: fit-content;
+  margin-bottom: 18px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(255, 89, 72, 0.55);
+  color: #d4cec6;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.hero-content .eyebrow {
+  display: none;
+}
+
+.hero-lede {
+  max-width: 640px;
+}
+
+.founder-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.founder-note::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--coral);
+  box-shadow: 0 0 0 5px rgba(255, 89, 72, 0.12);
+}
+
+/* Capability rail: same information, slightly more studio-like rhythm. */
+.skills-rail {
+  background: #15181b;
+}
+
+.skills-list a {
+  position: relative;
+  overflow: hidden;
+}
+
+.skills-list a::after {
+  content: "";
+  position: absolute;
+  inset: auto 18% 0;
+  height: 2px;
+  background: var(--coral);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 220ms ease;
+}
+
+.skills-list a:hover::after,
+.skills-list a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Work cards: retain the existing grid, add depth and visual hierarchy. */
+.section-light {
+  background:
+    radial-gradient(circle at 92% 20%, rgba(255, 89, 72, 0.055), transparent 28%),
+    var(--paper);
+}
+
+.work-grid {
+  position: relative;
+  isolation: isolate;
+}
+
+.work-item {
+  overflow: hidden;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 46%),
+    rgba(255, 253, 249, 0.26);
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1), background 260ms ease, box-shadow 260ms ease;
+}
+
+.work-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--coral), transparent 72%);
+  transform: scaleX(0.18);
+  transform-origin: left;
+  transition: transform 280ms ease;
+}
+
+.work-item::after {
+  content: "";
+  position: absolute;
+  width: 210px;
+  height: 210px;
+  right: -118px;
+  bottom: -122px;
+  border: 1px solid rgba(17, 19, 21, 0.08);
+  border-radius: 50%;
+  box-shadow: 0 0 0 36px rgba(17, 19, 21, 0.025), 0 0 0 72px rgba(255, 89, 72, 0.025);
+  pointer-events: none;
+}
+
+.work-item:hover {
+  z-index: 2;
+  transform: translateY(-8px);
+  background: rgba(255, 253, 249, 0.72);
+  box-shadow: 0 22px 48px rgba(17, 19, 21, 0.12);
+}
+
+.work-item:hover::before {
+  transform: scaleX(1);
+}
+
+.work-item:first-child .work-kicker::after {
+  content: "SHIPPED";
+  display: inline-flex;
+  margin-left: 12px;
+  padding: 4px 7px;
+  border: 1px solid rgba(201, 54, 42, 0.34);
+  color: var(--coral-dark);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  vertical-align: middle;
+}
+
+.tag-list li {
+  background: rgba(255, 253, 249, 0.48);
+}
+
+/* Services: a subtle system diagram feel, without turning the page into a dashboard. */
+.services {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 84% 16%, rgba(255, 89, 72, 0.08), transparent 25%),
+    var(--ink);
+}
+
+.services::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.2;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 100% 116px;
+  pointer-events: none;
+}
+
+.service-row {
+  position: relative;
+  transition: background 220ms ease, padding-inline 220ms ease;
+}
+
+.service-row::before {
+  content: "";
+  position: absolute;
+  inset: 18px auto 18px 0;
+  width: 2px;
+  background: var(--coral);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 220ms ease;
+}
+
+.service-row:hover {
+  padding-inline: 18px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.service-row:hover::before {
+  transform: scaleY(1);
+}
+
+.toolkit span {
+  background: rgba(255, 255, 255, 0.018);
+  transition: border-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.toolkit span:hover {
+  border-color: rgba(255, 89, 72, 0.62);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* Founder/process section: reinforce the visible working method. */
+.section-paper {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 100% 100%, rgba(17, 19, 21, 0.055), transparent 30%),
+    var(--paper-2);
+}
+
+.process {
+  position: relative;
+}
+
+.process::before {
+  content: "";
+  position: absolute;
+  top: 26px;
+  bottom: 26px;
+  left: 5px;
+  width: 1px;
+  background: linear-gradient(var(--coral-dark), rgba(201, 54, 42, 0.08));
+}
+
+.process li {
+  position: relative;
+}
+
+.process li::before {
+  content: "";
+  position: absolute;
+  left: 1px;
+  top: 34px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--paper-2);
+  border-radius: 50%;
+  background: var(--coral-dark);
+  transform: translateX(-50%);
+}
+
+/* Inferenco remains distinct, but no longer visually shouts over the parent brand. */
+.partnership {
+  padding-block: 72px;
+}
+
+.partnership-glow {
+  opacity: 0.075;
+}
+
+.inferenco-mark {
+  box-shadow: 0 18px 48px rgba(32, 201, 255, 0.08);
+}
+
+/* A stronger final scene using the existing markup. */
+.contact {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 88%, rgba(255, 89, 72, 0.08), transparent 30%),
+    var(--paper);
+}
+
+.contact-grid {
+  position: relative;
+  padding: clamp(42px, 6vw, 78px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.035), transparent 42%),
+    var(--ink-2);
+  color: var(--white);
+  box-shadow: 0 28px 70px rgba(17, 19, 21, 0.16);
+}
+
+.contact-grid::after {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  right: -90px;
+  bottom: -130px;
+  border: 1px solid rgba(255, 89, 72, 0.18);
+  border-radius: 50%;
+  box-shadow: 0 0 0 42px rgba(255, 89, 72, 0.035), 0 0 0 84px rgba(255, 255, 255, 0.018);
+  pointer-events: none;
+}
+
+.contact .eyebrow-dark {
+  color: var(--coral);
+}
+
+.contact h2 {
+  color: var(--white);
+}
+
+.contact-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-copy p {
+  color: #c7c1b9;
+}
+
+.contact .button-dark {
+  background: var(--coral);
+  color: var(--white);
+  box-shadow: 0 12px 34px rgba(255, 89, 72, 0.16);
+}
+
+.contact .button-dark:hover {
+  background: #ff7061;
+}
+
+.contact .email-link {
+  color: #d8d2ca;
+}
+
+.site-footer {
+  background: #0c0e10;
+}
+
+@keyframes rizz-breathe {
+  0%, 100% {
+    opacity: 0.64;
+    transform: translateY(-48%) rotate(-10deg) scale(0.98);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translateY(-48%) rotate(-7deg) scale(1.02);
+  }
+}
+
+@media (max-width: 980px) {
+  .hero-image {
+    object-position: 64% 10%;
+  }
+
+  .hero::before {
+    mask-image: linear-gradient(90deg, transparent 0%, transparent 28%, #000 75%, transparent 100%);
+  }
+
+  .hero::after {
+    width: 520px;
+    right: -250px;
+  }
+
+  .work-item:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .service-row:hover {
+    padding-inline: 0;
+  }
+
+  .process::before,
+  .process li::before {
+    display: none;
+  }
+}
+
+@media (max-width: 680px) {
+  .hero-image {
+    object-position: 70% 38%;
+    transform: none;
+  }
+
+  .hero::before {
+    opacity: 0.16;
+    background-size: 48px 48px;
+    mask-image: linear-gradient(0deg, transparent 0%, #000 44%, transparent 100%);
+  }
+
+  .hero::after {
+    width: 330px;
+    right: -190px;
+    top: 27%;
+    box-shadow: 0 0 0 36px rgba(255, 255, 255, 0.02), 0 0 0 72px rgba(255, 89, 72, 0.02);
+  }
+
+  .hero-content::before {
+    margin-bottom: 14px;
+    font-size: 9px;
+  }
+
+  .founder-note {
+    align-items: flex-start;
+  }
+
+  .work-item::after {
+    opacity: 0.55;
+  }
+
+  .contact-grid {
+    padding: 34px 24px;
+  }
+
+  .contact-grid::after {
+    width: 190px;
+    height: 190px;
+    right: -110px;
+    bottom: -100px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero::after {
+    animation: none;
+  }
+
+  .work-item,
+  .service-row,
+  .toolkit span {
+    transition: none;
+  }
+}
