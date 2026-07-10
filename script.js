@@ -8,7 +8,7 @@
   if (!document.querySelector('link[href="rizz.css"]')) {
     const enhancementStyles = document.createElement("link");
     enhancementStyles.rel = "stylesheet";
-    enhancementStyles.href = "rizz.css";
+    enhancementStyles.href = new URL("./rizz.css", import.meta.url).href;
     document.head.append(enhancementStyles);
   }
 
