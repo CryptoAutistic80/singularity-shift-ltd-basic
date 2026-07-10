@@ -1,6 +1,17 @@
 (() => {
   "use strict";
 
+  /*
+   * Load the visual enhancement layer separately. The original stylesheet
+   * remains untouched and is still the complete fallback.
+   */
+  if (!document.querySelector('link[href="rizz.css"]')) {
+    const enhancementStyles = document.createElement("link");
+    enhancementStyles.rel = "stylesheet";
+    enhancementStyles.href = "rizz.css";
+    document.head.append(enhancementStyles);
+  }
+
   const header = document.querySelector("[data-header]");
   const year = document.querySelector("[data-year]");
 
