@@ -7,12 +7,12 @@
     <meta name="theme-color" content="#111315">
     <meta
       name="description"
-      content="Founder-led bespoke software development for businesses of every size. Singularity Shift Ltd turns difficult ideas, inefficient processes and troubled builds into dependable digital products."
+      content="Founder-led software engineering for products, platforms and systems where trust matters. Singularity Shift turns difficult ideas and troubled builds into dependable digital products."
     >
     <meta property="og:title" content="Singularity Shift Ltd — Difficult ideas into dependable software">
     <meta
       property="og:description"
-      content="Bespoke, founder-led software engineering for businesses of every size—from focused improvements to complete product builds."
+      content="Founder-led software engineering for products and systems where trust matters—from Plyapp.io and mobile wallets to desktop software and proof systems."
     >
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://sshift.xyz/">
@@ -29,7 +29,7 @@
     <meta name="twitter:title" content="Singularity Shift Ltd — Difficult ideas into dependable software">
     <meta
       name="twitter:description"
-      content="Bespoke, founder-led software engineering for businesses of every size—from focused improvements to complete product builds."
+      content="Founder-led software engineering for products and systems where trust matters—from Plyapp.io and mobile wallets to desktop software and proof systems."
     >
     <meta name="twitter:image" content="https://sshift.xyz/assets/social-preview.jpg">
     <meta
@@ -72,6 +72,9 @@
           "Mobile app development",
           "Desktop app development",
           "Artificial intelligence",
+          "Cryptographic proof systems",
+          "Evidence verification",
+          "Plyapp platform development",
           "Custom software"
         ]
       }
@@ -88,7 +91,7 @@
           <span>Singularity Shift <small>Ltd</small></span>
         </a>
 
-        <nav class="site-nav" aria-label="Primary navigation">
+        <nav class="site-nav" id="site-nav" data-site-nav aria-label="Primary navigation">
           <a href="#work">Work</a>
           <a href="#services">Services</a>
           <a href="#approach">Approach</a>
@@ -96,7 +99,12 @@
           <a href="#about">About</a>
         </nav>
 
-        <a class="button button-small button-accent" href="#contact">Start a project</a>
+        <div class="nav-actions">
+          <button class="menu-toggle button button-small button-ghost" type="button" data-menu-toggle aria-controls="site-nav" aria-expanded="false">
+            <span data-menu-label>Menu</span>
+          </button>
+          <a class="button button-small button-accent" href="#contact">Start a project</a>
+        </div>
       </div>
     </header>
 
@@ -114,29 +122,29 @@
 
         <div class="hero-content shell">
           <p class="eyebrow">Founder-led software engineering · Cheltenham · UK-wide</p>
-          <h1 id="hero-title">Turn difficult ideas into <em>dependable software.</em></h1>
+          <h1 id="hero-title">When software gets in the way, I make it <em>dependable.</em></h1>
           <p class="hero-lede">
-            I’m James Walford, founder of Singularity Shift Ltd. I clarify, design and build
-            complete digital products—from the experience people use to the systems, data and
-            infrastructure behind it.
+            I’m James Walford, founder of Singularity Shift Ltd. I help individuals, founders and
+            teams turn complex product ideas, fragile systems and difficult technical problems into
+            software people can use and trust.
           </p>
           <div class="hero-actions">
-            <a class="button button-accent" href="#contact">Discuss what you need</a>
+            <a class="button button-accent" href="#contact">Describe the problem</a>
             <a class="button button-ghost" href="#work">See selected work</a>
           </div>
           <p class="founder-note">
-            <strong>Bespoke pricing</strong> · Every size of business welcome · Work directly with James
+            <strong>No project too small</strong> · Individuals to larger organisations · Work directly with James
           </p>
         </div>
       </section>
 
-      <section class="skills-rail" aria-label="Who Singularity Shift works with">
+      <section class="skills-rail" aria-label="Where projects start">
         <div class="shell skills-list">
-          <a href="#pricing"><span>01</span>Bespoke pricing</a>
-          <a href="#pricing"><span>02</span>Small businesses</a>
-          <a href="#pricing"><span>03</span>Growing teams</a>
-          <a href="#pricing"><span>04</span>Larger organisations</a>
-          <a href="#about"><span>05</span>Direct with James</a>
+          <a href="#services"><span>01</span>Bring a product to life</a>
+          <a href="#services"><span>02</span>Replace a fragile process</a>
+          <a href="#services"><span>03</span>Rescue an existing system</a>
+          <a href="#services"><span>04</span>Build for real devices</a>
+          <a href="#services"><span>05</span>Make trust verifiable</a>
         </div>
       </section>
 
@@ -145,17 +153,32 @@
           <div class="section-heading reveal">
             <div>
               <p class="eyebrow eyebrow-dark">Selected work</p>
-              <h2 id="work-title">Built beyond the point of a convincing demo.</h2>
+              <h2 id="work-title">Products and systems where trust matters.</h2>
             </div>
             <p>
-              I work across the visible product and the difficult systems underneath it, carrying
-              ideas through architecture, implementation, testing and real-world delivery.
+              I build across the product people touch and the difficult systems underneath it—carrying
+              work through architecture, implementation, testing and real-world delivery.
             </p>
           </div>
 
           <div class="work-grid">
             <article class="work-item reveal">
               <div class="work-number" aria-hidden="true">01</div>
+              <p class="work-kicker">Product platform</p>
+              <h3>Plyapp.io</h3>
+              <p>
+                Built and improved a production marketplace platform spanning a React frontend,
+                Rust API, PostgreSQL data and customer-facing email workflows.
+              </p>
+              <ul class="tag-list">
+                <li>React</li>
+                <li>Rust</li>
+                <li>PostgreSQL</li>
+              </ul>
+            </article>
+
+            <article class="work-item reveal">
+              <div class="work-number" aria-hidden="true">02</div>
               <p class="work-kicker">Mobile product</p>
               <h3>Nova Wallet</h3>
               <p>
@@ -170,32 +193,33 @@
             </article>
 
             <article class="work-item reveal">
-              <div class="work-number" aria-hidden="true">02</div>
-              <p class="work-kicker">AI systems</p>
-              <h3>Community automation</h3>
+              <div class="work-number" aria-hidden="true">03</div>
+              <p class="work-kicker">Desktop software</p>
+              <h3>Nova Desk</h3>
               <p>
-                Built moderation, scheduling, governance and knowledge workflows for active online
-                communities, with important decisions kept visible to people.
+                A cross-platform desktop wallet for the Cedra network, with encrypted storage, DApp
+                integration and an update path designed for real-world releases.
               </p>
               <ul class="tag-list">
                 <li>Rust</li>
-                <li>AI agents</li>
-                <li>Telegram</li>
+                <li>Desktop</li>
+                <li>Cross-platform</li>
               </ul>
             </article>
 
             <article class="work-item reveal">
-              <div class="work-number" aria-hidden="true">03</div>
-              <p class="work-kicker">Secure infrastructure</p>
-              <h3>Evidence infrastructure</h3>
+              <div class="work-number" aria-hidden="true">04</div>
+              <p class="work-kicker">Cryptographic systems</p>
+              <h3>zk-proofs</h3>
               <p>
-                Designed tamper-evident records and APIs for AI and compliance workflows, balancing
-                verifiability, privacy and practical integration.
+                Built proof-oriented infrastructure for signed, portable records that can be
+                verified offline and selectively disclosed when the underlying information should
+                stay private.
               </p>
               <ul class="tag-list">
+                <li>Proof systems</li>
                 <li>Cryptography</li>
-                <li>APIs</li>
-                <li>Compliance workflows</li>
+                <li>Selective disclosure</li>
               </ul>
             </article>
           </div>
@@ -211,42 +235,42 @@
             </div>
             <p>
               You do not need to arrive with a technical specification. We begin with what needs to
-              change, who it needs to help and what success should look like—then choose the smallest
-              sensible system that can deliver it.
+              change, who it needs to help and what has to be true when the work is done—then choose
+              the smallest system that can deliver it.
             </p>
           </div>
 
           <div class="service-list">
             <article class="service-row reveal" id="product-development">
               <span class="service-index">01</span>
-              <h3>New products, end to end</h3>
+              <h3>Products people can use</h3>
               <p>
-                Turn an early concept into a working web, mobile or desktop product—from uncovering
-                the requirements and shaping the architecture through build, testing and launch.
+                Shape and build web, mobile or desktop products from the first useful decision through
+                testing, release and the next sensible phase.
               </p>
             </article>
             <article class="service-row reveal" id="automation">
               <span class="service-index">02</span>
-              <h3>Business systems &amp; automation</h3>
+              <h3>Platforms, workflows &amp; automation</h3>
               <p>
-                Replace repetitive work, disconnected tools and fragile spreadsheets with focused
-                internal software, integrations and visible automation fitted to your operation.
+                Connect the product, data and operational work behind a business so teams spend less
+                time fighting disconnected tools.
               </p>
             </article>
             <article class="service-row reveal" id="apps">
               <span class="service-index">03</span>
               <h3>Mobile &amp; desktop software</h3>
               <p>
-                Build dependable software for real devices and workflows, with careful attention to
-                performance, data, failure handling and the person using it.
+                Build for real devices and workflows, with careful attention to performance, failure
+                handling, release delivery and the person using it.
               </p>
             </article>
-            <article class="service-row reveal" id="move">
+            <article class="service-row reveal" id="proof-systems">
               <span class="service-index">04</span>
-              <h3>Move &amp; decentralised engineering</h3>
+              <h3>Proof systems &amp; decentralised engineering</h3>
               <p>
-                Develop Move modules, wallet integrations and decentralised product infrastructure
-                where correctness, transaction behaviour and a clear user experience all matter.
+                Build Move modules, wallet integrations and proof-oriented infrastructure where
+                correctness, verifiability and clear user experience matter.
               </p>
             </article>
             <article class="service-row reveal" id="rescue">
@@ -313,29 +337,29 @@
       <section class="section pricing" id="pricing" aria-labelledby="pricing-title">
         <div class="shell">
           <div class="pricing-heading reveal">
-            <p class="eyebrow">Bespoke pricing</p>
-            <h2 id="pricing-title">A scope and price shaped around the work.</h2>
+            <p class="eyebrow">How projects start</p>
+            <h2 id="pricing-title">A sensible first move, shaped around the work.</h2>
             <p class="pricing-lede">
-              No business is too small. No organisation is too large. The right starting point
-              simply changes.
+              Whether you are an individual with a useful idea or a larger organisation with a difficult
+              system, the starting point depends on the work—not the size of your organisation.
             </p>
           </div>
 
           <div class="pricing-fit reveal">
             <article>
               <p class="pricing-index">For a focused need</p>
-              <h3>Small businesses &amp; first builds</h3>
+              <h3>One useful change</h3>
               <p>
-                Start with one awkward workflow, a useful integration, a prototype or the first
-                version of a product—scoped to the result you need now.
+                Start with one awkward workflow, useful integration, prototype or contained
+                improvement—scoped to the result you need now.
               </p>
             </article>
             <article>
               <p class="pricing-index">For a defined workstream</p>
-              <h3>Growing teams &amp; larger organisations</h3>
+              <h3>A product or system to own</h3>
               <p>
-                Bring in specialist ownership for a difficult integration, phased product build,
-                technical rescue or delivery alongside an existing team.
+                Bring in specialist ownership for a product build, difficult integration, desktop/mobile
+                software or technical rescue alongside your team.
               </p>
             </article>
           </div>
@@ -417,8 +441,8 @@
             <p class="eyebrow">Product partnership</p>
             <h2 id="inferenco-title">Broader collaboration when the work calls for it.</h2>
             <p>
-              Singularity Shift also builds through the Inferenco partnership, collaborating on
-              products across AI, mobile and decentralised technology.
+              When a project needs broader collaboration, I can work through the Inferenco
+              partnership across AI, mobile and decentralised technology.
             </p>
           </div>
           <a class="button button-cyan reveal" href="https://inferenco.com" target="_blank" rel="noopener noreferrer">
@@ -445,7 +469,7 @@
             >
               Email James about your project
             </a>
-            <p class="contact-note">Bespoke pricing · Every size of business welcome · No finished brief required</p>
+            <p class="contact-note">No project too small · Individuals to larger organisations · No finished brief required</p>
             <a class="email-link" href="mailto:singularityshiftai@gmail.com">singularityshiftai@gmail.com</a>
           </div>
         </div>
