@@ -863,16 +863,30 @@ h1 em {
 }
 
 .footer-grid p,
-.footer-grid > a:last-child {
+.footer-links a {
   margin: 0;
   color: #8e8982;
   font-size: 12px;
 }
 
-.footer-grid > a:last-child {
+.footer-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
   justify-self: end;
+}
+
+.footer-links a {
   border-bottom: 1px solid #5a5650;
 }
+
+.footer-articles-link {
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 
 .reveal {
   opacity: 0;
@@ -1008,6 +1022,12 @@ h1 em {
 
   .footer-grid p {
     display: none;
+  }
+
+  .footer-grid p.footer-legal {
+    display: block;
+    grid-column: 1 / -1;
+    font-size: 11px;
   }
 }
 
@@ -1181,7 +1201,7 @@ h1 em {
     padding-block: 26px;
   }
 
-  .footer-grid > a:last-child {
+  .footer-links {
     justify-self: start;
   }
 }

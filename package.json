@@ -3,7 +3,9 @@
   "private": true,
   "version": "2.0.0",
   "scripts": {
+    "predev": "node scripts/generate-articles.mjs",
     "dev": "vite",
+    "prebuild": "node scripts/generate-articles.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },
