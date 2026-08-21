@@ -435,6 +435,24 @@ h1 em {
   border-top: 1px solid var(--line-light);
 }
 
+@media (min-width: 981px) {
+  .ai-work-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .ai-work-grid .work-item {
+    border-right: 0;
+  }
+
+  .ai-work-grid .work-item:nth-child(3n) {
+    border-right: 1px solid var(--line-light);
+  }
+
+  .ai-work-grid .work-item:nth-child(n + 3) {
+    border-top: 0;
+  }
+}
+
 .work-number {
   position: absolute;
   right: 24px;
