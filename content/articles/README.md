@@ -6,7 +6,8 @@ They are intentionally not linked from the site or included in the production bu
 
 ## Initial publishing order
 
-1. `applied-ai-cheltenham.md` — applied AI positioning and practical local-intent entry point.
-2. `web-development-cheltenham.md` — broad local web-development intent.
-3. `bespoke-software-cost-cheltenham.md` — commercial research and pricing reassurance.
-4. `when-spreadsheets-hold-you-back.md` — operational problem-solving and custom-software intent.
+1. `ai-agents-cheltenham-businesses.md` — current agentic-AI trend and practical local-intent entry point.
+2. `applied-ai-cheltenham.md` — broad applied-AI positioning and practical local-intent entry point.
+3. `web-development-cheltenham.md` — broad local web-development intent.
+4. `bespoke-software-cost-cheltenham.md` — commercial research and pricing reassurance.
+5. `when-spreadsheets-hold-you-back.md` — operational problem-solving and custom-software intent.
