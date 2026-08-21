@@ -5,6 +5,8 @@ import { fileURLToPath } from "node:url";
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
 const contentDir = resolve(rootDir, "content", "articles");
 const outputDir = resolve(rootDir, "articles");
+const sitemapPath = resolve(rootDir, "sitemap.xml");
+const robotsPath = resolve(rootDir, "robots.txt");
 
 const articleOrder = [
   "ai-agents-cheltenham-businesses.md",
@@ -44,6 +46,32 @@ const escapeHtml = (value) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+
+function renderSitemap(articles) {
+  const urls = [
+    "https://sshift.xyz/",
+    "https://sshift.xyz/articles/",
+    ...articles.map((article) => article.canonicalUrl),
+  ];
+
+  return [
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
+    "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">",
+    ...urls.map((url) => "  <url><loc>" + url + "</loc></url>"),
+    "</urlset>",
+    "",
+  ].join(String.fromCharCode(10));
+}
+
+function renderRobots() {
+  return [
+    "User-agent: *",
+    "Allow: /",
+    "",
+    "Sitemap: https://sshift.xyz/sitemap.xml",
+    "",
+  ].join(String.fromCharCode(10));
+}
 
 const renderInline = (value) =>
   escapeHtml(value)
@@ -448,6 +476,8 @@ async function generate() {
 
   await mkdir(outputDir, { recursive: true });
   await writeFile(resolve(outputDir, "index.html"), renderIndex(articles), "utf8");
+  await writeFile(sitemapPath, renderSitemap(articles), "utf8");
+  await writeFile(robotsPath, renderRobots(), "utf8");
 
   for (const article of articles) {
     const articleDir = resolve(outputDir, article.slug);
