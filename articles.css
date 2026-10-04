@@ -10,15 +10,25 @@
 }
 
 .article-main {
+  padding-top: 0;
+}
+
+.nav-ready .article-main {
   padding-top: 82px;
+}
+
+.article-detail-intro :focus-visible,
+.article-detail-body :focus-visible,
+.article-index-section :focus-visible {
+  outline-color: var(--accent-dark);
 }
 
 .article-index-hero {
   position: relative;
   overflow: hidden;
-  padding: clamp(100px, 14vw, 184px) 0 clamp(78px, 10vw, 128px);
+  padding: clamp(70px, 9vw, 110px) 0 clamp(54px, 7vw, 88px);
   background:
-    radial-gradient(circle at 84% 12%, rgba(255, 89, 72, 0.2), transparent 28%),
+    radial-gradient(circle at 84% 12%, rgba(var(--accent-rgb), 0.2), transparent 28%),
     linear-gradient(135deg, #20252a 0%, #111315 65%);
 }
 
@@ -39,7 +49,7 @@
 .article-index-hero h1 {
   max-width: 800px;
   margin-bottom: 30px;
-  font-size: clamp(58px, 8vw, 112px);
+  font-size: clamp(52px, 7vw, 88px);
 }
 
 .article-index-hero h1 em {
@@ -67,7 +77,7 @@
 .article-index-hero__note::before {
   width: 24px;
   height: 1px;
-  background: var(--coral);
+  background: var(--accent);
   content: "";
 }
 
@@ -137,7 +147,7 @@
 }
 
 .article-card__number {
-  color: var(--coral-dark);
+  color: var(--accent-dark);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -175,7 +185,7 @@
   gap: 9px;
   align-items: center;
   margin-top: 28px;
-  color: var(--coral-dark);
+  color: var(--accent-dark);
   font-size: 13px;
   font-weight: 700;
 }
@@ -208,12 +218,12 @@
 }
 
 .article-back-link::before {
-  color: var(--coral-dark);
+  color: var(--accent-dark);
   content: "←";
 }
 
 .article-back-link:hover {
-  color: var(--coral-dark);
+  color: var(--accent-dark);
 }
 
 .article-detail-intro__copy {
@@ -303,7 +313,7 @@
 }
 
 .article-prose li::marker {
-  color: var(--coral-dark);
+  color: var(--accent-dark);
   font-weight: 700;
 }
 
@@ -315,7 +325,7 @@
 
 .article-prose a:hover {
   border-bottom-color: currentColor;
-  color: var(--coral-dark);
+  color: var(--accent-dark);
 }
 
 .article-prose strong {
@@ -334,7 +344,7 @@
 .article-prose blockquote {
   margin: 32px 0;
   padding: 8px 0 8px 24px;
-  border-left: 3px solid var(--coral);
+  border-left: 3px solid var(--accent);
   color: #5a5650;
   font-family: var(--font-display);
   font-size: 24px;
@@ -392,13 +402,13 @@
 }
 
 .article-aside li a:hover {
-  color: var(--coral-dark);
+  color: var(--accent-dark);
 }
 
 .article-aside li span {
   display: block;
   margin-bottom: 3px;
-  color: var(--coral-dark);
+  color: var(--accent-dark);
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -409,7 +419,7 @@
   overflow: hidden;
   padding: clamp(68px, 9vw, 120px) 0;
   background:
-    radial-gradient(circle at 80% 12%, rgba(255, 89, 72, 0.19), transparent 30%),
+    radial-gradient(circle at 80% 12%, rgba(var(--accent-rgb), 0.19), transparent 30%),
     var(--ink-2);
 }
 
@@ -450,7 +460,7 @@
 
   .article-aside {
     max-width: 620px;
-    border-left: 3px solid var(--coral);
+    border-left: 3px solid var(--accent);
   }
 
   .article-index-heading {
@@ -463,7 +473,7 @@
 }
 
 @media (max-width: 680px) {
-  .article-main {
+  .nav-ready .article-main {
     padding-top: 70px;
   }
 

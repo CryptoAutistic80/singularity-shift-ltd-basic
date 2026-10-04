@@ -21,6 +21,16 @@ if (existsSync(articlesDir)) {
   }
 }
 
+const servicesDir = resolve(rootDir, "services");
+if (existsSync(servicesDir)) {
+  for (const entry of readdirSync(servicesDir, { withFileTypes: true })) {
+    const page = resolve(servicesDir, entry.name, "index.html");
+    if (entry.isDirectory() && existsSync(page)) {
+      input["service-" + entry.name] = page;
+    }
+  }
+}
+
 export default defineConfig({
   server: {
     host: "0.0.0.0",

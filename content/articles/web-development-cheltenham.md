@@ -32,6 +32,26 @@ For example, a service business may need a clearer offer, stronger examples of i
 
 Good web development still matters here. The site should load quickly, make the next action obvious, work across devices and give you a foundation that can grow when the business does.
 
+## What a useful business website needs
+
+Before discussing visual style, make sure a visitor can answer four questions: what do you offer, is it suitable for them, why should they trust you, and what should they do next?
+
+A useful starting brief covers:
+
+- **Your customers:** who the site is for and the questions they ask before enquiring.
+- **Your services:** what you offer, where you work and any practical limits customers need to know.
+- **Your proof:** real examples, photographs, project details and customer feedback you have permission to use.
+- **Your next step:** an enquiry, a booking, a call or a purchase, with a clear route on a phone as well as a larger screen.
+- **Your ownership:** who will update the content, manage the domain and look after the site after launch.
+
+For search visibility, start with useful pages that accurately describe each main service. Clear titles, crawlable content and working internal links help search engines understand those pages. They do not guarantee a particular ranking; the content still needs to answer the visitor’s question.
+
+### An illustrative example: a local service business
+
+Imagine a local business whose existing site has one page of services, a few old photographs and a hard-to-find email address. This is an example of how to scope a project, not a client case study.
+
+A sensible first phase could be clearer service pages, a small gallery of real work, information about the areas served and a straightforward enquiry route. Check the pages on a phone and agree who will keep them current. An account system or a custom booking platform can wait until there is a clear need for one.
+
 ## When you need a web application
 
 A web application is for work that people actively carry out online. It may include accounts, forms, dashboards, bookings, collaboration, payments, data entry or a workflow shared by a team.

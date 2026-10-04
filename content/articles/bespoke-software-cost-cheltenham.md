@@ -1,11 +1,11 @@
 ---
-title: "How Much Does Bespoke Software Development Cost in Cheltenham?"
+title: "What Affects the Cost of Bespoke Software in Cheltenham?"
 description: "What actually affects the cost of bespoke software development, and how to start a project with a sensible scope."
 slug: "bespoke-software-cost-cheltenham"
 audience: "People researching a bespoke software project, integration, web application or technical rescue."
 ---
 
-# How Much Does Bespoke Software Development Cost in Cheltenham?
+# What Affects the Cost of Bespoke Software in Cheltenham?
 
 There is no honest fixed price for bespoke software before the problem is understood.
 
@@ -56,6 +56,20 @@ Not every project needs to begin with a large commitment. Depending on the situa
 - defining a larger product phase with clear decisions, assumptions and delivery shape.
 
 The point is to spend early effort where it reduces the most uncertainty.
+
+## A practical scoping example
+
+Imagine a small team that copies enquiry details from email into a spreadsheet. This is an illustrative example, not a client case study.
+
+One possible first phase is a simple enquiry form that records the information in one place. A larger version might add staff accounts, permissions, assignment, reminders and a connection to the team’s existing customer database.
+
+Both could be described as an enquiry system, but they involve different amounts of design, development, testing and ongoing care. Agreeing which version solves the immediate problem makes a quote more useful than pricing the label alone.
+
+## Remember the costs after launch
+
+Discuss hosting, domain names, third-party subscriptions and any support or maintenance you need. For an existing system, ask whether data migration, staff training and handover are included in the initial scope.
+
+Some costs are one-off; others continue while you use the system. A proposal should separate them and identify the services you will pay for directly. It should also explain how future changes will be agreed.
 
 ## What a good proposal should make clear
 

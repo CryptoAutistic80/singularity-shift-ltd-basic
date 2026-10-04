@@ -1,8 +1,6 @@
 (() => {
   "use strict";
 
-  document.documentElement.classList.add("js");
-
   const header = document.querySelector("[data-header]");
   const menuToggle = document.querySelector("[data-menu-toggle]");
   const siteNav = document.querySelector("[data-site-nav]");
@@ -52,11 +50,15 @@
     if (window.innerWidth > 980) setMenuOpen(false);
   });
 
+  // Collapse navigation only after its controls are ready; without JavaScript, links stay visible.
+  if (menuToggle && siteNav) {
+    document.documentElement.classList.add("nav-ready");
+  }
+
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const revealItems = document.querySelectorAll(".reveal");
 
   if (reduceMotion || !("IntersectionObserver" in window)) {
-    revealItems.forEach((item) => item.classList.add("is-visible"));
     return;
   }
 
