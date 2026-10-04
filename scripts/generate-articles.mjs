@@ -9,33 +9,62 @@ const sitemapPath = resolve(rootDir, "sitemap.xml");
 const robotsPath = resolve(rootDir, "robots.txt");
 
 const articleOrder = [
-  "ai-agents-cheltenham-businesses.md",
-  "applied-ai-cheltenham.md",
   "web-development-cheltenham.md",
-  "bespoke-software-cost-cheltenham.md",
   "when-spreadsheets-hold-you-back.md",
+  "bespoke-software-cost-cheltenham.md",
+  "applied-ai-cheltenham.md",
+  "ai-agents-cheltenham-businesses.md",
 ];
 
 const articlePresentation = {
   "ai-agents-cheltenham-businesses": {
     topic: "Applied AI · Systems design",
     label: "AI agents",
+    related: ["applied-ai-cheltenham", "when-spreadsheets-hold-you-back"],
+    service: "software",
   },
   "applied-ai-cheltenham": {
     topic: "Applied AI · Practical adoption",
     label: "Applied AI",
+    related: ["ai-agents-cheltenham-businesses", "when-spreadsheets-hold-you-back"],
+    service: "software",
   },
   "web-development-cheltenham": {
-    topic: "Web development · Product decisions",
-    label: "Web development",
+    topic: "Websites · Planning your project",
+    label: "Websites",
+    related: ["bespoke-software-cost-cheltenham", "when-spreadsheets-hold-you-back"],
+    service: "websites",
   },
   "bespoke-software-cost-cheltenham": {
     topic: "Bespoke software · Scoping",
     label: "Bespoke software",
+    related: ["when-spreadsheets-hold-you-back", "web-development-cheltenham"],
+    service: "software",
   },
   "when-spreadsheets-hold-you-back": {
     topic: "Operations · Process improvement",
     label: "Operations",
+    related: ["bespoke-software-cost-cheltenham", "web-development-cheltenham"],
+    service: "software",
+  },
+};
+
+const servicePresentation = {
+  websites: {
+    path: "services/web-design-cheltenham/",
+    label: "Website design & development",
+    title: "Planning a new or better website?",
+    description: "Work directly with James on a website that explains your business, shows your work and makes the next step easy.",
+    ctaTitle: "Let’s make your website work for your business.",
+    ctaDescription: "Tell me what you do, who you want to reach and what your current website needs to do better. A rough outline is enough to begin.",
+  },
+  software: {
+    path: "services/custom-software-cheltenham/",
+    label: "Custom software & integrations",
+    title: "Have a process you want to improve?",
+    description: "Bring the tools you use and the work that slows you down. We can identify a useful first step, with AI included where it earns its place.",
+    ctaTitle: "Make one difficult piece of work easier.",
+    ctaDescription: "Tell me what happens today, where it becomes frustrating and what a better result would look like. We can shape the scope around the actual problem.",
   },
 };
 
@@ -50,6 +79,8 @@ const escapeHtml = (value) =>
 function renderSitemap(articles) {
   const urls = [
     "https://sshift.xyz/",
+    "https://sshift.xyz/services/web-design-cheltenham/",
+    "https://sshift.xyz/services/custom-software-cheltenham/",
     "https://sshift.xyz/articles/",
     ...articles.map((article) => article.canonicalUrl),
   ];
@@ -199,7 +230,7 @@ function safeJson(value) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-function pageHead({ title, description, canonicalUrl, stylesHref, schema }) {
+function pageHead({ title, description, canonicalUrl, stylesHref, schema, ogType = "article" }) {
   const pageTitle = title + " | Singularity Shift";
   const escapedTitle = escapeHtml(pageTitle);
   const escapedDescription = escapeHtml(description);
@@ -214,10 +245,10 @@ function pageHead({ title, description, canonicalUrl, stylesHref, schema }) {
     '  <meta name="description" content="' + escapedDescription + '">',
     '  <meta property="og:title" content="' + escapedTitle + '">',
     '  <meta property="og:description" content="' + escapedDescription + '">',
-    '  <meta property="og:type" content="article">',
+    '  <meta property="og:type" content="' + ogType + '">',
     '  <meta property="og:url" content="' + canonicalUrl + '">',
     '  <meta property="og:image" content="https://sshift.xyz/assets/social-preview.jpg">',
-    '  <meta property="og:image:alt" content="Singularity Shift Ltd — applied AI and dependable software">',
+    '  <meta property="og:image:alt" content="Singularity Shift Ltd — website design and software development">',
     '  <meta name="twitter:card" content="summary_large_image">',
     '  <meta name="twitter:title" content="' + escapedTitle + '">',
     '  <meta name="twitter:description" content="' + escapedDescription + '">',
@@ -247,14 +278,18 @@ function siteHeader({ assetPrefix, rootHref, articlesHref, ctaHref, articleIndex
     "      <span>Singularity Shift <small>Ltd</small></span>",
     "    </a>",
     '    <nav class="site-nav" id="site-nav" data-site-nav aria-label="Primary navigation">',
-    '      <a href="' + rootHref + '">Home</a>',
-    '      <a href="' + articlesHref + '"' + current + ">Articles</a>",
+    '      <a href="' + rootHref + 'services/web-design-cheltenham/">Websites</a>',
+    '      <a href="' + rootHref + 'services/custom-software-cheltenham/">Software</a>',
+    '      <a href="' + rootHref + '#work">Work</a>',
+    '      <a href="' + articlesHref + '"' + current + ">Guides</a>",
+    '      <a href="' + rootHref + '#about">About</a>',
+    '      <a class="mobile-contact" href="' + ctaHref + '">Contact</a>',
     "    </nav>",
     '    <div class="nav-actions">',
     '      <button class="menu-toggle button button-small button-ghost" type="button" data-menu-toggle aria-controls="site-nav" aria-expanded="false">',
     '        <span data-menu-label>Menu</span>',
     "      </button>",
-    '      <a class="button button-small button-accent" href="' + ctaHref + '">Start a project</a>',
+    '      <a class="button button-small button-accent" href="' + ctaHref + '">Contact</a>',
     "    </div>",
     "  </div>",
     "</header>",
@@ -288,7 +323,7 @@ function cardMarkup(article, position) {
     "  </span>",
     "  <h3>" + escapeHtml(article.title) + "</h3>",
     "  <p>" + escapeHtml(article.description) + "</p>",
-    '  <span class="article-card__read">Read article</span>',
+    '  <span class="article-card__read">Read guide</span>',
     "</a>",
   ].join("\n");
 }
@@ -303,6 +338,7 @@ function articleSchema(article) {
     author: {
       "@type": "Person",
       name: "James Walford",
+      url: "https://sshift.xyz/#about",
     },
     publisher: {
       "@type": "Organization",
@@ -317,18 +353,19 @@ function renderIndex(articles) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Articles | Singularity Shift",
-    description: "Practical notes on applied AI, web development and dependable custom software.",
+    name: "Website & Software Guides | Singularity Shift",
+    description: "Practical guides to planning a website, improving business processes and scoping custom software.",
     url: "https://sshift.xyz/articles/",
   };
 
   return [
     pageHead({
-      title: "Articles",
-      description: "Practical notes on applied AI, web development and dependable custom software from a founder-led Cheltenham consultancy.",
+      title: "Website & Software Guides",
+      description: "Useful answers before you commission a website or custom software: choosing the right project, understanding costs and improving how your business works.",
       canonicalUrl: "https://sshift.xyz/articles/",
       stylesHref: "../",
       schema,
+      ogType: "website",
     }),
     '<body class="article-page article-index-page">',
     siteHeader({
@@ -341,20 +378,20 @@ function renderIndex(articles) {
     '<main id="main-content" class="article-main">',
     '  <section class="article-index-hero" aria-labelledby="articles-title">',
     '    <div class="shell article-index-hero__copy">',
-    '      <p class="eyebrow">Field notes · AI, software &amp; systems</p>',
-    '      <h1 id="articles-title">Notes on building with <em>clarity.</em></h1>',
-    '      <p class="article-lede">Practical reading for people deciding what to build, where AI can help, and how to make the resulting system dependable.</p>',
-    '      <p class="article-index-hero__note">Written from the work, not for the algorithm</p>',
+    '      <p class="eyebrow">Websites · Software · Your business</p>',
+    '      <h1 id="articles-title">Useful answers before <em>you start.</em></h1>',
+    '      <p class="article-lede">Planning a website, improving a process or working out what to build? Start with the question that matters to your business.</p>',
+    '      <p class="article-index-hero__note">Guides by James Walford · Cheltenham</p>',
     "    </div>",
     "  </section>",
     '  <section class="article-index-section" aria-labelledby="reading-title">',
     '    <div class="shell">',
     '      <div class="article-index-heading">',
     "        <div>",
-    '          <p class="eyebrow eyebrow-dark">All articles</p>',
-    '          <h2 id="reading-title">A useful place to start.</h2>',
+    '          <p class="eyebrow eyebrow-dark">All guides</p>',
+    '          <h2 id="reading-title">What would you like to make clearer?</h2>',
     "        </div>",
-    "        <p>No jargon for its own sake. Just a clearer way to think about the work in front of you.</p>",
+    "        <p>Practical questions to help you choose the right scope and prepare for a useful first conversation.</p>",
     "      </div>",
     '      <div class="article-grid">',
     articles.map(cardMarkup).join("\n"),
@@ -371,9 +408,8 @@ function renderIndex(articles) {
 }
 
 function relatedMarkup(article, articles) {
-  return articles
-    .filter((candidate) => candidate.slug !== article.slug)
-    .slice(0, 2)
+  return articlePresentation[article.slug].related
+    .map((slug) => articles.find((candidate) => candidate.slug === slug))
     .map((candidate) => {
       const presentation = articlePresentation[candidate.slug];
 
@@ -391,6 +427,7 @@ function relatedMarkup(article, articles) {
 
 function renderArticle(article, articles) {
   const presentation = articlePresentation[article.slug];
+  const service = servicePresentation[presentation.service];
 
   return [
     pageHead({
@@ -411,10 +448,11 @@ function renderArticle(article, articles) {
     '<main id="main-content" class="article-main">',
     '  <section class="article-detail-intro" aria-labelledby="article-title">',
     '    <div class="shell article-detail-intro__copy">',
-    '      <a class="article-back-link" href="../">All articles</a>',
+    '      <a class="article-back-link" href="../">All guides</a>',
     '      <p class="eyebrow eyebrow-dark">' + escapeHtml(presentation.topic) + "</p>",
     '      <h1 id="article-title">' + escapeHtml(article.title) + "</h1>",
     '      <p class="article-detail-intro__description">' + escapeHtml(article.description) + "</p>",
+    '      <p class="article-detail-intro__audience">By <a href="../../#about" rel="author"><strong>James Walford</strong></a> · Website designer &amp; software developer, Cheltenham</p>',
     '      <p class="article-detail-intro__audience"><strong>For:</strong> ' + escapeHtml(article.audience) + "</p>",
     "    </div>",
     "  </section>",
@@ -424,9 +462,10 @@ function renderArticle(article, articles) {
     renderMarkdown(article.body),
     "      </article>",
     '      <aside class="article-aside" aria-label="Work with Singularity Shift">',
-    '        <p class="article-aside__title">Need a clear next step?</p>',
-    "        <p>From a first idea to a difficult system, you can bring the rough outline. We will work out the most useful next move together.</p>",
-    '        <a class="button button-dark" href="../../#contact">Describe the problem</a>',
+    '        <p class="article-aside__title">' + escapeHtml(service.title) + '</p>',
+    '        <p>' + escapeHtml(service.description) + '</p>',
+    '        <p><a href="../../' + service.path + '">' + escapeHtml(service.label) + ' →</a></p>',
+    '        <a class="button button-dark" href="../../#contact">Tell me about your project</a>',
     '        <div class="article-aside__divider"></div>',
     '        <p><strong>Continue reading</strong></p>',
     "        <ul>",
@@ -439,11 +478,11 @@ function renderArticle(article, articles) {
     '    <div class="shell article-cta__grid">',
     "      <div>",
     '        <p class="eyebrow">Work directly with James</p>',
-    '        <h2 id="article-cta-title">Bring the work that is getting in the way.</h2>',
+    '        <h2 id="article-cta-title">' + escapeHtml(service.ctaTitle) + '</h2>',
     "      </div>",
     "      <div>",
-    "        <p>Whether you are one person with an idea or a larger organisation with a difficult system, no project is too small to start a useful conversation.</p>",
-    '        <a class="button button-accent" href="../../#contact">Start a project</a>',
+    '        <p>' + escapeHtml(service.ctaDescription) + '</p>',
+    '        <a class="button button-accent" href="../../#contact">Tell me about your project</a>',
     "      </div>",
     "    </div>",
     "  </section>",
