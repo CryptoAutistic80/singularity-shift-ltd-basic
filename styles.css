@@ -228,9 +228,19 @@ a {
   background: rgba(17, 19, 21, 0.7);
 }
 
+/* Keep the opening composition together and clear of the fixed navigation. */
+.landing {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+.nav-ready .landing {
+  padding-top: 82px;
+}
+
 .hero {
   position: relative;
-  min-height: min(820px, 92vh);
   display: grid;
   align-items: center;
   overflow: hidden;
@@ -247,7 +257,7 @@ a {
 
 .hero-image {
   object-fit: cover;
-  object-position: 50% 40%;
+  object-position: 50% 0;
 }
 
 .hero-shade {
@@ -259,8 +269,8 @@ a {
 .hero-content {
   position: relative;
   z-index: 2;
-  padding-top: 136px;
-  padding-bottom: 84px;
+  padding-top: 54px;
+  padding-bottom: 48px;
 }
 
 .hero-content > * {
@@ -996,12 +1006,8 @@ h1 em {
     justify-self: end;
   }
 
-  .hero {
-    min-height: 820px;
-  }
-
   .hero-image {
-    object-position: 64% 50%;
+    object-position: 64% 0;
   }
 
   .hero-shade {
@@ -1126,6 +1132,10 @@ h1 em {
     font-size: 11px;
   }
 
+  .nav-ready .landing {
+    padding-top: 70px;
+  }
+
   .hero {
     min-height: 820px;
     align-items: end;
@@ -1133,8 +1143,8 @@ h1 em {
 
   .hero-image {
     height: 56%;
-    top: 70px;
-    object-position: 70% 38%;
+    top: 0;
+    object-position: 70% 0;
   }
 
   .hero-shade {
