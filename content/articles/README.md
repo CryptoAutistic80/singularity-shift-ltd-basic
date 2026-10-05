@@ -6,9 +6,10 @@ Markdown in this directory is the source of truth for the static `/articles/` li
 
 Every guide needs double-quoted front matter: `title`, `description`, `slug`, `audience`, `category`, `topic`, `label`, `service`, `related`, and `order`. The filename must match `slug.md`. The five original guides retain presentation metadata in the generator for compatibility.
 
-- Categories: `planning`, `improve`, `functionality`, `business-types`, `software`.
+- Categories: `design`, `planning`, `improve`, `functionality`, `business-types`, `software`.
 - Service: `websites` or `software`; this selects the relevant service link and enquiry panel.
 - Related: two or three distinct, existing article slugs separated by commas.
+- Optional `concept`: `collection`, `daybreak`, `field-form` or `luma`. Adds a static screenshot and demo link after the opening paragraphs, concept-specific social imagery and a contextual WhatsApp enquiry.
 - Order: a numeric value in quotes. Categories have a fixed reading order; this controls guides within them.
 - Supported Markdown: paragraphs, H2/H3 headings, flat lists, blockquotes, bold, inline code and links. H1 is supplied by the title. Tables and nested lists are not supported.
 - Internal links from an article use `../other-guide/`, `../../services/web-design-cheltenham/` or `../../#contact`. External HTTP(S) links open separately.

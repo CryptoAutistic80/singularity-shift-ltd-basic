@@ -9,6 +9,7 @@ const sitemapPath = resolve(rootDir, "sitemap.xml");
 const robotsPath = resolve(rootDir, "robots.txt");
 
 const categories = {
+  design: { title: "Design ideas & working examples", description: "Explore brand, motion and product experiences through original working concepts, with practical advice for your own website." },
   planning: { title: "Plan your website", description: "Choose a developer, compare approaches and turn a rough idea into a clear brief." },
   improve: { title: "Improve an existing website", description: "Find the problems behind slow pages, missed enquiries and difficult updates." },
   functionality: { title: "Bookings, shops & web applications", description: "Work out what customers and staff need to do online before choosing a system." },
@@ -54,6 +55,13 @@ const articlePresentation = {
   },
 };
 
+const conceptPresentation = {
+  collection: { path: "concepts/", name: "The concept collection", image: "collection-preview.png", alt: "Three working website concepts: DAYBREAK coffee, FIELD / FORM architecture and LUMA lighting", description: "Compare three different website experiences and see the design decisions in action." },
+  daybreak: { path: "concepts/daybreak/", name: "DAYBREAK", image: "daybreak-preview.png", alt: "DAYBREAK coffee concept with layered photography, expressive lettering and a flavour finder", description: "Explore layered coffee imagery, a flavour finder and a personal tasting list." },
+  "field-form": { path: "concepts/field-form/", name: "FIELD / FORM", image: "field-preview.png", alt: "FIELD / FORM architecture concept during its expanding photographic scroll sequence", description: "Try an architectural scroll story, project briefs and a colour-to-monochrome image study." },
+  luma: { path: "concepts/luma/", name: "LUMA / 01", image: "luma-preview.png", alt: "LUMA lighting concept showing the parts of an interactive 3D lamp separated in an exploded view", description: "On desktop, scroll to take the lamp apart. Try its finishes, shade shapes and lighting controls on desktop or mobile." },
+};
+
 const servicePresentation = {
   websites: {
     path: "services/web-design-cheltenham/",
@@ -87,6 +95,7 @@ function renderSitemap(articles) {
     "https://sshift.xyz/services/web-design-cheltenham/",
     "https://sshift.xyz/services/custom-software-cheltenham/",
     "https://sshift.xyz/articles/",
+    "https://sshift.xyz/concepts/",
     ...articles.map((article) => article.canonicalUrl),
   ];
 
@@ -257,7 +266,7 @@ function safeJson(value) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-function pageHead({ title, description, canonicalUrl, stylesHref, schema, ogType = "article" }) {
+function pageHead({ title, description, canonicalUrl, stylesHref, schema, ogType = "article", image = "https://sshift.xyz/assets/social-preview.jpg", imageAlt = "Singularity Shift Ltd — website design and software development" }) {
   const pageTitle = title + " | Singularity Shift";
   const escapedTitle = escapeHtml(pageTitle);
   const escapedDescription = escapeHtml(description);
@@ -274,12 +283,12 @@ function pageHead({ title, description, canonicalUrl, stylesHref, schema, ogType
     '  <meta property="og:description" content="' + escapedDescription + '">',
     '  <meta property="og:type" content="' + ogType + '">',
     '  <meta property="og:url" content="' + canonicalUrl + '">',
-    '  <meta property="og:image" content="https://sshift.xyz/assets/social-preview.jpg">',
-    '  <meta property="og:image:alt" content="Singularity Shift Ltd — website design and software development">',
+    '  <meta property="og:image" content="' + escapeHtml(image) + '">',
+    '  <meta property="og:image:alt" content="' + escapeHtml(imageAlt) + '">',
     '  <meta name="twitter:card" content="summary_large_image">',
     '  <meta name="twitter:title" content="' + escapedTitle + '">',
     '  <meta name="twitter:description" content="' + escapedDescription + '">',
-    '  <meta name="twitter:image" content="https://sshift.xyz/assets/social-preview.jpg">',
+    '  <meta name="twitter:image" content="' + escapeHtml(image) + '">',
     '  <link rel="canonical" href="' + canonicalUrl + '">',
     '  <link rel="icon" type="image/x-icon" href="' + stylesHref + 'assets/favicon.ico">',
     '  <link rel="preconnect" href="https://fonts.googleapis.com">',
@@ -308,6 +317,7 @@ function siteHeader({ assetPrefix, rootHref, articlesHref, ctaHref, articleIndex
     '      <a href="' + rootHref + 'services/web-design-cheltenham/">Websites</a>',
     '      <a href="' + rootHref + 'services/custom-software-cheltenham/">Software</a>',
     '      <a href="' + rootHref + '#work">Work</a>',
+    '      <a href="' + rootHref + 'concepts/">Concepts</a>',
     '      <a href="' + articlesHref + '"' + current + ">Guides</a>",
     '      <a href="' + rootHref + '#about">About</a>',
     '      <a class="mobile-contact" href="' + ctaHref + '">Contact</a>',
@@ -368,6 +378,7 @@ function articleSchema(article) {
         author: { "@type": "Person", name: "James Walford", url: "https://sshift.xyz/#about" },
         publisher: { "@type": "Organization", name: "Singularity Shift Ltd", url: "https://sshift.xyz/" },
         inLanguage: "en-GB",
+        ...(article.concept ? { image: ["https://sshift.xyz/concepts/assets/" + conceptPresentation[article.concept].image] } : {}),
       },
       {
         "@type": "BreadcrumbList",
@@ -446,9 +457,32 @@ function relatedMarkup(article, articles) {
     .join("\n");
 }
 
+function renderConceptArticleBody(article) {
+  const body = renderMarkdown(article.body);
+  const concept = conceptPresentation[article.concept];
+  if (!concept) return body;
+  const preview = [
+    '<figure class="article-concept" data-concept="' + escapeHtml(article.concept) + '">',
+    '<a class="article-concept__image" href="../../' + concept.path + '" aria-label="Explore ' + escapeHtml(concept.name) + ', a working website concept"><img src="../../concepts/assets/' + concept.image + '" alt="' + escapeHtml(concept.alt) + '" width="1425" height="990" loading="lazy"></a>',
+    '<figcaption><p class="article-concept__eyebrow">See the idea in action</p>',
+    '<p class="article-concept__title">' + escapeHtml(concept.name) + '</p>',
+    '<p>' + escapeHtml(concept.description) + '</p>',
+    '<p class="article-concept__note">Original concepts for fictional brands, created by Singularity Shift.</p>',
+    '<div class="article-concept__links"><a href="../../' + concept.path + '">Try the working concept <span aria-hidden="true">↗</span></a><a href="../../#contact">Discuss an idea like this <span aria-hidden="true">→</span></a></div>',
+    '</figcaption></figure>',
+  ].join("\n");
+  const firstSection = body.indexOf('<h2 ');
+  return firstSection === -1 ? body + preview : body.slice(0, firstSection) + preview + "\n" + body.slice(firstSection);
+}
+
 function renderArticle(article, articles) {
   const presentation = article.presentation;
   const service = servicePresentation[presentation.service];
+  const concept = conceptPresentation[article.concept];
+  const message = concept
+    ? 'Hi James, I would like to discuss a website project. I found your guide: "' + article.title + '" (' + concept.name + ').'
+    : "Hi James, I'd like to discuss a website or software project.";
+  const whatsappHref = "https://wa.me/447540456767?text=" + encodeURIComponent(message);
 
   return [
     pageHead({
@@ -457,6 +491,7 @@ function renderArticle(article, articles) {
       canonicalUrl: article.canonicalUrl,
       stylesHref: "../../",
       schema: articleSchema(article),
+      ...(concept ? { image: "https://sshift.xyz/concepts/assets/" + concept.image, imageAlt: concept.alt } : {}),
     }),
     '<body class="article-page article-detail-page">',
     siteHeader({
@@ -481,7 +516,7 @@ function renderArticle(article, articles) {
     '    <div class="shell article-detail-grid">',
     '      <article class="article-prose">',
     renderContents(article),
-    renderMarkdown(article.body),
+    renderConceptArticleBody(article),
     "      </article>",
     '      <aside class="article-aside" aria-label="Work with Singularity Shift">',
     '        <p class="article-aside__title">' + escapeHtml(service.title) + '</p>',
@@ -506,7 +541,7 @@ function renderArticle(article, articles) {
     '        <p>' + escapeHtml(service.ctaDescription) + '</p>',
     '        <div class="contact-actions">',
     '          <a class="button button-accent" href="../../#contact">Tell me about your project</a>',
-    '          <a class="button button-ghost button-whatsapp" href="https://wa.me/447540456767?text=Hi%20James%2C%20I%27d%20like%20to%20discuss%20a%20website%20or%20software%20project." target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01"/></svg><span>Message James on WhatsApp<span class="visually-hidden"> (opens in a new tab)</span></span></a>',
+    '          <a class="button button-ghost button-whatsapp" href="' + escapeHtml(whatsappHref) + '" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01"/></svg><span>Message James on WhatsApp<span class="visually-hidden"> (opens in a new tab)</span></span></a>',
     '        </div>',
     "      </div>",
     "    </div>",
@@ -530,6 +565,7 @@ async function loadArticle(filename) {
   };
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(meta.slug) || filename !== meta.slug + ".md") throw new Error("Invalid slug in " + filename);
   if (!categories[presentation.category] || !servicePresentation[presentation.service] || !presentation.topic || !presentation.label || !Number.isFinite(presentation.order)) throw new Error("Invalid presentation metadata in " + filename);
+  if (meta.concept && !conceptPresentation[meta.concept]) throw new Error("Unknown concept in " + filename);
   if (articleHeadings(body).length < 2) throw new Error("Article needs a useful section structure: " + filename);
   return {
     ...meta, body, presentation,
@@ -540,7 +576,10 @@ async function loadArticle(filename) {
 
 async function generate() {
   const filenames = (await readdir(contentDir)).filter((name) => name.endsWith(".md") && name !== "README.md");
-  const articles = (await Promise.all(filenames.map(loadArticle))).sort((a, b) => a.presentation.order - b.presentation.order || a.slug.localeCompare(b.slug));
+  const categoryOrder = Object.keys(categories);
+  const articles = (await Promise.all(filenames.map(loadArticle))).sort((a, b) =>
+    categoryOrder.indexOf(a.presentation.category) - categoryOrder.indexOf(b.presentation.category) ||
+    a.presentation.order - b.presentation.order || a.slug.localeCompare(b.slug));
   const slugs = new Set(articles.map((article) => article.slug));
   for (const key of ["slug", "title", "description"]) {
     if (new Set(articles.map((article) => article[key])).size !== articles.length) throw new Error("Duplicate article " + key);

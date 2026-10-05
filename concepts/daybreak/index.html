@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#f3aaca">
+<meta name="description" content="DAYBREAK: a fictional independent coffee brand. Discover your coffee personality in this interactive website concept by Singularity Shift.">
+<title>DAYBREAK — Good coffee. Better days.</title>
+<link rel="stylesheet" href="./daybreak.css">
+<script type="module" src="./daybreak.js"></script>
+<link rel="stylesheet" href="../reading.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<aside class="demo-strip" aria-label="Concept navigation"><a href="../"><span aria-hidden="true">←</span> The collection</a><span>Fictional concept · by Singularity Shift</span><a href="../../#contact">Enquire <span aria-hidden="true">↗</span></a></aside>
+<header class="site-header">
+<a class="logo" href="#top" aria-label="Daybreak home">daybreak<span aria-hidden="true">*</span></a>
+<nav aria-label="Main navigation"><a href="#coffees">Meet the coffees</a><a href="#our-kind">Our kind of coffee</a><a href="#finder" class="nav-button">Find your flavour <span aria-hidden="true">↗</span></a></nav>
+</header>
+<main id="main">
+<section class="hero" id="top" aria-labelledby="hero-title">
+<div class="hero-copy"><p class="eyebrow">FOR EARLY BIRDS & NOT-SO-EARLY BIRDS.</p><h1 id="hero-title"><span class="hero-line hero-line-one">Good coffee.</span><span class="hero-line hero-line-two">Better <span class="days-word">days.</span></span></h1><p class="hero-description">Big flavour. Little rituals.<br>Your everyday cup, with a little more character.</p><a class="button dark" href="#finder">Find your coffee <span aria-hidden="true">↗</span></a><p class="hero-caption">A FRESH TAKE ON YOUR DAILY GRIND.</p></div>
+<div class="hero-art"><figure class="hero-photo"><img src="./assets/coffee-moment.jpg" width="1800" height="2700" alt="Two freshly made coffees with leaf-patterned latte art, surrounded by deep green foliage" fetchpriority="high"></figure><figure class="hero-detail" aria-hidden="true"><img src="./assets/coffee-beans.jpg" alt="" width="1000" height="1500"><figcaption>A LITTLE<br>DAILY MAGIC.</figcaption></figure><div class="mood-stamp" aria-hidden="true"><span>YOUR DAILY</span><strong>GOOD<br>MOOD</strong><span>STARTS HERE</span></div><div class="photo-tag">MADE FOR THE MOMENT <span aria-hidden="true">↗</span></div></div>
+<div class="hero-baseline"><a class="scroll-invitation" href="#ritual"><span class="scroll-arrow" aria-hidden="true">↓</span><span>SCROLL FOR THE GOOD STUFF.<small>Take a little coffee break.</small></span></a><button type="button" class="motion-toggle" id="motion-toggle" aria-label="Motion effects" aria-pressed="true" hidden><span class="motion-dot" aria-hidden="true"></span>Motion <span id="motion-state" aria-hidden="true">on</span></button><a href="#finder">Find your flavour <span aria-hidden="true">↗</span></a></div>
+</section>
+<div class="manifesto-strip" aria-hidden="true"><div class="manifesto-track track-one"><span>GOOD COFFEE.</span><span class="strip-dot">✳</span><span>BETTER DAYS.</span><span class="strip-dot">✳</span><span>GOOD COFFEE.</span><span class="strip-dot">✳</span><span>BETTER DAYS.</span></div><div class="manifesto-track track-two"><span>LESS FUSS.</span><span class="strip-dot">✳</span><span>MORE FLAVOUR.</span><span class="strip-dot">✳</span><span>LESS FUSS.</span><span class="strip-dot">✳</span><span>MORE FLAVOUR.</span></div></div>
+
+<section class="ritual" id="ritual" aria-labelledby="ritual-heading">
+<div class="ritual-stage">
+<div class="ritual-topline"><p class="eyebrow">A SMALL RITUAL. A WHOLE DIFFERENT DAY.</p><p class="ritual-scroll-cue">LET IT UNFOLD <span aria-hidden="true">↓</span></p></div>
+<h2 class="ritual-title" id="ritual-heading">Make a<br><span>moment.</span></h2>
+<div class="ritual-deck">
+<figure class="ritual-frame ritual-frame-one"><img src="./assets/coffee-beans.jpg" width="1000" height="1500" alt="Roasted coffee beans, photographed in warm close-up" loading="lazy"><figcaption><span>01 / START WITH THE GOOD STUFF.</span><strong>Small beans.<br>Big possibilities.</strong></figcaption></figure>
+<figure class="ritual-frame ritual-frame-two"><img src="./assets/coffee-cup.jpg" width="1200" height="1800" alt="Coffee splashes in a ceramic cup, surrounded by roasted beans" loading="lazy"><figcaption><span>02 / TAKE YOUR OWN SWEET TIME.</span><strong>A little pause.<br>A proper cup.</strong></figcaption></figure>
+<figure class="ritual-frame ritual-frame-three"><img src="./assets/coffee-moment.jpg" width="1800" height="2700" alt="Two coffees ready to share on a small wooden table beside lush plants" loading="lazy"><figcaption><span>03 / MAKE SOMEONE'S MORNING.</span><strong>Good company.<br>Even better days.</strong></figcaption></figure>
+</div>
+<div class="ritual-bottomline"><div class="ritual-progress" aria-hidden="true"><span id="ritual-current">01</span><span class="ritual-progress-track"><span></span></span><span>03</span></div><p>GO ON. MAKE A MOMENT OF IT.</p><a href="#finder">Find your daily thing <span aria-hidden="true">↗</span></a></div>
+</div>
+</section>
+
+<section class="finder section-pad" id="finder" aria-labelledby="finder-heading">
+<div class="finder-heading"><p class="eyebrow">YOUR CUP. YOUR CALL.</p><h2 id="finder-heading">Let's find<br>your <span>daily thing.</span></h2><p>No coffee dictionary required.<br>Tell us what you like. We'll take it from here.</p><p class="tiny-note">Try our demo coffee finder. Every blend is fictional.</p></div>
+<div class="finder-controls">
+<form id="coffee-finder">
+<fieldset><legend><span>01</span> How do you brew?</legend><div class="choice-row"><label class="choice"><input type="radio" name="brew" value="espresso" checked><span><span class="choice-check" aria-hidden="true">✓</span>Espresso / moka</span></label><label class="choice"><input type="radio" name="brew" value="filter"><span><span class="choice-check" aria-hidden="true">✓</span>Filter / cafetière</span></label></div></fieldset>
+<fieldset><legend><span>02</span> What sounds good?</legend><div class="choice-row"><label class="choice"><input type="radio" name="flavour" value="comfort" checked><span><span class="choice-check" aria-hidden="true">✓</span>Chocolate & cosy</span></label><label class="choice"><input type="radio" name="flavour" value="bright"><span><span class="choice-check" aria-hidden="true">✓</span>Fruity & bright</span></label><label class="choice"><input type="radio" name="flavour" value="decaf"><span><span class="choice-check" aria-hidden="true">✓</span>Easy-going decaf</span></label></div></fieldset>
+</form>
+<section class="match-card" id="match-card" aria-labelledby="match-name">
+<div class="match-top"><span class="eyebrow">MEET YOUR MATCH</span><span id="match-number" aria-hidden="true">01</span></div>
+<div class="match-info" aria-live="polite" aria-atomic="true"><h3 id="match-name">The Daily</h3><p class="match-notes" id="match-notes">MILK CHOCOLATE · HAZELNUT · CARAMEL</p><p class="match-reason" id="match-reason">A round, chocolatey cup that feels right at home in your espresso or moka pot. Especially good with a splash of milk.</p><div class="match-meta"><span id="match-roast">MEDIUM-DARK ROAST</span><span id="match-brew">ESPRESSO / MOKA</span></div></div>
+<div class="match-actions"><button type="button" class="button dark" id="add-match">Save to my tasting list <span aria-hidden="true">+</span></button><a href="#coffees" id="explore-match">Meet the line-up <span aria-hidden="true">↗</span></a></div>
+</section>
+<noscript><p class="noscript-note">The flavour finder and tasting list need JavaScript. You can still explore all three fictional coffees below.</p></noscript>
+</div>
+</section>
+
+<section class="coffees section-pad" id="coffees" aria-labelledby="coffees-heading">
+<div class="section-heading"><div><p class="eyebrow">SOMETHING FOR YOUR EVERYDAY.</p><h2 id="coffees-heading">Small line-up.<br><span>Big personalities.</span></h2></div><div class="filters" aria-label="Filter coffees"><button type="button" aria-pressed="true" data-filter="all">All coffees</button><button type="button" aria-pressed="false" data-filter="caffeinated">Caffeinated</button><button type="button" aria-pressed="false" data-filter="decaf">Decaf</button></div></div>
+<p class="filter-count" id="filter-count" aria-live="polite">3 coffees to get to know</p>
+<div class="coffee-grid">
+<article class="coffee-card daily" data-coffee="daily" data-kind="caffeinated"><div class="card-photo"><img src="./assets/coffee-cup.jpg" alt="A cream coffee cup surrounded by roasted beans" width="1200" height="1800" loading="lazy"><span class="card-sticker">THE EVERYDAY<br>FAVOURITE</span></div><div class="card-copy"><div class="card-meta"><span>01 / MEDIUM-DARK</span><span>WHOLE BEAN</span></div><h3>The Daily</h3><p class="card-notes">Chocolate. Hazelnut. Happy place.</p><p class="card-description">Your reliable plus-one. Round and mellow, with a sweet finish that makes the next sip inevitable.</p><button type="button" class="save-coffee" data-save="daily" aria-pressed="false">Save to tasting list <span aria-hidden="true">+</span></button></div></article>
+<article class="coffee-card bright" data-coffee="bright" data-kind="caffeinated"><div class="card-photo"><img src="./assets/coffee-beans.jpg" alt="A close-up of rich brown roasted coffee beans" width="1000" height="1500" loading="lazy"><span class="card-sticker">A LITTLE<br>ADVENTUROUS</span></div><div class="card-copy"><div class="card-meta"><span>02 / LIGHT-MEDIUM</span><span>WHOLE BEAN</span></div><h3>Bright Side</h3><p class="card-notes">Berries. Citrus. A fresh perspective.</p><p class="card-description">For curious cups. A lively, fruit-forward character that brings a little sunshine to your brewing ritual.</p><button type="button" class="save-coffee" data-save="bright" aria-pressed="false">Save to tasting list <span aria-hidden="true">+</span></button></div></article>
+<article class="coffee-card slow" data-coffee="slow" data-kind="decaf"><div class="card-photo"><img src="./assets/coffee-moment.jpg" alt="Two coffees on a wooden table among green leaves" width="1800" height="2700" loading="lazy"><span class="card-sticker">ALL THE JOY.<br>LESS BUZZ.</span></div><div class="card-copy"><div class="card-meta"><span>03 / MEDIUM DECAF</span><span>WHOLE BEAN</span></div><h3>Slow Sunday</h3><p class="card-notes">Cocoa. Biscuit. Take your time.</p><p class="card-description">The laid-back one. A cosy, gently sweet decaf for the kind of coffee break that isn't in a hurry.</p><button type="button" class="save-coffee" data-save="slow" aria-pressed="false">Save to tasting list <span aria-hidden="true">+</span></button></div></article>
+</div>
+<section class="tasting-list" id="tasting-list" aria-labelledby="tasting-heading"><div><p class="eyebrow">A LITTLE LIST OF GOOD THINGS.</p><h3 id="tasting-heading">Your tasting list <span id="tasting-count">0</span></h3><p>Just for exploring. No order, checkout or personal details.</p></div><div class="tasting-content"><ul id="saved-coffees"><li class="empty-list">Your next favourite is waiting. Save a coffee above to get started.</li></ul><button type="button" id="clear-list" class="clear-list" hidden>Clear list</button><p class="list-status" id="list-status" role="status" aria-live="polite"></p></div></section>
+</section>
+
+<section class="our-kind section-pad" id="our-kind" aria-labelledby="our-kind-heading"><p class="eyebrow">NO SECRET HANDSHAKE REQUIRED.</p><div><h2 id="our-kind-heading">Good coffee is<br>for <span>everyone.</span></h2><p>That's the idea behind DAYBREAK. A fictional independent coffee brand built around better everyday moments, a little curiosity, and finding what tastes good to you.</p><a class="button dark" href="#finder">Find your daily thing <span aria-hidden="true">↗</span></a></div><span class="kind-side-note">LESS FUSS.<br>MORE FLAVOUR.</span></section>
+</main>
+<aside class="concept-reading" aria-labelledby="design-guides-title"><div><p class="concept-reading__eyebrow">Behind the design</p><h2 id="design-guides-title">What could this do for your business?</h2><p>Explore the choices behind this work, what to put in your brief and what a real build would need.</p></div><ul><li><a href="../../articles/coffee-brand-website-design/">Planning a coffee brand website<span aria-hidden="true">↗</span></a></li><li><a href="../../articles/product-finder-website/">Helping visitors find the right product<span aria-hidden="true">↗</span></a></li><li><a href="../../articles/brand-storytelling-websites/">Telling your brand story online<span aria-hidden="true">↗</span></a></li></ul></aside>
+<footer class="site-footer"><div class="footer-intro"><p>A fictional brand.<br>A real possibility for yours.</p><a class="button pink" href="../../#contact">Let's make your website <span aria-hidden="true">↗</span></a></div><a class="footer-logo" href="#top" aria-label="Daybreak, back to top">daybreak<span aria-hidden="true">*</span></a><div class="footer-bottom"><p>Design concept by <a href="../../">Singularity Shift</a>.<br>All coffees and flavour profiles are illustrative. Nothing is for sale.</p><details><summary>Photography & font credits</summary><p>Illustrative photos by <a href="https://unsplash.com/photos/c2Y16tC3yO8" target="_blank" rel="noopener noreferrer">Nathan Dumlao</a>, <a href="https://unsplash.com/photos/lsmu0rUhUOk" target="_blank" rel="noopener noreferrer">Ante Samarzija</a>, and <a href="https://unsplash.com/photos/nLfSrImdgEs" target="_blank" rel="noopener noreferrer">Krystina Jarvis</a>, via <a href="https://unsplash.com/license" target="_blank" rel="noopener noreferrer">Unsplash</a>. Photography illustrates the coffee mood, not actual DAYBREAK products. <a href="./assets/bricolage-OFL.txt">Bricolage Grotesque</a> and <a href="./assets/dm-sans-OFL.txt">DM Sans</a> use the SIL Open Font License and are served locally.</p></details></div></footer>
+</body></html>

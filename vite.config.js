@@ -31,6 +31,15 @@ if (existsSync(servicesDir)) {
   }
 }
 
+const conceptsDir = resolve(rootDir, "concepts");
+if (existsSync(conceptsDir)) {
+  input.concepts = resolve(conceptsDir, "index.html");
+  for (const entry of readdirSync(conceptsDir, { withFileTypes: true })) {
+    const page = resolve(conceptsDir, entry.name, "index.html");
+    if (entry.isDirectory() && existsSync(page)) input["concept-" + entry.name] = page;
+  }
+}
+
 export default defineConfig({
   server: {
     host: "0.0.0.0",

@@ -8,9 +8,13 @@
     "prebuild": "node scripts/generate-articles.mjs",
     "build": "vite build",
     "preview": "vite preview",
-    "check:content": "node scripts/check-content.mjs"
+    "check:content": "node scripts/check-content.mjs",
+    "vendor:three": "node scripts/vendor-three.mjs"
   },
   "devDependencies": {
     "vite": "^7.0.0"
+  },
+  "dependencies": {
+    "three": "0.186.1"
   }
 }

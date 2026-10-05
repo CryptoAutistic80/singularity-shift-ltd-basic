@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <meta name="theme-color" content="#eeeee9">
+  <meta name="description" content="LUMA / 01: a fictional lighting collection and interactive design concept by Singularity Shift. Explore a sculptural lamp in 3D and make it your own.">
+  <title>LUMA / 01 — Light, considered. | Design concept</title>
+  <link rel="icon" href="../../assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;450;500;550;600;650;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="luma.css">
+  <script type="module" src="luma.js"></script>
+<link rel="stylesheet" href="../reading.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to the lamp</a>
+  <div class="concept-bar">
+    <a href="../" class="concept-back"><span aria-hidden="true">↖</span> All concepts</a>
+    <span class="concept-disclosure">Fictional concept <span aria-hidden="true">·</span> by Singularity Shift</span>
+    <a href="../../#contact" class="concept-enquiry">Build something like this <span aria-hidden="true">↗</span></a>
+  </div>
+
+  <header class="site-header">
+    <a href="./" class="wordmark" aria-label="Luma slash zero one, home">LUMA<span class="wordmark-slash">/</span><span class="wordmark-number">01</span></a>
+    <span class="brand-description">Objects for<br>the everyday.</span>
+    <nav aria-label="Luma navigation">
+      <a href="#details">The thinking</a>
+      <a href="#configure" class="nav-configure">Make it yours <span aria-hidden="true">↘</span></a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="object-layout" id="object-experience" aria-labelledby="object-title">
+      <div class="object-stage" id="object-stage">
+        <div class="stage-topline"><span>FORM 001 <span class="tiny-divider">/</span> TABLE LIGHT</span><span class="edition">A study in balance</span></div>
+        <div class="stage-type" aria-hidden="true">luma.</div>
+        <div class="scene-meter" aria-hidden="true"><span></span></div>
+        <div class="scene-chapter" aria-hidden="true"><span id="scene-chapter-number">01</span><span id="scene-chapter-name">A different perspective</span></div>
+        <div class="lamp-viewer" id="lamp-viewer" tabindex="0" role="group" aria-label="Interactive lamp view. Drag to rotate. Use left and right arrow keys to turn, up and down to change the angle, or Home to reset." aria-describedby="viewer-help">
+          <div class="lamp-fallback" id="lamp-fallback">
+            <svg class="fallback-svg" viewBox="0 0 600 650" role="img" aria-label="Sculptural dome table lamp">
+              <defs>
+                <linearGradient id="fallback-finish" x1="0" x2="1"><stop offset="0" stop-color="#76769c"/><stop offset=".34" stop-color="#c1c1e2"/><stop offset=".7" stop-color="#a2a1c9"/><stop offset="1" stop-color="#686986"/></linearGradient>
+                <linearGradient id="fallback-stem" x1="0" x2="1"><stop stop-color="#77788c"/><stop offset=".4" stop-color="#dedee8"/><stop offset="1" stop-color="#7c7d91"/></linearGradient>
+                <radialGradient id="fallback-glow"><stop stop-color="#fff6d8" stop-opacity=".85"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></radialGradient>
+                <filter id="fallback-shadow"><feGaussianBlur stdDeviation="11"/></filter>
+              </defs>
+              <ellipse cx="306" cy="577" rx="125" ry="17" fill="#262634" opacity=".14" filter="url(#fallback-shadow)"/>
+              <ellipse id="fallback-light" cx="302" cy="539" rx="178" ry="80" fill="url(#fallback-glow)"/>
+              <path d="M342 550 C374 555 399 585 465 578" fill="none" stroke="#5a5b63" stroke-width="5" stroke-linecap="round"/>
+              <path d="M293 288 L307 288 L310 535 L290 535Z" fill="url(#fallback-stem)"/>
+              <ellipse cx="300" cy="547" rx="84" ry="15" fill="#5f6075"/>
+              <path d="M216 536 Q219 514 300 514 Q381 514 384 536 L384 544 Q300 567 216 544Z" fill="url(#fallback-finish)"/>
+              <ellipse cx="300" cy="536" rx="84" ry="19" fill="url(#fallback-finish)"/>
+              <path id="fallback-shade" d="M146 309 C151 209 209 166 300 166 C391 166 449 209 454 309 Q300 354 146 309Z" fill="url(#fallback-finish)"/>
+              <ellipse cx="300" cy="309" rx="154" ry="31" fill="#ededde"/>
+              <path d="M146 307 Q300 349 454 307" stroke="#767695" stroke-width="6" fill="none"/>
+              <ellipse cx="300" cy="306" rx="61" ry="11" fill="#fff9e8" opacity=".9"/>
+            </svg>
+          </div>
+          <canvas id="lamp-canvas" aria-hidden="true"></canvas>
+          <div class="assembly-labels" aria-hidden="true"><span class="component-label" data-component="shade">01 / THE SILHOUETTE</span><span class="component-label" data-component="diffuser">02 / THE SOFT GLOW</span><span class="component-label" data-component="base">03 / THE BALANCE</span></div>
+        </div>
+        <div class="stage-caption"><span id="stage-finish">Iris</span><span class="caption-line" aria-hidden="true"></span><span id="stage-form">Dome</span></div>
+        <div class="stage-bottomline">
+          <span class="viewer-help" id="viewer-help"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8a8 8 0 1 1-1 7M5 3v5H0" /></svg><span id="viewer-instruction">Drag to explore</span></span>
+          <button class="view-reset" id="reset-view" type="button" aria-label="Reset the lamp viewing angle">Reset view <span aria-hidden="true">↺</span></button>
+        </div>
+        <span class="view-status sr-only" id="view-status" aria-live="polite"></span>
+      </div>
+
+      <div class="object-story" id="configure">
+        <div class="object-intro">
+          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span> AN OBJECT. A LITTLE POSSIBILITY.</p>
+          <h1 id="object-title">The shape<br>of quiet.</h1>
+          <p class="object-description">Sculptural by day. A softer world by night.<br>A little light, entirely your own.</p>
+          <a class="scroll-invitation" href="#anatomy"><span class="scroll-invitation-mark" aria-hidden="true">↓</span><span><strong>There is more beneath the surface.</strong><span class="scroll-invitation-copy">Scroll to turn it. Keep going to take it apart.</span></span></a>
+        </div>
+        <form id="configuration-form" class="configuration-form">
+          <fieldset class="finish-fieldset">
+            <legend><span class="control-number">01</span> Find your finish <span class="selection-label" id="finish-label">Iris</span></legend>
+            <div class="finish-options">
+              <label class="finish-option" title="Porcelain">
+                <input type="radio" name="finish" value="porcelain">
+                <span class="finish-swatch porcelain"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10 3.5 3.5L15 7"/></svg></span>
+                <span>Porcelain</span>
+              </label>
+              <label class="finish-option" title="Graphite">
+                <input type="radio" name="finish" value="graphite">
+                <span class="finish-swatch graphite"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10 3.5 3.5L15 7"/></svg></span>
+                <span>Graphite</span>
+              </label>
+              <label class="finish-option" title="Iris">
+                <input type="radio" name="finish" value="iris" checked>
+                <span class="finish-swatch iris"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 10 3.5 3.5L15 7"/></svg></span>
+                <span>Iris</span>
+              </label>
+            </div>
+          </fieldset>
+          <fieldset class="shape-fieldset">
+            <legend><span class="control-number">02</span> Choose your silhouette</legend>
+            <div class="shape-options">
+              <label class="shape-option"><input type="radio" name="shape" value="dome" checked><span><svg viewBox="0 0 40 30" aria-hidden="true"><path d="M6 19C6 4 34 4 34 19Z M20 19v7 M14 26h12"/></svg>Dome</span></label>
+              <label class="shape-option"><input type="radio" name="shape" value="pleat"><span><svg viewBox="0 0 40 30" aria-hidden="true"><path d="M13 7h14l8 13H5Z M16 7l-5 13 M20 7v13 M24 7l5 13 M20 20v6 M14 26h12"/></svg>Pleat</span></label>
+            </div>
+          </fieldset>
+          <div class="brightness-fieldset">
+            <label for="brightness"><span class="control-number">03</span> Set the mood <output id="brightness-value" for="brightness">70%</output></label>
+            <div class="brightness-control">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/></svg>
+              <input type="range" id="brightness" name="brightness" min="0" max="100" value="70" step="1" aria-label="Lamp brightness">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/></svg>
+            </div>
+            <div class="brightness-captions"><span>A quiet glow</span><span>A brighter idea</span></div>
+          </div>
+          <button class="save-button" type="submit"><span>Keep this combination</span><span aria-hidden="true">↗</span></button>
+          <p class="demo-note">An imagined object. A working design concept.<br>Configure and save a favourite &mdash; no checkout.</p>
+          <div class="saved-configuration" id="saved-configuration" hidden role="status">
+            <span class="saved-mark" aria-hidden="true">✓</span>
+            <div><strong>Your combination, kept.</strong><p id="saved-description"></p><span id="save-location">Saved in this browser for your next visit.</span></div>
+          </div>
+        </form>
+        <div class="object-chapters" id="anatomy" aria-label="A closer look at the lamp">
+          <article class="object-chapter" data-chapter="0">
+            <p class="eyebrow">01 / A DIFFERENT PERSPECTIVE</p>
+            <h2>Good from<br>every angle.</h2>
+            <p>An unbroken curve. A slender stem. A satisfying sense of balance. Some objects reward a second look.</p>
+            <span class="chapter-direction" aria-hidden="true">KEEP SCROLLING <span>↓</span></span>
+          </article>
+          <article class="object-chapter" data-chapter="1">
+            <p class="eyebrow">02 / NOTHING TO HIDE</p>
+            <h2>Every part.<br>Nothing extra.</h2>
+            <p>The silhouette. The soft glow. The foundation. One clear idea, revealed layer by layer.</p>
+            <span class="chapter-detail">A little space to appreciate what holds it all together.</span>
+          </article>
+          <article class="object-chapter" data-chapter="2">
+            <p class="eyebrow">03 / EVERYTHING IN ITS PLACE</p>
+            <h2>Yours.<br>In one piece.</h2>
+            <p>Different finish. Different mood. Exactly your kind of light. A small object with room for your own point of view.</p>
+            <a href="#configure" class="text-link">Make it yours <span aria-hidden="true">↑</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="design-notes" id="details" aria-labelledby="details-title">
+      <div class="notes-heading"><p class="eyebrow">LESS, BUT WITH FEELING.</p><h2 id="details-title">Good objects<br>make room for you.</h2></div>
+      <div class="notes-copy"><p>Some things don&rsquo;t need to shout. A simple silhouette. The right balance. A colour that feels like it belongs.</p><p>LUMA is an exploration of the everyday object &mdash; and how a website can let you experience it before it exists.</p><a href="#configure" class="text-link">Find your combination <span aria-hidden="true">↗</span></a></div>
+      <div class="detail-art" aria-hidden="true"><span class="art-ring art-ring-one"></span><span class="art-ring art-ring-two"></span><span class="art-ring art-ring-three"></span><span class="art-center"></span><span class="art-caption">FORM / LIGHT / FEELING</span></div>
+    </section>
+
+    <section class="concept-cta" aria-labelledby="concept-cta-title">
+      <div><p class="eyebrow">A CONCEPT BY SINGULARITY SHIFT</p><h2 id="concept-cta-title">Imagine this level of care<br>for your business.</h2></div>
+      <a href="../../#contact">Let&rsquo;s make something <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
+  <aside class="concept-reading" aria-labelledby="design-guides-title"><div><p class="concept-reading__eyebrow">Behind the design</p><h2 id="design-guides-title">What could this do for your business?</h2><p>Explore the choices behind this work, what to put in your brief and what a real build would need.</p></div><ul><li><a href="../../articles/interactive-product-websites/">Is an interactive product website right for you?<span aria-hidden="true">↗</span></a></li><li><a href="../../articles/product-configurator-planning/">Planning a working product configurator<span aria-hidden="true">↗</span></a></li><li><a href="../../articles/interactive-website-performance/">Keeping an interactive website fast<span aria-hidden="true">↗</span></a></li></ul></aside>
+<footer class="site-footer"><a href="./" class="wordmark" aria-label="Luma home">LUMA<span class="wordmark-slash">/</span><span class="wordmark-number">01</span></a><p>A fictional lighting brand.<br>Designed and built by <a href="../../">Singularity Shift</a>.</p><a href="../" class="footer-back">Back to the concepts <span aria-hidden="true">↖</span></a></footer>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <meta name="theme-color" content="#F1F2EE">
+  <meta name="description" content="FIELD / FORM: an interactive, fictional architecture studio concept by Singularity Shift. Explore three spatial studies in colour and monochrome.">
+  <title>FIELD / FORM — Spaces for possibility</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./field.css">
+  <script type="module" src="./field.js"></script>
+<link rel="stylesheet" href="../reading.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="concept-strip"><span>Fictional concept · by Singularity Shift</span><a href="../">All concepts <span aria-hidden="true">↗</span></a></div>
+  <header class="site-header">
+    <a class="small-mark" href="#" aria-label="FIELD / FORM home">F<span>/</span>F<span class="mark-dot" aria-hidden="true"></span></a>
+    <span class="header-descriptor mono">An exploration of space.</span>
+    <nav aria-label="Main navigation"><a href="#studies">The studies <span>01</span></a><a href="#perspective">Our perspective <span>02</span></a><a class="nav-contact" href="../../#contact">Let’s talk <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="main">
+    <section class="intro scroll-intro" id="opening" aria-labelledby="brand-title">
+      <div class="intro-stage">
+        <div class="opening-meta mono"><span>Independent by design.</span><span>Architecture / Interiors / Possibility</span></div>
+        <h1 class="kinetic-title" id="brand-title"><span class="kinetic-field">FIELD</span><span class="kinetic-slash">/</span><span class="kinetic-form">FORM</span></h1>
+        <figure class="intro-architecture">
+          <div class="aperture-frame"><img src="./assets/light-study.webp" width="1800" height="2700" alt="The curved white façade of a building in Madrid, photographed from below by Joel Filipe." fetchpriority="high"><div class="aperture-shade" aria-hidden="true"></div></div>
+          <figcaption class="intro-photo-credit mono">Architectural reference · <a href="https://unsplash.com/photos/white-concrete-building-at-daytime-PFIeJh17SZo">Joel Filipe / Unsplash</a></figcaption>
+        </figure>
+        <div class="hero-caption"><p class="mono">A change of perspective.</p><h2>SEE SPACE.<br><span>DIFFERENTLY.</span></h2></div>
+        <span class="scroll-cue mono"><span class="scroll-cue-line" aria-hidden="true"></span>Scroll to open the frame</span>
+        <div class="opening-bottom"><p>Spaces for the way<br>we want to live.</p><a class="opening-skip" href="#studies">Explore the studies <span aria-hidden="true">↓</span></a></div>
+        <div class="opening-progress" aria-hidden="true"><span></span></div>
+      </div>
+    </section>
+    <section class="studies" id="studies" aria-labelledby="studies-title">
+      <div class="section-line"><h2 id="studies-title" class="mono">01 / Selected studies</h2><span class="mono">A change of perspective.</span></div>
+      <div class="project-viewer">
+        <div class="project-copy" id="project-copy">
+          <p class="project-eyebrow mono"><span id="project-number">01</span> — <span id="project-type">Living / Concept study</span></p>
+          <h3 id="project-title">A softer<br>skyline.</h3>
+          <p id="project-description">An exploration of light, repetition and the space between. Imagining a more generous kind of urban living.</p>
+          <button type="button" class="text-button" id="open-brief">Read the brief <span aria-hidden="true">↗</span></button>
+          <div class="project-small-print mono"><span id="project-name">Arc House</span><span>F / F — <span id="project-code">001</span></span></div>
+        </div>
+        <div class="project-media">
+          <figure>
+            <div class="image-study" id="image-study" style="--split: 38%">
+              <div class="image-stack" id="image-stack">
+                <img class="colour-image" id="colour-image" src="./assets/light-study.webp" width="1800" height="2700" alt="A white, curved building in Madrid, its repeated fins set against a pale blue sky. Architectural reference photograph by Joel Filipe." fetchpriority="high">
+                <img class="mono-image" id="mono-image" src="./assets/light-study.webp" width="1800" height="2700" alt="" aria-hidden="true">
+              </div>
+              <div class="image-labels mono" aria-hidden="true"><span>Monochrome study</span><span>Colour photograph</span></div>
+              <div class="split-line" aria-hidden="true"><span>↔</span></div>
+              <span class="image-corner mono" aria-hidden="true">F/F <span id="image-index">01</span></span>
+            </div>
+            <figcaption class="image-caption"><span>Reference photograph · <a id="image-credit" href="https://unsplash.com/photos/white-concrete-building-at-daytime-PFIeJh17SZo">Joel Filipe / Unsplash</a></span><span class="mono" id="photo-place">Madrid, Spain</span></figcaption>
+          </figure>
+          <div class="study-control">
+            <div class="control-heading"><label for="study-range">Look a little differently.</label><output for="study-range" id="study-value" class="mono">38% mono</output></div>
+            <input type="range" min="0" max="100" value="38" id="study-range" aria-describedby="range-help" aria-valuetext="38% monochrome study, 62% colour photograph">
+            <p id="range-help">Drag to compare colour and monochrome. A visual study of the same photograph.</p>
+          </div>
+        </div>
+      </div>
+      <div class="project-selectors" role="group" aria-label="Choose a concept study">
+        <button type="button" class="project-selector is-active" data-project="0" aria-pressed="true"><span class="selector-index mono">01</span><span class="selector-content"><strong>Arc House</strong><span>Light &amp; living</span></span><span class="selector-arrow" aria-hidden="true">↗</span></button>
+        <button type="button" class="project-selector" data-project="1" aria-pressed="false"><span class="selector-index mono">02</span><span class="selector-content"><strong>Common Ground</strong><span>Nature &amp; neighbourhood</span></span><span class="selector-arrow" aria-hidden="true">↗</span></button>
+        <button type="button" class="project-selector" data-project="2" aria-pressed="false"><span class="selector-index mono">03</span><span class="selector-content"><strong>Quiet Works</strong><span>Rhythm &amp; retreat</span></span><span class="selector-arrow" aria-hidden="true">↗</span></button>
+      </div>
+      <p class="sr-only" id="project-status" role="status" aria-live="polite"></p>
+      <noscript><p class="no-script">The first study is shown here. Enable JavaScript to change studies and use the image comparison.</p></noscript>
+    </section>
+    <section class="spatial-sequence" id="field-notes" aria-labelledby="field-notes-title">
+      <div class="sequence-stage">
+        <div class="sequence-top mono"><span>02 / Field notes</span><span>Three ways of seeing.</span></div>
+        <div class="sequence-layout">
+          <div class="sequence-copy"><p class="sequence-index mono" aria-hidden="true"><span id="sequence-current">01</span> / 03</p><h2 id="field-notes-title"><span data-spatial-word="0" class="is-current">Light.</span><span data-spatial-word="1">Life.</span><span data-spatial-word="2">Room.</span></h2><p class="sequence-description">Light gives a space its shape.<br>Nature makes room for life.<br>Quiet lets us think.</p><p class="sequence-instruction mono">Keep scrolling. A new perspective awaits.</p></div>
+          <div class="sheet-stack">
+            <figure class="sheet-card sheet-one"><div class="sheet-image"><img src="./assets/light-study.webp" width="1800" height="2700" alt="White architectural fins catching the light against a pale blue sky." loading="lazy"></div><figcaption><span class="sheet-title">Follow the light.</span><span class="mono">01 / Madrid<br>Photo: Joel Filipe</span></figcaption></figure>
+            <figure class="sheet-card sheet-two"><div class="sheet-image"><img src="./assets/terrace-study.webp" width="1800" height="1354" alt="A leafy tree grows beside a white building, softening its straight edges." loading="lazy"></div><figcaption><span class="sheet-title">Let life in.</span><span class="mono">02 / London<br>Photo: Imani Bahati</span></figcaption></figure>
+            <figure class="sheet-card sheet-three"><div class="sheet-image"><img src="./assets/rhythm-study.webp" width="2000" height="1333" alt="A sharply angled façade meeting a wide, quiet expanse of sky." loading="lazy"></div><figcaption><span class="sheet-title">Leave room to think.</span><span class="mono">03 / Canada<br>Photo: RUBENIMAGES.</span></figcaption></figure>
+          </div>
+        </div>
+        <div class="sequence-bottom mono"><span>Real photographs. Fictional possibilities.</span><span class="sequence-meter" aria-hidden="true"><i></i></span><a href="#perspective">Our perspective <span aria-hidden="true">↘</span></a></div>
+      </div>
+    </section>
+    <section class="perspective" id="perspective" aria-labelledby="perspective-title">
+      <div class="section-line"><p class="mono">03 / Our perspective</p><span class="asterisk" aria-hidden="true">✳</span></div>
+      <div class="perspective-grid"><h2 id="perspective-title">Good spaces<br>start with a<br><span>better question.</span></h2><div class="perspective-copy"><p>What if a building made more room for life?</p><p>FIELD / FORM is an imagined independent studio with a simple point of view: design begins with people. How we meet, how we move, and what makes us feel at home.</p><p>These three fictional briefs explore that idea through light, landscape and the everyday. Each begins with a real architectural photograph, used as a point of reference.</p><a class="text-link" href="#studies">Return to the studies <span aria-hidden="true">↗</span></a></div></div>
+      <div class="principles"><div><span class="mono">I.</span><p>Listen to<br>the place.</p></div><div><span class="mono">II.</span><p>Make space<br>for people.</p></div><div><span class="mono">III.</span><p>Let the<br>light in.</p></div></div>
+    </section>
+    <section class="enquiry" aria-labelledby="enquiry-title"><p class="mono">Your next chapter starts somewhere.</p><div><h2 id="enquiry-title">Make room<br>for an idea.</h2><a href="../../#contact" class="enquiry-arrow" aria-label="Discuss your website idea with Singularity Shift">↗</a></div><p class="enquiry-note">Like this direction? <a href="../../#contact">Let’s create a website for your business.</a></p></section>
+  </main>
+  <aside class="concept-reading" aria-labelledby="design-guides-title"><div><p class="concept-reading__eyebrow">Behind the design</p><h2 id="design-guides-title">What could this do for your business?</h2><p>Explore the choices behind this work, what to put in your brief and what a real build would need.</p></div><ul><li><a href="../../articles/architect-interior-designer-websites-cheltenham/">Websites for architects and interior designers<span aria-hidden="true">↗</span></a></li><li><a href="../../articles/website-photography-art-direction/">Planning photography for your website<span aria-hidden="true">↗</span></a></li><li><a href="../../articles/parallax-website-design/">When parallax earns its place<span aria-hidden="true">↗</span></a></li></ul></aside>
+<footer class="site-footer"><a class="footer-brand" href="#">FIELD / FORM</a><p>A fictional studio. A real possibility.</p><a href="../">Back to the collection <span aria-hidden="true">↗</span></a><details class="credits"><summary>Photography &amp; concept notes</summary><div><p>FIELD / FORM, its studio identity and all project briefs are fictional concepts created by <a href="../../">Singularity Shift</a>. The photographs depict existing architecture and are visual references, not work by this fictional studio. Monochrome views are CSS treatments of the same photographs.</p><p>Photography: <a href="https://unsplash.com/photos/white-concrete-building-at-daytime-PFIeJh17SZo">Joel Filipe</a>, <a href="https://unsplash.com/photos/green-leafed-tree-beside-white-concrete-building-with-glass-window-idaXDb_k51o">Imani Bahati</a> and <a href="https://unsplash.com/photos/brown-concrete-building-during-daytime-qQ_LvMMNXoM">RUBENIMAGES.</a> / Unsplash. Used under the <a href="https://unsplash.com/license">Unsplash License</a>.</p></div></details></footer>
+  <dialog id="brief-dialog" aria-labelledby="brief-title" aria-describedby="brief-introduction"><div class="dialog-top"><p class="mono" id="brief-index">F / F — 001</p><button type="button" class="dialog-close" aria-label="Close project brief">Close <span aria-hidden="true">×</span></button></div><p class="brief-kicker mono">A fictional project brief</p><h2 id="brief-title">Arc House</h2><p class="brief-introduction" id="brief-introduction">A softer skyline.</p><dl class="brief-facts"><div><dt>Study</dt><dd id="brief-study">Urban living</dd></div><div><dt>Focus</dt><dd id="brief-focus">Daylight, shelter, shared space</dd></div><div><dt>Status</dt><dd>Imagined / unbuilt</dd></div></dl><h3>The question</h3><p id="brief-question">How can a repeated façade create variety, privacy and a sense of belonging?</p><h3>The approach</h3><p id="brief-approach">Imagine a series of homes arranged around generous shared thresholds. Deep window reveals frame the sky, while a repeated structure makes room for individual lives. The study asks how an apparently simple elevation could support many different ways of living.</p><div class="brief-reference"><span class="mono">A point of reference</span><p id="brief-reference">Joel Filipe’s photograph in Madrid draws attention to the rhythm of a curved white façade. It is an existing building, used here as a visual reference for a fictional brief.</p></div><a class="text-link" href="../../#contact">Create a site with this perspective <span aria-hidden="true">↗</span></a></dialog>
+</body>
+</html>

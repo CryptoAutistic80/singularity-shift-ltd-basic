@@ -7,8 +7,9 @@ category: "business-types"
 topic: "Independent shop websites"
 label: "Independent shops"
 service: "websites"
-related: "restaurant-cafe-websites-cheltenham,creative-portfolio-websites-cheltenham"
+related: "product-finder-website,restaurant-cafe-websites-cheltenham,creative-portfolio-websites-cheltenham"
 order: "32"
+concept: "daybreak"
 ---
 
 # Independent Shop Websites in Cheltenham: Browse, Check Stock or Buy Online?
@@ -66,6 +67,12 @@ An online presence should support the physical business too. Explain the kinds o
 Use real photographs of the space and products. Provide the address, opening hours and useful access information. If a product needs to be tried, compared or discussed, explain that rather than forcing it into a conventional checkout.
 
 For shops that also serve food or drink, the [restaurant and cafe website guide](../restaurant-cafe-websites-cheltenham/) covers menus, service times and planning a visit.
+
+## Help customers narrow down a product range
+
+A short product finder can help when customers ask the same few questions before choosing. In the [DAYBREAK coffee concept](../../concepts/daybreak/), brew method and flavour preferences change a recommendation, and visitors can save coffees to a temporary tasting list. The products are fictional and there is no checkout.
+
+For a real shop, first decide which answers actually change the recommendation and how availability should affect the result. Someone who already knows what they want should still be able to browse directly. The [product finder guide](../product-finder-website/) explains how to keep those questions useful and how to handle a visitor whose answers do not match anything you sell.
 
 ## Questions to settle before commissioning the site
 

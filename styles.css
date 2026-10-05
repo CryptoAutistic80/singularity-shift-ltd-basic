@@ -1309,3 +1309,22 @@ h1 em {
 @media (max-width: 400px) {
   .site-nav .mobile-contact { display: inline-flex; }
 }
+
+/* Working design concepts, kept distinct from commissioned and product work. */
+.concept-teaser { background: #182b28; }
+.concept-teaser .section-heading h2 { color: #fffdf9; }
+.concept-teaser .section-heading p:not(.eyebrow) { color: #c3d0cc; }
+.concept-teaser .text-link { color: #aad1c9; }
+.concept-teaser-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.concept-teaser-item { display: block; min-width: 0; }
+.concept-teaser-image { overflow: hidden; aspect-ratio: 1.44; background: #263b36; }
+.concept-teaser-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 450ms ease; }
+.concept-teaser-item:hover img { transform: scale(1.025); }
+.concept-teaser-caption { display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 22px; }
+.concept-teaser-caption > div > span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #aad1c9; }
+.concept-teaser-caption h3 { font-family: var(--font-body); font-size: 24px; font-weight: 500; letter-spacing: -.035em; line-height: 1.2; color: #fffdf9; margin: 10px 0 0; }
+.concept-teaser-caption > span { color: #aad1c9; font-size: 28px; }
+.concept-teaser-item > p { color: #c3d0cc; font-size: 13px; margin-top: 12px; max-width: 290px; }
+.concept-teaser-note { font-size: 11px; color: #adbfb7; margin: 35px 0 0; }
+@media (max-width: 800px) { .concept-teaser-grid { grid-template-columns: 1fr; gap: 34px; } .concept-teaser-caption h3 { font-size: 28px; } .concept-teaser-item > p { max-width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .concept-teaser-image img { transition: none; } .concept-teaser-item:hover img { transform: none; } }

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111315">
+  <meta name="description" content="Brief website motion with reduced-motion layouts, useful controls and keyboard access. A practical guide to reviewing animation without hiding essential content.">
+  <meta property="og:title" content="Accessible Website Animation: What to Put in Your Brief | Singularity Shift">
+  <meta property="og:description" content="Brief website motion with reduced-motion layouts, useful controls and keyboard access. A practical guide to reviewing animation without hiding essential content.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://sshift.xyz/articles/website-animation-accessibility/">
+  <meta property="og:image" content="https://sshift.xyz/concepts/assets/collection-preview.png">
+  <meta property="og:image:alt" content="Three working website concepts: DAYBREAK coffee, FIELD / FORM architecture and LUMA lighting">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Accessible Website Animation: What to Put in Your Brief | Singularity Shift">
+  <meta name="twitter:description" content="Brief website motion with reduced-motion layouts, useful controls and keyboard access. A practical guide to reviewing animation without hiding essential content.">
+  <meta name="twitter:image" content="https://sshift.xyz/concepts/assets/collection-preview.png">
+  <link rel="canonical" href="https://sshift.xyz/articles/website-animation-accessibility/">
+  <link rel="icon" type="image/x-icon" href="../../assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../articles.css">
+  <title>Accessible Website Animation: What to Put in Your Brief | Singularity Shift</title>
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Article","headline":"Accessible Website Animation: What to Put in Your Brief","description":"Brief website motion with reduced-motion layouts, useful controls and keyboard access. A practical guide to reviewing animation without hiding essential content.","mainEntityOfPage":"https://sshift.xyz/articles/website-animation-accessibility/","articleSection":"Design ideas & working examples","author":{"@type":"Person","name":"James Walford","url":"https://sshift.xyz/#about"},"publisher":{"@type":"Organization","name":"Singularity Shift Ltd","url":"https://sshift.xyz/"},"inLanguage":"en-GB","image":["https://sshift.xyz/concepts/assets/collection-preview.png"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://sshift.xyz/"},{"@type":"ListItem","position":2,"name":"Guides","item":"https://sshift.xyz/articles/"},{"@type":"ListItem","position":3,"name":"Accessible Website Animation: What to Put in Your Brief","item":"https://sshift.xyz/articles/website-animation-accessibility/"}]}]}</script>
+</head>
+<body class="article-page article-detail-page">
+<a class="skip-link" href="#main-content">Skip to main content</a>
+<header class="site-header article-site-header" data-header>
+  <div class="nav-shell">
+    <a class="brand" href="../../" aria-label="Singularity Shift Ltd home">
+      <img src="../../assets/singularity-shift-mark.png" alt="" width="54" height="54">
+      <span>Singularity Shift <small>Ltd</small></span>
+    </a>
+    <nav class="site-nav" id="site-nav" data-site-nav aria-label="Primary navigation">
+      <a href="../../services/web-design-cheltenham/">Websites</a>
+      <a href="../../services/custom-software-cheltenham/">Software</a>
+      <a href="../../#work">Work</a>
+      <a href="../../concepts/">Concepts</a>
+      <a href="../">Guides</a>
+      <a href="../../#about">About</a>
+      <a class="mobile-contact" href="../../#contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="menu-toggle button button-small button-ghost" type="button" data-menu-toggle aria-controls="site-nav" aria-expanded="false">
+        <span data-menu-label>Menu</span>
+      </button>
+      <a class="button button-small button-accent" href="../../#contact">Contact</a>
+    </div>
+  </div>
+</header>
+<main id="main-content" class="article-main">
+  <section class="article-detail-intro" aria-labelledby="article-title">
+    <div class="shell article-detail-intro__copy">
+      <a class="article-back-link" href="../#design">Design ideas &amp; working examples</a>
+      <p class="eyebrow eyebrow-dark">Accessible motion · Project requirements</p>
+      <h1 id="article-title">Accessible Website Animation: What to Put in Your Brief</h1>
+      <p class="article-detail-intro__description">Brief website motion with reduced-motion layouts, useful controls and keyboard access. A practical guide to reviewing animation without hiding essential content.</p>
+      <p class="article-detail-intro__audience">By <a href="../../#about" rel="author"><strong>James Walford</strong></a> · Website designer &amp; software developer, Cheltenham</p>
+      <p class="article-detail-intro__audience">5 min read · <strong>For:</strong> Business owners, designers and project leads commissioning websites with animation or interactive visual effects.</p>
+    </div>
+  </section>
+  <section class="article-detail-body">
+    <div class="shell article-detail-grid">
+      <article class="article-prose">
+<nav class="article-contents" aria-label="In this guide"><p><strong>In this guide</strong></p><ol><li><a href="#make-a-short-inventory-of-movement">Make a short inventory of movement</a></li><li><a href="#design-the-reduced-motion-version-explicitly">Design the reduced-motion version explicitly</a></li><li><a href="#distinguish-interaction-effects-from-continuous-movement">Distinguish interaction effects from continuous movement</a></li><li><a href="#keep-the-controls-usable-without-dragging">Keep the controls usable without dragging</a></li><li><a href="#use-a-real-example-to-make-the-requirements-tangible">Use a real example to make the requirements tangible</a></li><li><a href="#exclude-flashing-effects-from-the-creative-direction">Exclude flashing effects from the creative direction</a></li><li><a href="#agree-what-the-review-will-cover">Agree what the review will cover</a></li></ol></nav>
+<p>An animated website should let people understand the offer and complete their task at a pace they can control. That means planning the experience for visitors who enjoy movement, people who need less of it and those navigating without a mouse.</p>
+<p>The brief needs to describe what remains available when movement changes or stops. This makes accessibility part of the design and acceptance process from the beginning. For a Cheltenham business commissioning a distinctive site, it also gives you concrete questions to ask when reviewing a demonstration.</p>
+<figure class="article-concept" data-concept="collection">
+<a class="article-concept__image" href="../../concepts/" aria-label="Explore The concept collection, a working website concept"><img src="../../concepts/assets/collection-preview.png" alt="Three working website concepts: DAYBREAK coffee, FIELD / FORM architecture and LUMA lighting" width="1425" height="990" loading="lazy"></a>
+<figcaption><p class="article-concept__eyebrow">See the idea in action</p>
+<p class="article-concept__title">The concept collection</p>
+<p>Compare three different website experiences and see the design decisions in action.</p>
+<p class="article-concept__note">Original concepts for fictional brands, created by Singularity Shift.</p>
+<div class="article-concept__links"><a href="../../concepts/">Try the working concept <span aria-hidden="true">↗</span></a><a href="../../#contact">Discuss an idea like this <span aria-hidden="true">→</span></a></div>
+</figcaption></figure>
+<h2 id="make-a-short-inventory-of-movement">Make a short inventory of movement</h2>
+<p>List the effects you are considering and what starts each one. An automatically playing background, a scene tied to scrolling and a transition after selecting a product behave differently.</p>
+<p>For each effect, record:</p>
+<ul><li>The information or purpose it supports.</li><li>Whether it begins automatically or follows an intentional action.</li><li>Whether it continues while the visitor tries to read something else.</li><li>The control available to stop, skip or change it.</li><li>How the same information appears without the movement.</li></ul>
+<p>Include details such as moving headings, rotating products, image comparisons, loading indicators and carousels. Small animations can still create a distracting overall experience when several run at once.</p>
+<h2 id="design-the-reduced-motion-version-explicitly">Design the reduced-motion version explicitly</h2>
+<p>Browsers can detect a device preference for less non-essential motion through <strong>prefers-reduced-motion</strong>. That preference needs an intentional response in the site&#39;s styles and scripts. It does not automatically redesign a page. <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion" target="_blank" rel="noopener noreferrer">MDN: prefers-reduced-motion</a>.</p>
+<p>Ask for a quieter layout that keeps the same useful content. An expanding photograph could become a still image. A stack of moving project sheets could become a normal sequence. A product selector can continue to change the selected item without a sweeping transition.</p>
+<p>Review this version alongside the animated design. Simply hiding the moving section may remove the only explanation of a service. Making an animation extremely brief may leave a sudden jump that does not suit the purpose either.</p>
+<p>Ask the developer to check what happens if the preference changes while the page is already open. Existing motion should respond appropriately, and the visitor should keep a usable page.</p>
+<h2 id="distinguish-interaction-effects-from-continuous-movement">Distinguish interaction effects from continuous movement</h2>
+<p>W3C&#39;s <strong>Animation from Interactions</strong>, Success Criterion 2.3.3 at Level AAA, addresses disabling non-essential motion triggered by interaction. Its explanation specifically includes additional motion associated with scrolling, such as parallax. Ordinary movement of the document as someone scrolls is treated differently. <a href="https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html" target="_blank" rel="noopener noreferrer">W3C: Animation from Interactions</a>.</p>
+<p>Automatically moving content needs separate consideration. <strong>Pause, Stop, Hide</strong>, Success Criterion 2.2.2 at Level A, covers moving, blinking or scrolling information that starts automatically, lasts more than five seconds and appears alongside other content. It calls for a way to pause, stop or hide that movement unless it is essential to the activity. Automatically updating information has related requirements without the five-second exception. <a href="https://www.w3.org/WAI/WCAG22/Understanding/pause-stop-hide.html" target="_blank" rel="noopener noreferrer">W3C: Pause, Stop, Hide</a>.</p>
+<p>These distinctions help a developer assess each feature properly. A reduced-motion setting should be considered together with appropriate controls for the page&#39;s particular behaviour.</p>
+<h2 id="keep-the-controls-usable-without-dragging">Keep the controls usable without dragging</h2>
+<p>A comparison effect can invite someone to drag a divider while also providing a labelled range control. Project choices can be ordinary buttons with an identifiable selected state. People should be able to operate the functionality using a keyboard where it does not inherently depend on a freehand path. <a href="https://www.w3.org/WAI/WCAG22/Understanding/keyboard.html" target="_blank" rel="noopener noreferrer">W3C: Keyboard</a>.</p>
+<p>During review, move through the page with the keyboard. Check that focus remains visible, that controls have meaningful names and that selecting an item provides understandable feedback. Watch for controls that become covered by a pinned scene or are visually moved away from their expected position.</p>
+<p>If a project opens in a dialog, include opening, closing and returning to the page in the review. Confirm that the visitor can resume where they left off. A polished entrance animation is only one part of that interaction.</p>
+<h2 id="use-a-real-example-to-make-the-requirements-tangible">Use a real example to make the requirements tangible</h2>
+<p>The <a href="../../concepts/">interactive concept collection</a> offers working material to discuss. In FIELD / FORM, the animated opening and layered photographic sequence have static reduced-motion presentations. The project choices and colour-to-monochrome comparison remain useful controls.</p>
+<p>The architecture studio and briefs are fictional, and its photographs are credited references. The comparison shows two treatments of one image. It demonstrates an interaction pattern without implying a completed building transformation.</p>
+<p>Use examples like this to describe the behaviour you want. Their existence does not establish that a different website, or every part of a concept, meets a particular accessibility standard.</p>
+<h2 id="exclude-flashing-effects-from-the-creative-direction">Exclude flashing effects from the creative direction</h2>
+<p>Make avoiding flashes and strobing part of the brief. Flashing raises a separate concern from the discomfort or distraction caused by other movement. W3C&#39;s <a href="https://www.w3.org/WAI/WCAG22/Understanding/three-flashes-or-below-threshold.html" target="_blank" rel="noopener noreferrer">Three Flashes or Below Threshold guidance</a> explains the relevant criterion and its thresholds.</p>
+<p>A motion preference is not a substitute for assessing flashing content. This matters when reviewing rapid video cuts, high-contrast transitions and promotional effects as well as code-driven animation.</p>
+<h2 id="agree-what-the-review-will-cover">Agree what the review will cover</h2>
+<p>Request a review of ordinary customer tasks with full motion and reduced motion, keyboard navigation, a phone layout and longer real content. Include the journey from a direct link to a lower section, rather than testing only a carefully paced trip from the homepage.</p>
+<p>Record the browsers and devices checked, problems found and any areas still awaiting review. Automated checks and a visual demonstration provide partial evidence; broader accessibility needs a wider assessment.</p>
+<p>For <a href="../../services/web-design-cheltenham/">website design in Cheltenham</a>, <a href="../../#contact">tell James which interactions you are considering</a>. We can turn the creative direction into concrete behaviour, alternatives and review criteria before it becomes difficult to change.</p>
+      </article>
+      <aside class="article-aside" aria-label="Work with Singularity Shift">
+        <p class="article-aside__title">Planning a new or better website?</p>
+        <p>Work directly with James on a website that explains your business, shows your work and makes the next step easy.</p>
+        <p><a href="../../services/web-design-cheltenham/">Website design &amp; development →</a></p>
+        <a class="button button-dark" href="../../#contact">Tell me about your project</a>
+        <div class="article-aside__divider"></div>
+        <p><strong>Continue reading</strong></p>
+        <ul>
+<li>
+  <a href="../parallax-website-design/">
+    <span>Parallax &amp; scroll effects</span>
+    Parallax Website Design: When Scroll Effects Earn Their Place
+  </a>
+</li>
+<li>
+  <a href="../mobile-friendly-website/">
+    <span>Check mobile usability</span>
+    Is Your Website Easy to Use on a Phone? A Cheltenham Business Guide
+  </a>
+</li>
+<li>
+  <a href="../interactive-website-performance/">
+    <span>Performance by design</span>
+    Keeping an Interactive Website Fast and Comfortable
+  </a>
+</li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+  <section class="article-cta" aria-labelledby="article-cta-title">
+    <div class="shell article-cta__grid">
+      <div>
+        <p class="eyebrow">Work directly with James</p>
+        <h2 id="article-cta-title">Let’s make your website work for your business.</h2>
+      </div>
+      <div>
+        <p>Tell me what you do, who you want to reach and what your current website needs to do better. A rough outline is enough to begin.</p>
+        <div class="contact-actions">
+          <a class="button button-accent" href="../../#contact">Tell me about your project</a>
+          <a class="button button-ghost button-whatsapp" href="https://wa.me/447540456767?text=Hi%20James%2C%20I%20would%20like%20to%20discuss%20a%20website%20project.%20I%20found%20your%20guide%3A%20%22Accessible%20Website%20Animation%3A%20What%20to%20Put%20in%20Your%20Brief%22%20(The%20concept%20collection)." target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01"/></svg><span>Message James on WhatsApp<span class="visually-hidden"> (opens in a new tab)</span></span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <a class="brand brand-footer" href="../../" aria-label="Singularity Shift Ltd home">
+      <img src="../../assets/singularity-shift-mark.png" alt="" width="46" height="46" loading="lazy">
+      <span>Singularity Shift <small>Ltd</small></span>
+    </a>
+    <p>© <span data-year>2026</span> Singularity Shift Ltd · Cheltenham, UK</p>
+    <a href="https://inferenco.com" target="_blank" rel="noopener noreferrer">Inferenco partnership</a>
+  </div>
+</footer>
+  <script type="module" src="../../script.js"></script>
+</body>
+</html>

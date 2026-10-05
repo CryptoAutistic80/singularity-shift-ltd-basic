@@ -1,0 +1,1 @@
+Three.js 0.186.1, MIT licence. Vendored from the pinned npm package for GitHub Pages, which serves the repository root. Only the LUMA concept loads these modules. Run `npm run vendor:three` after updating the dependency.

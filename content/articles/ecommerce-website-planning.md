@@ -7,8 +7,9 @@ category: "functionality"
 topic: "Online shops"
 label: "Plan an online shop"
 service: "websites"
-related: "website-booking-system,mobile-friendly-website,website-maintenance-cheltenham"
+related: "product-configurator-planning,website-booking-system,mobile-friendly-website"
 order: "26"
+concept: "luma"
 ---
 
 # Planning an Ecommerce Website for a Cheltenham Business
@@ -71,6 +72,12 @@ Before launch, test the storefront and the staff workflow. Use the payment provi
 Try a normal purchase, an unavailable product, a changed quantity, a failed payment and a return to the shop after checkout. Confirm what appears in the order dashboard and which emails are sent. Make sure staff know which record to trust if a notification is delayed.
 
 On a phone, complete the entire purchase rather than checking only the product page. Our [mobile usability guide](../mobile-friendly-website/) covers common obstacles around navigation and forms.
+
+## Separate a visual choice from a sellable configuration
+
+The [LUMA lighting concept](../../concepts/luma/) lets visitors change a lamp's finish, shade and brightness, then save a favourite in their browser. Its desktop scroll scene opens the object into separate components. It demonstrates product presentation; it does not calculate a price, reserve stock or accept an order.
+
+For a real ecommerce build, those next steps need explicit rules. Which finish and size combinations exist? Where do current prices come from? What should happen if a saved option is discontinued? The [product configurator planning guide](../product-configurator-planning/) covers that operational scope. If you are still deciding whether an interactive model is worthwhile, start with [when a 3D product website makes sense](../interactive-product-websites/).
 
 ## Leave room for the work after launch
 

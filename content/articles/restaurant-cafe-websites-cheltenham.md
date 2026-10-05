@@ -7,8 +7,9 @@ category: "business-types"
 topic: "Restaurant and cafe websites"
 label: "Food and drink"
 service: "websites"
-related: "independent-shop-websites-cheltenham,holiday-accommodation-websites-cheltenham"
+related: "coffee-brand-website-design,independent-shop-websites-cheltenham,holiday-accommodation-websites-cheltenham"
 order: "31"
+concept: "daybreak"
 ---
 
 # Restaurant and Cafe Websites in Cheltenham: Help Guests Plan a Visit
@@ -60,6 +61,12 @@ Menus, seasonal opening times and booking links should have named owners inside 
 Ask your website designer to demonstrate the changes you expect to make most often. Adding a new dish should not involve rebuilding the page. A temporary closure should not remain hidden below last year's promotion.
 
 If gift cards or retail products are part of the offer, the [guide to independent shop websites](../independent-shop-websites-cheltenham/) can help distinguish an online purchase from a simple product enquiry.
+
+## Give the brand character without hiding the visit details
+
+The [DAYBREAK coffee concept](../../concepts/daybreak/) shows one possible visual direction: confident lettering, layered coffee photography and a playful scroll sequence. It is an original fictional brand, with a flavour finder and tasting list rather than a working venue booking or online shop.
+
+For a cafe, those ideas could support a clear menu, address and opening hours. A roaster selling beans might instead lead customers towards brew methods and flavour preferences. Decide which business journey you need before borrowing the visual style. The [coffee brand website guide](../coffee-brand-website-design/) explains that distinction and what to include in a design brief.
 
 ## A useful pre-opening website check
 

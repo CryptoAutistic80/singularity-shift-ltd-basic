@@ -7,8 +7,9 @@ category: "business-types"
 topic: "Creative portfolio websites"
 label: "Creative portfolios"
 service: "websites"
-related: "consultant-websites-cheltenham,independent-shop-websites-cheltenham"
+related: "architect-interior-designer-websites-cheltenham,consultant-websites-cheltenham,independent-shop-websites-cheltenham"
 order: "37"
+concept: "field-form"
 ---
 
 # Creative Portfolio Websites in Cheltenham: Show Your Role and Win the Right Enquiries
@@ -62,6 +63,12 @@ You can explain which details will be discussed later. Do not make someone write
 Make your working location and arrangements accurate. Being based in Cheltenham can be useful to someone looking for local collaboration, while remote work may suit other projects. Describe what you actually offer rather than implying unrestricted travel or immediate availability.
 
 The [consultant website guide](../consultant-websites-cheltenham/) explores similar questions around service scope and evidence. If you also sell prints or products, see the [independent shop guide](../independent-shop-websites-cheltenham/).
+
+## Let visitors explore a design direction
+
+In the [FIELD / FORM concept](../../concepts/field-form/), the opening photograph expands as you scroll, and a sequence of image sheets presents different architectural moods. Visitors can also select a project, read its fictional brief and compare colour and monochrome versions of the same reference photograph.
+
+The useful lesson for a real portfolio is how an image can lead into an explanation. The effect should serve the project story, while the project name, your role and the enquiry link remain straightforward to reach. The [architect and interior designer website guide](../architect-interior-designer-websites-cheltenham/) looks more closely at organising spatial work, project status and photography. [Planning website photography](../website-photography-art-direction/) can help turn that direction into a usable set of images.
 
 ## A portfolio review checklist
 

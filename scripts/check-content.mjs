@@ -9,7 +9,7 @@ const failures = [];
 const assert = (condition, message) => { if (!condition) failures.push(message); };
 const decode = (value) => value.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
 const sources = (await readdir(resolve(root, "content/articles"))).filter((file) => file.endsWith(".md") && file !== "README.md");
-const files = ["index.html", "articles/index.html"];
+const files = ["index.html", "articles/index.html", "concepts/index.html"];
 const titles = new Set();
 const descriptions = new Set();
 const articleUrls = [];
@@ -47,6 +47,17 @@ for (const sourceFile of sources) {
   const service = meta.service === "software" || ["applied-ai-cheltenham", "ai-agents-cheltenham-businesses", "bespoke-software-cost-cheltenham", "when-spreadsheets-hold-you-back"].includes(meta.slug) ? "custom-software-cheltenham" : "web-design-cheltenham";
   assert(html.includes(`href="../../services/${service}/"`), `${file}: missing appropriate service route`);
   assert(html.includes('href="../../#contact"'), `${file}: missing enquiry route`);
+  if (meta.concept) {
+    const routes = { collection: "concepts/", daybreak: "concepts/daybreak/", "field-form": "concepts/field-form/", luma: "concepts/luma/" };
+    assert(Object.hasOwn(routes, meta.concept), `${sourceFile}: unknown concept`);
+    assert(html.includes(`data-concept="${meta.concept}"`), `${file}: missing working example preview`);
+    assert(html.includes(`href="../../${routes[meta.concept]}"`), `${file}: missing matching demo link`);
+    const socialImage = html.match(/<meta property="og:image" content="([^"]+)"/)?.[1];
+    assert(socialImage?.startsWith(origin + "/concepts/assets/"), `${file}: missing concept social image`);
+    const whatsapp = [...html.matchAll(/href="(https:\/\/wa\.me\/[^" ]+)"/g)].map(match => new URL(decode(match[1])));
+    assert(whatsapp.some(url => url.searchParams.get("text")?.includes(meta.title)), `${file}: missing article context in enquiry link`);
+  }
+
   const schemas = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].flatMap((match) => {
     try { const value = JSON.parse(match[1]); return value["@graph"] || [value]; }
     catch { failures.push(`${file}: invalid structured data`); return []; }
@@ -59,6 +70,13 @@ for (const sourceFile of sources) {
 for (const entry of await readdir(resolve(root, "services"), { withFileTypes: true })) {
   if (entry.isDirectory()) files.push(`services/${entry.name}/index.html`);
 }
+for (const entry of await readdir(resolve(root, "concepts"), { withFileTypes: true })) {
+  if (entry.isDirectory() && entry.name !== "assets") {
+    const file = `concepts/${entry.name}/index.html`;
+    try { await stat(resolve(root, file)); files.push(file); } catch { continue; }
+    try { await stat(resolve(root, "dist", file)); } catch { failures.push(`${file}: missing from production build`); }
+  }
+}
 const pageCache = new Map();
 const getPage = async (file) => {
   if (!pageCache.has(file)) pageCache.set(file, await readFile(resolve(root, file), "utf8"));
@@ -70,7 +88,9 @@ for (const file of files) {
   try { html = await getPage(file); } catch { continue; }
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   assert(new Set(ids).size === ids.length, `${file}: duplicate anchor IDs`);
-  assert(!/<meta\s+[^>]*name="robots"[^>]*content="[^"]*noindex/.test(html), `${file}: unexpectedly excluded from indexing`);
+  const isFictionalDemo = file.startsWith("concepts/") && file !== "concepts/index.html";
+  const isNoindex = /<meta\s+[^>]*name="robots"[^>]*content="[^"]*noindex/.test(html);
+  assert(isFictionalDemo ? isNoindex : !isNoindex, `${file}: incorrect indexing directive`);
   for (const match of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
     const href = decode(match[1]);
     const url = new URL(href, `${origin}/${file}`);
@@ -97,7 +117,7 @@ const sitemap = await readFile(resolve(root, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => decode(match[1]));
 assert(sitemap.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'), "Sitemap namespace invalid");
 assert(new Set(sitemapUrls).size === sitemapUrls.length, "Duplicate sitemap entries");
-const expectedUrls = [origin + "/", origin + "/articles/", ...files.filter((file) => file.startsWith("services/")).map((file) => origin + "/" + file.replace(/index.html$/, "")), ...articleUrls];
+const expectedUrls = [origin + "/", origin + "/articles/", origin + "/concepts/", ...files.filter((file) => file.startsWith("services/")).map((file) => origin + "/" + file.replace(/index.html$/, "")), ...articleUrls];
 assert(expectedUrls.length === sitemapUrls.length && expectedUrls.every((url) => sitemapUrls.includes(url)), "Sitemap does not match the page inventory");
 for (const url of articleUrls) {
   const slug = url.split("/").filter(Boolean).at(-1);

@@ -1,0 +1,10 @@
+.concept-reading { margin: 0; padding: clamp(40px, 6vw, 82px) max(24px, calc((100% - 1220px) / 2)); display: grid; grid-template-columns: 1fr 1fr; gap: 32px 64px; border-top: 1px solid currentColor; color: inherit; }
+.concept-reading__eyebrow { margin: 0 0 14px; font: 600 11px/1.4 sans-serif; text-transform: uppercase; letter-spacing: .13em; }
+.concept-reading h2 { margin: 0 0 18px; font-family: inherit; font-size: clamp(26px, 3vw, 40px); font-weight: 500; letter-spacing: -.035em; line-height: 1.12; }
+.concept-reading p:not(.concept-reading__eyebrow) { margin: 0; max-width: 450px; font: 400 14px/1.7 sans-serif; }
+.concept-reading ul { margin: 0; padding: 0; list-style: none; }
+.concept-reading li { border-bottom: 1px solid currentColor; }
+.concept-reading li a { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 18px 0; color: inherit; text-decoration: none; font: 600 14px/1.5 sans-serif; }
+.concept-reading li a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.concept-reading a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+@media(max-width:720px) { .concept-reading { grid-template-columns: 1fr; gap: 22px; } }
