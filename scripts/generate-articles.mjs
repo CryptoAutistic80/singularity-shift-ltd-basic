@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -8,40 +8,45 @@ const outputDir = resolve(rootDir, "articles");
 const sitemapPath = resolve(rootDir, "sitemap.xml");
 const robotsPath = resolve(rootDir, "robots.txt");
 
-const articleOrder = [
-  "web-development-cheltenham.md",
-  "when-spreadsheets-hold-you-back.md",
-  "bespoke-software-cost-cheltenham.md",
-  "applied-ai-cheltenham.md",
-  "ai-agents-cheltenham-businesses.md",
-];
+const categories = {
+  planning: { title: "Plan your website", description: "Choose a developer, compare approaches and turn a rough idea into a clear brief." },
+  improve: { title: "Improve an existing website", description: "Find the problems behind slow pages, missed enquiries and difficult updates." },
+  functionality: { title: "Bookings, shops & web applications", description: "Work out what customers and staff need to do online before choosing a system." },
+  "business-types": { title: "Websites for your kind of business", description: "Different businesses need different journeys, from a trade enquiry to an accommodation booking." },
+  software: { title: "Software & business processes", description: "Explore custom tools, scope and practical uses of automation." },
+};
 
 const articlePresentation = {
   "ai-agents-cheltenham-businesses": {
+    category: "software", order: 43,
     topic: "Applied AI · Systems design",
     label: "AI agents",
     related: ["applied-ai-cheltenham", "when-spreadsheets-hold-you-back"],
     service: "software",
   },
   "applied-ai-cheltenham": {
+    category: "software", order: 42,
     topic: "Applied AI · Practical adoption",
     label: "Applied AI",
     related: ["ai-agents-cheltenham-businesses", "when-spreadsheets-hold-you-back"],
     service: "software",
   },
   "web-development-cheltenham": {
+    category: "planning", order: 18,
     topic: "Websites · Planning your project",
     label: "Websites",
-    related: ["bespoke-software-cost-cheltenham", "when-spreadsheets-hold-you-back"],
+    related: ["choosing-web-developer-cheltenham", "website-builder-vs-web-developer", "web-app-developer-cheltenham"],
     service: "websites",
   },
   "bespoke-software-cost-cheltenham": {
+    category: "software", order: 41,
     topic: "Bespoke software · Scoping",
     label: "Bespoke software",
     related: ["when-spreadsheets-hold-you-back", "web-development-cheltenham"],
     service: "software",
   },
   "when-spreadsheets-hold-you-back": {
+    category: "software", order: 40,
     topic: "Operations · Process improvement",
     label: "Operations",
     related: ["bespoke-software-cost-cheltenham", "web-development-cheltenham"],
@@ -107,12 +112,32 @@ function renderRobots() {
 const renderInline = (value) =>
   escapeHtml(value)
     .replace(
-      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-      (_, label, href) =>
-        '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + label + "</a>",
+      /\[([^\]]+)\]\(((?:https?:\/\/|\.\.?\/|\/(?!\/)|#)[^\s)]+)\)/g,
+      (_, label, href) => {
+        const external = /^https?:\/\//.test(href) && new URL(href).hostname !== "sshift.xyz";
+        return '<a href="' + href + '"' + (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + label + '</a>';
+      },
     )
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\x60([^\x60]+)\x60/g, "<code>$1</code>");
+
+function articleHeadings(markdown) {
+  const used = new Set();
+  return markdown.split(/\r?\n/).filter((line) => line.startsWith("## ")).map((line) => {
+    const title = line.slice(3);
+    const base = title.normalize("NFKD").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
+    let id = base;
+    let suffix = 2;
+    while (used.has(id)) id = base + "-" + suffix++;
+    used.add(id);
+    return { title, id };
+  });
+}
+
+function renderContents(article) {
+  return '<nav class="article-contents" aria-label="In this guide"><p><strong>In this guide</strong></p><ol>' +
+    articleHeadings(article.body).map(({ title, id }) => '<li><a href="#' + id + '">' + renderInline(title) + '</a></li>').join("") + '</ol></nav>';
+}
 
 function parseFrontMatter(source, filename) {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
@@ -147,6 +172,8 @@ function renderMarkdown(markdown) {
   const lines = markdown.split(/\r?\n/);
   const blocks = [];
   let index = 0;
+  let headingIndex = 0;
+  const headings = articleHeadings(markdown);
   const startsBlock = (line) =>
     /^#{1,3} /.test(line) ||
     /^[-*] /.test(line) ||
@@ -167,7 +194,7 @@ function renderMarkdown(markdown) {
     }
 
     if (line.startsWith("## ")) {
-      blocks.push("<h2>" + renderInline(line.slice(3)) + "</h2>");
+      blocks.push('<h2 id="' + headings[headingIndex++].id + '">' + renderInline(line.slice(3)) + "</h2>");
       index += 1;
       continue;
     }
@@ -312,7 +339,7 @@ function siteFooter({ assetPrefix, rootHref }) {
 }
 
 function cardMarkup(article, position) {
-  const presentation = articlePresentation[article.slug];
+  const presentation = article.presentation;
   const number = String(position + 1).padStart(2, "0");
 
   return [
@@ -323,7 +350,7 @@ function cardMarkup(article, position) {
     "  </span>",
     "  <h3>" + escapeHtml(article.title) + "</h3>",
     "  <p>" + escapeHtml(article.description) + "</p>",
-    '  <span class="article-card__read">Read guide</span>',
+    '  <span class="article-card__read">Read guide · ' + article.readMinutes + ' min</span>',
     "</a>",
   ].join("\n");
 }
@@ -331,87 +358,81 @@ function cardMarkup(article, position) {
 function articleSchema(article) {
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: article.title,
-    description: article.description,
-    mainEntityOfPage: article.canonicalUrl,
-    author: {
-      "@type": "Person",
-      name: "James Walford",
-      url: "https://sshift.xyz/#about",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Singularity Shift Ltd",
-      url: "https://sshift.xyz/",
-    },
-    inLanguage: "en-GB",
+    "@graph": [
+      {
+        "@type": "Article",
+        headline: article.title,
+        description: article.description,
+        mainEntityOfPage: article.canonicalUrl,
+        articleSection: categories[article.presentation.category].title,
+        author: { "@type": "Person", name: "James Walford", url: "https://sshift.xyz/#about" },
+        publisher: { "@type": "Organization", name: "Singularity Shift Ltd", url: "https://sshift.xyz/" },
+        inLanguage: "en-GB",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://sshift.xyz/" },
+          { "@type": "ListItem", position: 2, name: "Guides", item: "https://sshift.xyz/articles/" },
+          { "@type": "ListItem", position: 3, name: article.title, item: article.canonicalUrl },
+        ],
+      },
+    ],
   };
 }
 
 function renderIndex(articles) {
+  const groups = Object.entries(categories).map(([id, category]) => ({
+    id, ...category, articles: articles.filter((article) => article.presentation.category === id),
+  })).filter((category) => category.articles.length);
   const schema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Website & Software Guides | Singularity Shift",
-    description: "Practical guides to planning a website, improving business processes and scoping custom software.",
+    name: "Website Guides for Cheltenham Businesses",
+    description: "Practical guides to choosing a website developer, planning a build and improving your business website.",
     url: "https://sshift.xyz/articles/",
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: articles.map((article, index) => ({
+        "@type": "ListItem", position: index + 1, name: article.title, url: article.canonicalUrl,
+      })),
+    },
   };
-
   return [
     pageHead({
-      title: "Website & Software Guides",
-      description: "Useful answers before you commission a website or custom software: choosing the right project, understanding costs and improving how your business works.",
-      canonicalUrl: "https://sshift.xyz/articles/",
-      stylesHref: "../",
-      schema,
-      ogType: "website",
+      title: "Website Guides for Cheltenham Businesses",
+      description: "Choosing a website builder or developer in Cheltenham? Explore practical guides to costs, redesigns, local search, bookings and better business websites.",
+      canonicalUrl: "https://sshift.xyz/articles/", stylesHref: "../", schema, ogType: "website",
     }),
     '<body class="article-page article-index-page">',
-    siteHeader({
-      assetPrefix: "../",
-      rootHref: "../",
-      articlesHref: "./",
-      ctaHref: "../#contact",
-      articleIndex: true,
-    }),
+    siteHeader({ assetPrefix: "../", rootHref: "../", articlesHref: "./", ctaHref: "../#contact", articleIndex: true }),
     '<main id="main-content" class="article-main">',
-    '  <section class="article-index-hero" aria-labelledby="articles-title">',
-    '    <div class="shell article-index-hero__copy">',
-    '      <p class="eyebrow">Websites · Software · Your business</p>',
-    '      <h1 id="articles-title">Useful answers before <em>you start.</em></h1>',
-    '      <p class="article-lede">Planning a website, improving a process or working out what to build? Start with the question that matters to your business.</p>',
-    '      <p class="article-index-hero__note">Guides by James Walford · Cheltenham</p>',
-    "    </div>",
-    "  </section>",
-    '  <section class="article-index-section" aria-labelledby="reading-title">',
-    '    <div class="shell">',
-    '      <div class="article-index-heading">',
-    "        <div>",
-    '          <p class="eyebrow eyebrow-dark">All guides</p>',
-    '          <h2 id="reading-title">What would you like to make clearer?</h2>',
-    "        </div>",
-    "        <p>Practical questions to help you choose the right scope and prepare for a useful first conversation.</p>",
-    "      </div>",
-    '      <div class="article-grid">',
-    articles.map(cardMarkup).join("\n"),
-    "      </div>",
-    "    </div>",
-    "  </section>",
-    "</main>",
+    '<section class="article-index-hero" aria-labelledby="articles-title"><div class="shell article-index-hero__copy">',
+    '<p class="eyebrow">Cheltenham · Website &amp; software guides</p>',
+    '<h1 id="articles-title">A clearer plan for <em>your website.</em></h1>',
+    '<p class="article-lede">Choosing a website builder or developer in Cheltenham? Find useful answers about costs, the right approach and what your customers need from your site.</p>',
+    '<p class="article-index-hero__note">' + articles.length + ' practical guides · James Walford, Cheltenham</p>',
+    '</div></section>',
+    '<section class="article-index-section" aria-labelledby="reading-title"><div class="shell">',
+    '<div class="article-index-heading"><div><p class="eyebrow eyebrow-dark">Start with your question</p><h2 id="reading-title">What are you working on?</h2></div>',
+    '<p>Browse the guides, or <a class="text-link" href="../services/web-design-cheltenham/">explore website design and development</a> if you are ready to discuss a project.</p></div>',
+    '<nav class="article-topics" aria-label="Guide topics">' + groups.map((group) => '<a href="#' + group.id + '">' + escapeHtml(group.title) + ' <span>' + group.articles.length + '</span></a>').join("") + '</nav>',
+    groups.map((group) => [
+      '<section class="article-category" aria-labelledby="' + group.id + '">',
+      '<div class="article-category-heading"><h2 id="' + group.id + '">' + escapeHtml(group.title) + '</h2><p>' + escapeHtml(group.description) + '</p></div>',
+      '<div class="article-grid">', group.articles.map((article) => cardMarkup(article, articles.indexOf(article))).join("\n"), '</div></section>',
+    ].join("\n")).join("\n"),
+    '</div></section></main>',
     siteFooter({ assetPrefix: "../", rootHref: "../" }),
-    '  <script type="module" src="../script.js"></script>',
-    "</body>",
-    "</html>",
-    "",
+    '<script type="module" src="../script.js"></script>', '</body>', '</html>', '',
   ].join("\n");
 }
 
 function relatedMarkup(article, articles) {
-  return articlePresentation[article.slug].related
+  return article.presentation.related
     .map((slug) => articles.find((candidate) => candidate.slug === slug))
     .map((candidate) => {
-      const presentation = articlePresentation[candidate.slug];
+      const presentation = candidate.presentation;
 
       return [
         "<li>",
@@ -426,7 +447,7 @@ function relatedMarkup(article, articles) {
 }
 
 function renderArticle(article, articles) {
-  const presentation = articlePresentation[article.slug];
+  const presentation = article.presentation;
   const service = servicePresentation[presentation.service];
 
   return [
@@ -448,17 +469,18 @@ function renderArticle(article, articles) {
     '<main id="main-content" class="article-main">',
     '  <section class="article-detail-intro" aria-labelledby="article-title">',
     '    <div class="shell article-detail-intro__copy">',
-    '      <a class="article-back-link" href="../">All guides</a>',
+    '      <a class="article-back-link" href="../#' + presentation.category + '">' + escapeHtml(categories[presentation.category].title) + '</a>',
     '      <p class="eyebrow eyebrow-dark">' + escapeHtml(presentation.topic) + "</p>",
     '      <h1 id="article-title">' + escapeHtml(article.title) + "</h1>",
     '      <p class="article-detail-intro__description">' + escapeHtml(article.description) + "</p>",
     '      <p class="article-detail-intro__audience">By <a href="../../#about" rel="author"><strong>James Walford</strong></a> · Website designer &amp; software developer, Cheltenham</p>',
-    '      <p class="article-detail-intro__audience"><strong>For:</strong> ' + escapeHtml(article.audience) + "</p>",
+    '      <p class="article-detail-intro__audience">' + article.readMinutes + ' min read · <strong>For:</strong> ' + escapeHtml(article.audience) + '</p>',
     "    </div>",
     "  </section>",
     '  <section class="article-detail-body">',
     '    <div class="shell article-detail-grid">',
     '      <article class="article-prose">',
+    renderContents(article),
     renderMarkdown(article.body),
     "      </article>",
     '      <aside class="article-aside" aria-label="Work with Singularity Shift">',
@@ -482,7 +504,10 @@ function renderArticle(article, articles) {
     "      </div>",
     "      <div>",
     '        <p>' + escapeHtml(service.ctaDescription) + '</p>',
-    '        <a class="button button-accent" href="../../#contact">Tell me about your project</a>',
+    '        <div class="contact-actions">',
+    '          <a class="button button-accent" href="../../#contact">Tell me about your project</a>',
+    '          <a class="button button-ghost button-whatsapp" href="https://wa.me/447540456767?text=Hi%20James%2C%20I%27d%20like%20to%20discuss%20a%20website%20or%20software%20project." target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><path d="M8 11.5h.01M12 11.5h.01M16 11.5h.01"/></svg><span>Message James on WhatsApp<span class="visually-hidden"> (opens in a new tab)</span></span></a>',
+    '        </div>',
     "      </div>",
     "    </div>",
     "  </section>",
@@ -498,19 +523,30 @@ function renderArticle(article, articles) {
 async function loadArticle(filename) {
   const source = await readFile(resolve(contentDir, filename), "utf8");
   const { meta, body } = parseFrontMatter(source, filename);
-
+  const legacy = articlePresentation[meta.slug];
+  const presentation = legacy || {
+    category: meta.category, topic: meta.topic, label: meta.label, service: meta.service,
+    related: (meta.related || "").split(",").map((slug) => slug.trim()).filter(Boolean), order: Number(meta.order),
+  };
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(meta.slug) || filename !== meta.slug + ".md") throw new Error("Invalid slug in " + filename);
+  if (!categories[presentation.category] || !servicePresentation[presentation.service] || !presentation.topic || !presentation.label || !Number.isFinite(presentation.order)) throw new Error("Invalid presentation metadata in " + filename);
+  if (articleHeadings(body).length < 2) throw new Error("Article needs a useful section structure: " + filename);
   return {
-    ...meta,
-    body,
+    ...meta, body, presentation,
+    readMinutes: Math.max(1, Math.ceil(body.split(/\s+/).length / 220)),
     canonicalUrl: "https://sshift.xyz/articles/" + meta.slug + "/",
   };
 }
 
 async function generate() {
-  const articles = [];
-
-  for (const filename of articleOrder) {
-    articles.push(await loadArticle(filename));
+  const filenames = (await readdir(contentDir)).filter((name) => name.endsWith(".md") && name !== "README.md");
+  const articles = (await Promise.all(filenames.map(loadArticle))).sort((a, b) => a.presentation.order - b.presentation.order || a.slug.localeCompare(b.slug));
+  const slugs = new Set(articles.map((article) => article.slug));
+  for (const key of ["slug", "title", "description"]) {
+    if (new Set(articles.map((article) => article[key])).size !== articles.length) throw new Error("Duplicate article " + key);
+  }
+  for (const article of articles) {
+    if (article.presentation.related.length < 2 || article.presentation.related.some((slug) => !slugs.has(slug) || slug === article.slug)) throw new Error("Invalid related guides for " + article.slug);
   }
 
   await mkdir(outputDir, { recursive: true });

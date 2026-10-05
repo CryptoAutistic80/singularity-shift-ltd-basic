@@ -318,8 +318,8 @@
 }
 
 .article-prose a {
-  border-bottom: 1px solid rgba(201, 54, 42, 0.55);
-  color: #9e2b22;
+  border-bottom: 1px solid currentColor;
+  color: var(--accent-dark);
   font-weight: 700;
 }
 
@@ -441,7 +441,7 @@
   line-height: 1;
 }
 
-.article-cta p:last-child {
+.article-cta p:not(.eyebrow) {
   max-width: 460px;
   margin: 0 0 28px;
   color: #c4beb6;
@@ -517,4 +517,115 @@
   .article-aside {
     padding: 24px;
   }
+}
+
+/* Browse every guide without relying on client-side filtering. */
+.article-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 64px;
+}
+
+.article-topics a {
+  display: inline-flex;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 18px;
+  border: 1px solid var(--line-light);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.article-topics a:hover {
+  background: #fffaf2;
+}
+
+.article-topics span {
+  color: var(--accent-dark);
+}
+
+.article-category + .article-category {
+  margin-top: 76px;
+}
+
+.article-category-heading {
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+.article-category-heading h2 {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  color: var(--ink);
+}
+
+.article-category-heading p {
+  color: #5c5852;
+  margin: 0;
+}
+
+.article-category .article-card {
+  min-height: 290px;
+}
+
+.article-category .article-card h3 {
+  font-size: clamp(28px, 3vw, 38px);
+  margin-top: 32px;
+}
+
+.article-category-heading h2, .article-prose h2 {
+  scroll-margin-top: 110px;
+}
+
+.article-contents {
+  padding: 24px 28px;
+  border: 1px solid var(--line-light);
+  background: #e9e3d9;
+  margin-bottom: 42px;
+}
+
+.article-contents p {
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+.article-contents ol {
+  margin-bottom: 0;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.article-prose a {
+  overflow-wrap: anywhere;
+}
+
+.article-detail-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 680px) {
+  .article-topics {
+    gap: 8px;
+    margin-bottom: 44px;
+  }
+
+  .article-topics a {
+    max-width: 100%;
+    padding: 10px 12px;
+  }
+
+  .article-category + .article-category {
+    margin-top: 52px;
+  }
+
+  .article-contents {
+    padding: 20px;
+  }
+
 }
