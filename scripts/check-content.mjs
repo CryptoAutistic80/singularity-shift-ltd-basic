@@ -119,6 +119,8 @@ assert(sitemap.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'), 
 assert(new Set(sitemapUrls).size === sitemapUrls.length, "Duplicate sitemap entries");
 const expectedUrls = [origin + "/", origin + "/articles/", origin + "/concepts/", ...files.filter((file) => file.startsWith("services/")).map((file) => origin + "/" + file.replace(/index.html$/, "")), ...articleUrls];
 assert(expectedUrls.length === sitemapUrls.length && expectedUrls.every((url) => sitemapUrls.includes(url)), "Sitemap does not match the page inventory");
+const textSitemap = await readFile(resolve(root, "sitemap.txt"), "utf8");
+assert(textSitemap === sitemapUrls.join("\n") + "\n", "Text sitemap must match the XML URL inventory, with one URL per line and a final newline");
 for (const url of articleUrls) {
   const slug = url.split("/").filter(Boolean).at(-1);
   assert(index.includes(`href="./${slug}/"`), `${slug}: missing crawlable guide-index link`);
