@@ -6,6 +6,7 @@ const rootDir = fileURLToPath(new URL("../", import.meta.url));
 const contentDir = resolve(rootDir, "content", "articles");
 const outputDir = resolve(rootDir, "articles");
 const sitemapPath = resolve(rootDir, "sitemap.xml");
+const textSitemapPath = resolve(rootDir, "sitemap.txt");
 const robotsPath = resolve(rootDir, "robots.txt");
 
 const categories = {
@@ -89,8 +90,8 @@ const escapeHtml = (value) =>
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
 
-function renderSitemap(articles) {
-  const urls = [
+function sitemapUrls(articles) {
+  return [
     "https://sshift.xyz/",
     "https://sshift.xyz/services/web-design-cheltenham/",
     "https://sshift.xyz/services/custom-software-cheltenham/",
@@ -98,6 +99,10 @@ function renderSitemap(articles) {
     "https://sshift.xyz/concepts/",
     ...articles.map((article) => article.canonicalUrl),
   ];
+}
+
+function renderSitemap(articles) {
+  const urls = sitemapUrls(articles);
 
   return [
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
@@ -106,6 +111,10 @@ function renderSitemap(articles) {
     "</urlset>",
     "",
   ].join(String.fromCharCode(10));
+}
+
+function renderTextSitemap(articles) {
+  return [...sitemapUrls(articles), ""].join(String.fromCharCode(10));
 }
 
 function renderRobots() {
@@ -591,6 +600,7 @@ async function generate() {
   await mkdir(outputDir, { recursive: true });
   await writeFile(resolve(outputDir, "index.html"), renderIndex(articles), "utf8");
   await writeFile(sitemapPath, renderSitemap(articles), "utf8");
+  await writeFile(textSitemapPath, renderTextSitemap(articles), "utf8");
   await writeFile(robotsPath, renderRobots(), "utf8");
 
   for (const article of articles) {
