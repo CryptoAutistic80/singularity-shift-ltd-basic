@@ -1,10 +1,10 @@
 import { readFile, readdir, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { APP_ORIGIN as origin, appUrl, documentNames, loadApps } from "./lib/apps.mjs";
 
 // Check the published static outputs as a connected site, independently of rendering.
 const root = fileURLToPath(new URL("../", import.meta.url));
-const origin = "https://sshift.xyz";
 const failures = [];
 const assert = (condition, message) => { if (!condition) failures.push(message); };
 const decode = (value) => value.replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">");
@@ -77,6 +77,41 @@ for (const entry of await readdir(resolve(root, "concepts"), { withFileTypes: tr
     try { await stat(resolve(root, "dist", file)); } catch { failures.push(`${file}: missing from production build`); }
   }
 }
+
+const appIndex = "apps/index.html";
+const appUrls = [`${origin}/apps/`];
+const draftPages = new Set();
+const apps = await loadApps();
+const appDirectory = await readFile(resolve(root, appIndex), "utf8");
+files.push(appIndex);
+assert(appDirectory.includes(`<link rel="canonical" href="${appUrls[0]}">`), `${appIndex}: canonical mismatch`);
+assert((await stat(resolve(root, "dist", appIndex))).isFile(), `${appIndex}: missing from production build`);
+
+for (const { slug, updated, supportEmail } of apps) {
+  for (const [document, label] of Object.entries(documentNames)) {
+    const file = `apps/${slug}/${document}/index.html`;
+    const other = document === "privacy" ? "terms" : "privacy";
+    const canonical = appUrl(slug, document);
+    files.push(file);
+    if (updated === null) draftPages.add(file);
+    else appUrls.push(canonical);
+    assert(appDirectory.includes(`href="./${slug}/${document}/"`), `${appIndex}: missing link to ${file}`);
+    const html = await readFile(resolve(root, file), "utf8");
+    assert(html.includes(`<link rel="canonical" href="${canonical}">`), `${file}: canonical mismatch`);
+    assert(html.includes(`<h1>${label}</h1>`) && (html.match(/<h1\b/g) || []).length === 1, `${file}: expected one matching H1`);
+    assert(html.includes(`href="../${other}/"`), `${file}: missing link to ${other}`);
+    assert(html.includes(`href="mailto:${supportEmail}"`), `${file}: missing support link`);
+    assert(html.includes('aria-label="On this page"'), `${file}: missing section navigation`);
+    assert(updated === null ? html.includes("Draft for review.") && !html.includes("<time ") :
+      html.includes(`<time datetime="${updated}">`), `${file}: incorrect date or draft status`);
+    try { await stat(resolve(root, "dist", file)); }
+    catch { failures.push(`${file}: missing from production build`); }
+  }
+}
+const appDirectories = (await readdir(resolve(root, "apps"), { withFileTypes: true }))
+  .filter((entry) => entry.isDirectory()).map((entry) => entry.name).sort();
+assert(appDirectories.join("\n") === apps.map(({ slug }) => slug).join("\n"), "Generated app inventory contains stale or missing pages");
+
 const pageCache = new Map();
 const getPage = async (file) => {
   if (!pageCache.has(file)) pageCache.set(file, await readFile(resolve(root, file), "utf8"));
@@ -90,7 +125,7 @@ for (const file of files) {
   assert(new Set(ids).size === ids.length, `${file}: duplicate anchor IDs`);
   const isFictionalDemo = file.startsWith("concepts/") && file !== "concepts/index.html";
   const isNoindex = /<meta\s+[^>]*name="robots"[^>]*content="[^"]*noindex/.test(html);
-  assert(isFictionalDemo ? isNoindex : !isNoindex, `${file}: incorrect indexing directive`);
+  assert(isNoindex === (isFictionalDemo || draftPages.has(file)), `${file}: incorrect indexing directive`);
   for (const match of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
     const href = decode(match[1]);
     const url = new URL(href, `${origin}/${file}`);
@@ -117,7 +152,7 @@ const sitemap = await readFile(resolve(root, "sitemap.xml"), "utf8");
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => decode(match[1]));
 assert(sitemap.includes('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"'), "Sitemap namespace invalid");
 assert(new Set(sitemapUrls).size === sitemapUrls.length, "Duplicate sitemap entries");
-const expectedUrls = [origin + "/", origin + "/articles/", origin + "/concepts/", ...files.filter((file) => file.startsWith("services/")).map((file) => origin + "/" + file.replace(/index.html$/, "")), ...articleUrls];
+const expectedUrls = [origin + "/", origin + "/articles/", origin + "/concepts/", ...files.filter((file) => file.startsWith("services/")).map((file) => origin + "/" + file.replace(/index.html$/, "")), ...articleUrls, ...appUrls];
 assert(expectedUrls.length === sitemapUrls.length && expectedUrls.every((url) => sitemapUrls.includes(url)), "Sitemap does not match the page inventory");
 const textSitemap = await readFile(resolve(root, "sitemap.txt"), "utf8");
 assert(textSitemap === sitemapUrls.join("\n") + "\n", "Text sitemap must match the XML URL inventory, with one URL per line and a final newline");

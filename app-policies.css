@@ -1,0 +1,121 @@
+.app-policies {
+  background: var(--paper);
+  color: var(--ink);
+  color-scheme: light;
+}
+
+.policy-header,
+.policy-footer {
+  background: var(--ink);
+  color: var(--text);
+}
+
+.policy-header .shell,
+.policy-footer .shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 24px;
+  padding-block: 18px;
+}
+
+.policy-footer p {
+  margin: 0;
+}
+
+.policy-header .shell > a:not(.brand),
+.policy-footer a,
+.policy-shell a {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.policy-shell {
+  width: min(740px, calc(100% - 40px));
+  margin-inline: auto;
+  padding-block: clamp(52px, 8vw, 96px);
+  overflow-wrap: break-word;
+}
+
+.policy-shell :focus-visible {
+  outline-color: var(--accent-dark);
+}
+
+.policy-shell h1 {
+  margin: 0 0 0.35em;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.02;
+}
+
+.policy-app-name,
+.policy-date {
+  margin: 0 0 16px;
+  color: #544f48;
+}
+
+.policy-app-name {
+  font-weight: 700;
+}
+
+.policy-shell a {
+  color: var(--accent-dark);
+}
+
+.policy-shell .article-prose a {
+  border: 0;
+}
+
+.policy-draft {
+  padding: 10px 14px;
+  border-inline-start: 3px solid var(--accent-dark);
+  background: var(--paper-2);
+}
+
+.policy-contents {
+  margin-block: 30px 44px;
+  padding: 18px 20px;
+  border: 1px solid var(--line-light);
+}
+
+.policy-contents p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.policy-contents ol {
+  margin-block: 8px 0;
+  padding-inline-start: 1.4em;
+}
+
+.policy-contents li + li {
+  margin-top: 4px;
+}
+
+.policy-links,
+.policy-directory {
+  list-style: none;
+  padding: 0;
+}
+
+.policy-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+}
+
+.policy-directory > li {
+  margin-top: 30px;
+  padding: 22px;
+  border: 1px solid var(--line-light);
+}
+
+.policy-directory h2 {
+  margin-top: 0;
+}
+
+.policy-directory .policy-links {
+  margin-bottom: 0;
+}

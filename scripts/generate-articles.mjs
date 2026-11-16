@@ -1,6 +1,9 @@
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { escapeHtml, markdownHeadings, renderInline, renderMarkdown } from "./lib/markdown.mjs";
+import { generateApps } from "./generate-apps.mjs";
+import { appUrl, APP_ORIGIN, documentNames } from "./lib/apps.mjs";
 
 const rootDir = fileURLToPath(new URL("../", import.meta.url));
 const contentDir = resolve(rootDir, "content", "articles");
@@ -82,27 +85,21 @@ const servicePresentation = {
   },
 };
 
-const escapeHtml = (value) =>
-  String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-
-function sitemapUrls(articles) {
+function sitemapUrls(articles, apps) {
   return [
     "https://sshift.xyz/",
     "https://sshift.xyz/services/web-design-cheltenham/",
     "https://sshift.xyz/services/custom-software-cheltenham/",
     "https://sshift.xyz/articles/",
     "https://sshift.xyz/concepts/",
+    APP_ORIGIN + "/apps/",
+    ...apps.filter(({ updated }) => updated !== null)
+      .flatMap(({ slug }) => Object.keys(documentNames).map((document) => appUrl(slug, document))),
     ...articles.map((article) => article.canonicalUrl),
   ];
 }
 
-function renderSitemap(articles) {
-  const urls = sitemapUrls(articles);
+function renderSitemap(urls) {
 
   return [
     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
@@ -113,8 +110,8 @@ function renderSitemap(articles) {
   ].join(String.fromCharCode(10));
 }
 
-function renderTextSitemap(articles) {
-  return [...sitemapUrls(articles), ""].join(String.fromCharCode(10));
+function renderTextSitemap(urls) {
+  return [...urls, ""].join(String.fromCharCode(10));
 }
 
 function renderRobots() {
@@ -127,34 +124,9 @@ function renderRobots() {
   ].join(String.fromCharCode(10));
 }
 
-const renderInline = (value) =>
-  escapeHtml(value)
-    .replace(
-      /\[([^\]]+)\]\(((?:https?:\/\/|\.\.?\/|\/(?!\/)|#)[^\s)]+)\)/g,
-      (_, label, href) => {
-        const external = /^https?:\/\//.test(href) && new URL(href).hostname !== "sshift.xyz";
-        return '<a href="' + href + '"' + (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + label + '</a>';
-      },
-    )
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\x60([^\x60]+)\x60/g, "<code>$1</code>");
-
-function articleHeadings(markdown) {
-  const used = new Set();
-  return markdown.split(/\r?\n/).filter((line) => line.startsWith("## ")).map((line) => {
-    const title = line.slice(3);
-    const base = title.normalize("NFKD").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
-    let id = base;
-    let suffix = 2;
-    while (used.has(id)) id = base + "-" + suffix++;
-    used.add(id);
-    return { title, id };
-  });
-}
-
 function renderContents(article) {
   return '<nav class="article-contents" aria-label="In this guide"><p><strong>In this guide</strong></p><ol>' +
-    articleHeadings(article.body).map(({ title, id }) => '<li><a href="#' + id + '">' + renderInline(title) + '</a></li>').join("") + '</ol></nav>';
+    markdownHeadings(article.body).map(({ title, id }) => '<li><a href="#' + id + '">' + renderInline(title) + '</a></li>').join("") + '</ol></nav>';
 }
 
 function parseFrontMatter(source, filename) {
@@ -184,91 +156,6 @@ function parseFrontMatter(source, filename) {
     meta,
     body: source.slice(match[0].length).trim(),
   };
-}
-
-function renderMarkdown(markdown) {
-  const lines = markdown.split(/\r?\n/);
-  const blocks = [];
-  let index = 0;
-  let headingIndex = 0;
-  const headings = articleHeadings(markdown);
-  const startsBlock = (line) =>
-    /^#{1,3} /.test(line) ||
-    /^[-*] /.test(line) ||
-    /^\d+\. /.test(line) ||
-    /^> /.test(line);
-
-  while (index < lines.length) {
-    const line = lines[index];
-
-    if (!line.trim()) {
-      index += 1;
-      continue;
-    }
-
-    if (line.startsWith("# ")) {
-      index += 1;
-      continue;
-    }
-
-    if (line.startsWith("## ")) {
-      blocks.push('<h2 id="' + headings[headingIndex++].id + '">' + renderInline(line.slice(3)) + "</h2>");
-      index += 1;
-      continue;
-    }
-
-    if (line.startsWith("### ")) {
-      blocks.push("<h3>" + renderInline(line.slice(4)) + "</h3>");
-      index += 1;
-      continue;
-    }
-
-    if (line.startsWith("> ")) {
-      const quote = [];
-
-      while (index < lines.length && lines[index].startsWith("> ")) {
-        quote.push(lines[index].slice(2));
-        index += 1;
-      }
-
-      blocks.push("<blockquote>" + renderInline(quote.join(" ")) + "</blockquote>");
-      continue;
-    }
-
-    const ordered = /^\d+\. /.test(line);
-    const listPattern = ordered ? /^\d+\. (.+)$/ : /^[-*] (.+)$/;
-
-    if (listPattern.test(line)) {
-      const items = [];
-
-      while (index < lines.length) {
-        const item = lines[index].match(listPattern);
-
-        if (!item) {
-          break;
-        }
-
-        items.push("<li>" + renderInline(item[1]) + "</li>");
-        index += 1;
-      }
-
-      blocks.push((ordered ? "<ol>" : "<ul>") + items.join("") + (ordered ? "</ol>" : "</ul>"));
-      continue;
-    }
-
-    const paragraph = [];
-
-    while (index < lines.length && lines[index].trim() && !startsBlock(lines[index])) {
-      paragraph.push(lines[index].trim());
-      index += 1;
-    }
-
-    if (paragraph.length) {
-      blocks.push("<p>" + renderInline(paragraph.join(" ")) + "</p>");
-    }
-  }
-
-  return blocks.join("\n");
 }
 
 function safeJson(value) {
@@ -575,7 +462,7 @@ async function loadArticle(filename) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(meta.slug) || filename !== meta.slug + ".md") throw new Error("Invalid slug in " + filename);
   if (!categories[presentation.category] || !servicePresentation[presentation.service] || !presentation.topic || !presentation.label || !Number.isFinite(presentation.order)) throw new Error("Invalid presentation metadata in " + filename);
   if (meta.concept && !conceptPresentation[meta.concept]) throw new Error("Unknown concept in " + filename);
-  if (articleHeadings(body).length < 2) throw new Error("Article needs a useful section structure: " + filename);
+  if (markdownHeadings(body).length < 2) throw new Error("Article needs a useful section structure: " + filename);
   return {
     ...meta, body, presentation,
     readMinutes: Math.max(1, Math.ceil(body.split(/\s+/).length / 220)),
@@ -598,9 +485,11 @@ async function generate() {
   }
 
   await mkdir(outputDir, { recursive: true });
+  const appPages = await generateApps();
+  const urls = sitemapUrls(articles, appPages);
   await writeFile(resolve(outputDir, "index.html"), renderIndex(articles), "utf8");
-  await writeFile(sitemapPath, renderSitemap(articles), "utf8");
-  await writeFile(textSitemapPath, renderTextSitemap(articles), "utf8");
+  await writeFile(sitemapPath, renderSitemap(urls), "utf8");
+  await writeFile(textSitemapPath, renderTextSitemap(urls), "utf8");
   await writeFile(robotsPath, renderRobots(), "utf8");
 
   for (const article of articles) {
