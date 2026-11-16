@@ -40,6 +40,18 @@ if (existsSync(conceptsDir)) {
   }
 }
 
+const appsDir = resolve(rootDir, "apps");
+if (existsSync(appsDir)) {
+  input.apps = resolve(appsDir, "index.html");
+  for (const entry of readdirSync(appsDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    for (const document of ["privacy", "terms"]) {
+      const page = resolve(appsDir, entry.name, document, "index.html");
+      if (existsSync(page)) input[`app-${entry.name}-${document}`] = page;
+    }
+  }
+}
+
 export default defineConfig({
   server: {
     host: "0.0.0.0",
