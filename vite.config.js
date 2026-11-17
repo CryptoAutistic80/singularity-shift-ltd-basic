@@ -7,6 +7,8 @@ const rootDir = fileURLToPath(new URL(".", import.meta.url));
 const articlesDir = resolve(rootDir, "articles");
 const input = {
   home: resolve(rootDir, "index.html"),
+  pdfSignPrivacy: resolve(rootDir, "pdf-easy-sign-pro/privacy/index.html"),
+  pdfSignTerms: resolve(rootDir, "pdf-easy-sign-pro/terms/index.html"),
 };
 
 if (existsSync(articlesDir)) {
